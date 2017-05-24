@@ -5,11 +5,11 @@ import {ComponentStyles} from "../style";
 import {logoImage} from "../common";
 
 class Logo extends Component {
-
+  
   constructor(props) {
     super(props);
   }
-
+  
   render() {
     return (
       <Image
