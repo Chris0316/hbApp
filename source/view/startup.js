@@ -22,7 +22,9 @@ class StartupPage extends Component {
     const resetAction = NavigationActions.reset({
       index: 0,
       actions: [
-        NavigationActions.navigate({routeName: 'home'})
+        NavigationActions.navigate({routeName: 'home',params:{
+          title:'xx'
+        }})
       ]
     })
     this.timer = TimerMixin.setTimeout(() => {

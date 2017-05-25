@@ -10,7 +10,7 @@ export default {
     version: '0.0.1',
     copyright: 'Copyright ©2017.HwaBao Securities Co.Ltd.,All Rights Reserved'
   },
-  apiDomain: 'http://10.0.31.109:8080/'
+  apiDomain: 'http://192.168.31.207:8080/'
 }
 
 export const pageSize = 10
