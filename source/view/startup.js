@@ -2,43 +2,44 @@
  * Created by kim on 2017/5/24.
  */
 import React, {Component} from "react";
-import {StyleSheet, View, Text} from "react-native";
-
+import {StyleSheet, View} from "react-native";
+import {NavigationActions} from "react-navigation";
+import TimerMixin from "react-timer-mixin";
 import * as Animatable from "react-native-animatable";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../style";
 import Logo from "../component/logo";
-import Router from '../component/router'
 class StartupPage extends Component {
-  static navigationOptions = ({navigation}) => ({
-    header: null
-  });
-  
+
   constructor(props) {
     super(props);
-    this.router = new Router(this.props.navigation)
   }
-  
+
+  componentWillUnmount() {
+    this.timer && TimerMixin.clearTimeout(this.timer);
+  }
+
   onPageContentShow() {
-    this.timer = setTimeout(() => {
-      // this.props.navigation.navigate('Home')
-    }, 2000);
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({routeName: 'home'})
+      ]
+    })
+    this.timer = TimerMixin.setTimeout(() => {
+      this.props.navigation.dispatch(resetAction)
+    }, 300)
   }
-  
-  onPress() {
-    this.props.navigation.navigate('home')
-  }
-  
+
   renderContent() {
     return (
       <Animatable.View
         onAnimationEnd={this.onPageContentShow.bind(this)}
         animation="fadeInDown">
         <Logo/>
-        <Text onPress={this.onPress.bind(this)}>Start...</Text>
       </Animatable.View>
     )
   }
-  
+
   render() {
     return (
       <View

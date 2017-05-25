@@ -5,21 +5,25 @@
 import React, {Component} from "react";
 import {Text, View} from "react-native";
 import {ComponentStyles} from "../style";
-import Router from '../component/router'
 class Home extends Component {
-  static navigationOptions = ({navigation}) => ({
-    headerTitle: '主页'
-  });
-  
+
   constructor(props) {
     super(props);
-    this.router = new Router(this.props.navigation)
   }
-  
+
+  openWeb() {
+    let url = 'http://www.163.com'
+    this.props.navigation.navigate('web', {
+      url: url
+    })
+  }
+
   render() {
     return (
       <View style={ComponentStyles.container}>
-        <Text>Home</Text>
+        <Text onPress={() => {
+          this.openWeb()
+        }}>Home</Text>
       </View>
     )
   }
