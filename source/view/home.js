@@ -3,22 +3,29 @@
  */
 
 import React, {Component} from "react";
-import {Text, View} from "react-native";
-import {ComponentStyles} from "../style";
-import {login} from '../service/userService'
+import {ScrollView, StatusBar, Text, View} from "react-native";
+import {CommonStyles, ComponentStyles} from "../style";
+import {login} from "../service/userService";
+import config from "../config";
+import {decodeHTML} from "../common";
+import HtmlConvertor from "../component/htmlConvertor";
+import HomeRender from "../component/header/home";
 class Home extends Component {
-  
+
   constructor(props) {
     super(props);
+    this.state = {
+      html: ''
+    }
   }
-  
+
   openWeb() {
     let url = 'http://www.163.com'
     this.props.navigation.navigate('web', {
       url: url
     })
   }
-  
+
   login() {
     login('18016052872', '111111').then(res => {
       if (res.isSuc) {
@@ -26,16 +33,61 @@ class Home extends Component {
       }
     })
   }
-  
+
+  showHtml() {
+    let html = decodeHTML(config.news);
+    if (this.state.html) {
+      this.setState({
+        html: ''
+      })
+    } else {
+      this.setState({
+        html: html
+      })
+    }
+  }
+
+  renderHTML() {
+    if (this.state.html) {
+      return (
+        <ScrollView>
+          <View style={ [CommonStyles.p_a_3] }>
+            <HtmlConvertor
+              navigate={ this.props.navigation.navigate }
+              content={ this.state.html }>
+            </HtmlConvertor>
+          </View>
+        </ScrollView>
+      )
+    }
+
+  }
+
   render() {
     return (
-      <View style={ComponentStyles.container}>
-        <Text onPress={() => {
-          this.openWeb()
-        }}>Home...</Text>
-        <Text style={{fontSize: 50, color: 'red'}} onPress={this.login.bind(this)}>TEST</Text>
+      <View style={ ComponentStyles.container }>
+        <StatusBar
+          translucent={ true }
+          backgroundColor="rgba(0, 0, 0, 0.2)"
+          barStyle="light-content"/>
+        <HomeRender navigate={ this.props.navigation.navigate }>
+          <Text onPress={() => {
+            this.openWeb()
+          }}>Home...</Text>
+          <Text style={{fontSize: 50, color: 'red'}} onPress={this.showHtml.bind(this)}>TEST</Text>
+          {this.renderHTML()}
+        </HomeRender>
       </View>
     )
+    // return (
+    //   <View style={ComponentStyles.container}>
+    //     <Text onPress={() => {
+    //       this.openWeb()
+    //     }}>Home...</Text>
+    //     <Text style={{fontSize: 50, color: 'red'}} onPress={this.showHtml.bind(this)}>TEST</Text>
+    //     {this.renderHTML()}
+    //   </View>
+    // )
   }
 }
 export  default Home;

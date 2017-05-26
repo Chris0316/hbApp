@@ -2,7 +2,7 @@
  * Created by kim on 2017/5/24.
  */
 import React, {Component} from "react";
-import {BackHandler, Platform, ToastAndroid} from "react-native";
+import {BackHandler, Platform, StatusBar, ToastAndroid} from "react-native";
 import {StackNavigator} from "react-navigation";
 import TimerMixin from "react-timer-mixin";
 import * as View from "./view";
@@ -19,7 +19,7 @@ class HBApp extends Component {
       BackHandler.addEventListener('hardwareBackPress', this._onHomeBackPress);
     }
   }
-  
+
   getCurrentRouteName(navigationState) {
     if (!navigationState) {
       return 'start';
@@ -30,7 +30,7 @@ class HBApp extends Component {
     }
     return route.routeName;
   }
-  
+
   onHomeBackPress() {
     let routerName = this.getCurrentRouteName(this.state.currentState)
     if (routerName !== 'start' && routerName !== 'home') {
@@ -40,7 +40,7 @@ class HBApp extends Component {
     this.handleHomeBackPress();
     return true;
   }
-  
+
   handleHomeBackPress() {
     if (Platform.OS === "android") {
       ToastAndroid.show("再按一次退出应用", ToastAndroid.SHORT);
@@ -53,12 +53,12 @@ class HBApp extends Component {
       }, 2000);
     }
   }
-  
+
   exitApp() {
     this.timer && TimerMixin.clearTimeout(this.timer);
     BackHandler.exitApp();
   }
-  
+
   render() {
     let app = this;
     return (
@@ -86,7 +86,8 @@ const AppNavigator = StackNavigator({
   home: {
     screen: View.home,
     navigationOptions: ({navigation}) => ({
-      title: navigation.state.params.title || '主页'
+      title: navigation.state.params.title || '主页',
+      header: null
     })
   },
   web: {
