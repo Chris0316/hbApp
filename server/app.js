@@ -10,7 +10,17 @@ var app = require('koa')()
   , bodyParser = require('koa-bodyparser')
   , send = require('koa-send')
   , appRouter = require('./router')
+  , EJSRender = require('koa-ejs')
   , debug = require('debug')('react:app');
+var viewRoot = path.join(__dirname, '../www/');
+app.viewRoot = viewRoot;
+//EJS模版引擎的配置
+EJSRender(app, {
+  root: viewRoot,
+  viewExt: 'html',
+  cache: false,
+  debug: true
+});
 //cookie的加密串
 app.keys = ['HBEC'];
 app.use(session({

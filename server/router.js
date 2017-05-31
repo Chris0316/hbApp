@@ -18,6 +18,12 @@ router.all('/common', function*() {
   this.body = result;
 });
 
+router.get('/leancloud', function*(){
+  yield this.render('leancloud', {
+    layout: false
+  })
+});
+
 /**
  * 用户认证
  */

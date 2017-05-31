@@ -8,8 +8,14 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.Nullable;
+
+import com.richardcao.exceptionsmanager.react.ExceptionsManager;
+import com.tencent.bugly.crashreport.CrashReport;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -21,9 +27,15 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage()
+      List<ReactPackage> packages = Arrays.<ReactPackage>asList(
+          new MainReactPackage(),
+          new RNDeviceInfo()
       );
+      ArrayList<ReactPackage> packageList = new ArrayList<>(packages);
+      if (!BuildConfig.DEBUG) {
+          packageList.add(new ExceptionsManager());
+      }
+      return packageList;
     }
   };
 
@@ -36,5 +48,8 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    if (!BuildConfig.DEBUG) {
+      CrashReport.initCrashReport(getApplicationContext(), "900019562", false);
+    }
   }
 }
