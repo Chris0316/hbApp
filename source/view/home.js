@@ -3,8 +3,8 @@
  */
 
 import React, {Component} from "react";
-import {ScrollView, StatusBar, Text, View} from "react-native";
-import {CommonStyles, ComponentStyles} from "../style";
+import {Image, ScrollView, StatusBar, Text, View} from "react-native";
+import {CommonStyles, ComponentStyles, HtmlConvertorStyles} from "../style";
 import {login} from "../service/userService";
 import config from "../config";
 import {decodeHTML} from "../common";
@@ -74,7 +74,8 @@ class Home extends Component {
           <Text onPress={() => {
             this.openWeb()
           }}>Home...</Text>
-          <Text style={{fontSize: 50, color: 'red'}} onPress={this.showHtml.bind(this)}>TEST</Text>
+          <Image source={require('../image/test.jpg')} style={HtmlConvertorStyles.img}/>
+          <Text style={{fontSize: 50, color: 'red'}} onPress={this.showHtml.bind(this)}>更新的内容多一些试试看!</Text>
           {this.renderHTML()}
         </HomeRender>
       </View>

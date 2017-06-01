@@ -2,16 +2,43 @@
  * Created by kim on 2017/5/24.
  */
 import React, {Component} from "react";
-import {StyleSheet, View} from "react-native";
+import {Alert, Platform, StyleSheet, View} from "react-native";
 import {NavigationActions} from "react-navigation";
 import TimerMixin from "react-timer-mixin";
 import * as Animatable from "react-native-animatable";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../style";
 import Logo from "../component/logo";
+
+import {checkUpdate, downloadUpdate, switchVersion, switchVersionLater} from "react-native-update";
+
+import _updateConfig from "../../update.json";
+const {appKey} = _updateConfig[Platform.OS];
+
 class StartupPage extends Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentWillMount() {
+    checkUpdate(appKey).then(info => {
+      if (info.expired) {
+        Alert.alert('提示', '您的应用版本已更新,请前往应用商店下载新的版本');
+      } else if (info.update) {
+        downloadUpdate(info).then(hash => {
+          Alert.alert('提示', '应用更新完成，请重启', [
+            {
+              text: '确定',
+              onPress: () => {
+                switchVersion(hash);
+              }
+            }
+          ]);
+        }).catch(err => {
+          Alert.alert('提示', '更新失败.');
+        });
+      }
+    })
   }
 
   componentWillUnmount() {
@@ -22,9 +49,11 @@ class StartupPage extends Component {
     const resetAction = NavigationActions.reset({
       index: 0,
       actions: [
-        NavigationActions.navigate({routeName: 'home',params:{
-          title:'xx'
-        }})
+        NavigationActions.navigate({
+          routeName: 'home', params: {
+            title: 'xx'
+          }
+        })
       ]
     })
     this.timer = TimerMixin.setTimeout(() => {
