@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">hbApp</string>
+    <string name="title_activity_native">NativeActivity</string>
 </resources>

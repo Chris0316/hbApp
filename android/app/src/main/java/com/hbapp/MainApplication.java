@@ -3,21 +3,20 @@ package com.hbapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import cn.reactnative.modules.update.UpdatePackage;
-import cn.reactnative.modules.update.UpdateContext;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.richardcao.exceptionsmanager.react.ExceptionsManager;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.annotation.Nullable;
 
-import com.richardcao.exceptionsmanager.react.ExceptionsManager;
-import com.tencent.bugly.crashreport.CrashReport;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import cn.reactnative.modules.update.UpdateContext;
+import cn.reactnative.modules.update.UpdatePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
