@@ -3,13 +3,15 @@
  */
 
 import React, {Component} from "react";
-import {Image, ScrollView, StatusBar, Text, View} from "react-native";
-import {CommonStyles, ComponentStyles, HtmlConvertorStyles} from "../style";
-import {login} from "../service/userService";
+import {ScrollView, StatusBar, Text, View} from "react-native";
+import {CommonStyles, ComponentStyles} from "../style";
 import config from "../config";
 import {decodeHTML} from "../common";
 import HtmlConvertor from "../component/htmlConvertor";
 import HomeRender from "../component/header/home";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import * as userAction from "../action/user";
 class Home extends Component {
 
   constructor(props) {
@@ -26,12 +28,9 @@ class Home extends Component {
     })
   }
 
-  login() {
-    login('18016052872', '111111').then(res => {
-      if (res.isSuc) {
-        this.props.navigation.setParams({'title': '123'})
-      }
-    })
+  doLogin() {
+    const {userAction} = this.props;
+    userAction.reqLogin('18016052872', '111111')
   }
 
   showHtml() {
@@ -60,7 +59,19 @@ class Home extends Component {
         </ScrollView>
       )
     }
+  }
 
+  renderLoading() {
+    const {user} = this.props;
+    if (user.loading === true) {
+      return (
+        <Text style={{fontSize: 50, color: 'red'}}>Loading...</Text>
+      )
+    } else {
+      return (
+        <Text style={{fontSize: 50, color: 'green'}}>Loading...</Text>
+      )
+    }
   }
 
   render() {
@@ -73,22 +84,19 @@ class Home extends Component {
         <HomeRender navigate={ this.props.navigation.navigate }>
           <Text onPress={() => {
             this.openWeb()
-          }}>Home...</Text>
-          <Image source={require('../image/test.jpg')} style={HtmlConvertorStyles.img}/>
-          <Text style={{fontSize: 50, color: 'red'}} onPress={this.showHtml.bind(this)}>更新的内容多一些试试看!</Text>
+          }}>Open Web</Text>
+          <Text style={{fontSize: 50, color: 'red'}} onPress={this.showHtml.bind(this)}>显示更多内容</Text>
+          <Text onPress={this.doLogin.bind(this)}>登录1</Text>
           {this.renderHTML()}
+          {this.renderLoading()}
         </HomeRender>
       </View>
     )
-    // return (
-    //   <View style={ComponentStyles.container}>
-    //     <Text onPress={() => {
-    //       this.openWeb()
-    //     }}>Home...</Text>
-    //     <Text style={{fontSize: 50, color: 'red'}} onPress={this.showHtml.bind(this)}>TEST</Text>
-    //     {this.renderHTML()}
-    //   </View>
-    // )
   }
 }
-export  default Home;
+
+export default connect(state => ({
+  user: state.user
+}), dispatch => ({
+  userAction: bindActionCreators(userAction, dispatch)
+}))(Home)

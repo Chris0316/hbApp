@@ -2,7 +2,7 @@
  * Created by kim on 2017/5/24.
  */
 import React, {Component} from "react";
-import {BackHandler, Platform, StatusBar, ToastAndroid} from "react-native";
+import {BackHandler, Platform, ToastAndroid} from "react-native";
 import {StackNavigator} from "react-navigation";
 import TimerMixin from "react-timer-mixin";
 import * as View from "./view";

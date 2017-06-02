@@ -9,7 +9,7 @@ import * as Animatable from "react-native-animatable";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../style";
 import Logo from "../component/logo";
 
-import {checkUpdate, downloadUpdate, switchVersion, switchVersionLater} from "react-native-update";
+import {checkUpdate, downloadUpdate, switchVersion} from "react-native-update";
 
 import _updateConfig from "../../update.json";
 const {appKey} = _updateConfig[Platform.OS];
@@ -21,6 +21,10 @@ class StartupPage extends Component {
   }
 
   componentWillMount() {
+    //this.checkUpdate()
+  }
+
+  checkUpdate() {
     checkUpdate(appKey).then(info => {
       if (info.expired) {
         Alert.alert('提示', '您的应用版本已更新,请前往应用商店下载新的版本');
