@@ -29,3 +29,9 @@ export function logoutRes() {
     type: types.LOGOUT_RES
   }
 }
+
+export function refreshToken() {
+  return {
+    type: types.REFRESH_TOKEN
+  }
+}

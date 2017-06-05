@@ -3,7 +3,7 @@
  */
 
 var Router = require('koa-router');
-var router = new Router().prefix('/react');
+var router = new Router().prefix('/api');
 var debug = require('debug')('react:router');
 
 /**

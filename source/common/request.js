@@ -2,6 +2,8 @@
  * Created by kim on 2017/6/2.
  */
 import _ from "lodash";
+import Config from '../config';
+const apiDomain = Config.apiDomain;
 
 export const request = (url, method, body) => {
   let isOk, headers = {}, data = body;
@@ -14,6 +16,9 @@ export const request = (url, method, body) => {
       })
       data = temp.join('&');
     }
+  }
+  if (!_.startsWith(url, "http")) {
+    url = apiDomain + url;
   }
   return new Promise((resolve, reject) => {
     fetch(url, {
