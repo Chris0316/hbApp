@@ -18,7 +18,7 @@ router.all('/common', function*() {
   this.body = result;
 });
 
-router.get('/leancloud', function*(){
+router.get('/leancloud', function*() {
   yield this.render('leancloud', {
     layout: false
   })
@@ -39,6 +39,17 @@ router.post('/auth', function*() {
   this.body = {
     code: 0,
     isSuc: flag
+  }
+});
+
+/**
+ * 退出
+ */
+router.post('/logout', function*() {
+  debug(`doLogout`);
+  this.body = {
+    code: 0,
+    isSuc: true
   }
 });
 

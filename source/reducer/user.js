@@ -10,21 +10,27 @@ const initialState = {
 
 export default function user(state = initialState, action) {
   switch (action.type) {
-    case types.REQ_LOGIN:
-      console.log(0, state)
+    case types.LOGIN:
       return Object.assign({}, state, {
-        loading: true
+        loading: true,
+        login: false,
+        res: {}
       });
-    case types.DO_LOGIN:
-      console.log(1, state)
-      return {
-        ...state
-      };
-    case types.RES_LOGIN:
-      console.log(2, state, action)
+    case types.LOGIN_RES:
       return Object.assign({}, state, {
-        hahah: 1234,
-        loading: false
+        res: action.res,
+        loading: false,
+        login: true
+      });
+    case types.LOGOUT:
+      return Object.assign({}, state, {
+        loading: true,
+        login: true
+      });
+    case types.LOGOUT_RES:
+      return Object.assign({}, state, {
+        loading: false,
+        login: false
       });
     default:
       return state;

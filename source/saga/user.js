@@ -3,33 +3,47 @@
  */
 import {call, fork, put, take} from "redux-saga/effects";
 import {request} from "../common/request";
-import {doLogin, resLogin} from "../action/user";
+import {loginRes, logoutRes} from "../action/user";
 import * as types from "../constant/actionType";
 
 export function* login(loginId, password) {
   try {
-    yield put(doLogin());
     const res = yield call(request, 'http://10.0.31.109:8080/react/auth', 'post', {
       loginId, password
     });
-    const res2 = yield call(request, 'http://10.0.31.109:8080/react/common', 'get');
-    console.log('res', res, res2)
-    yield put(resLogin(res, res2))
+    yield put(loginRes(res))
   } catch (err) {
-    yield put(resLogin(err))
+    yield put(loginRes(err))
+  }
+}
+
+export function* logout() {
+  try {
+    yield call(request, 'http://10.0.31.109:8080/react/logout', 'post');
+    yield put(logoutRes(res))
+  } catch (err) {
+    yield put(logoutRes(err))
+  }
+}
+
+export function* doLogin() {
+  while (true) {
+    const {loginId, password} = yield take(types.LOGIN);
+    yield fork(login, loginId, password);
+  }
+}
+
+export function* doLogout() {
+  while (true) {
+    yield take(types.LOGOUT);
+    yield fork(logout);
   }
 }
 
 
-export function* watchUserReq() {
-  while (true) {
-    const {loginId, password} = yield take(types.REQ_LOGIN);
-    yield fork(
-      login,
-      loginId,
-      password
-    );
-  }
+export default function* watch() {
+  yield fork(doLogout)
+  yield fork(doLogin)
 }
 
 

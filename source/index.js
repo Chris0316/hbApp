@@ -90,6 +90,12 @@ const AppNavigator = StackNavigator({
       header: null
     })
   },
+  login: {
+    screen: View.login,
+    navigationOptions: ({navigation}) => ({
+      title: navigation.state.params.title || '登录'
+    })
+  },
   web: {
     screen: View.web,
     navigationOptions: ({navigation}) => ({

@@ -3,26 +3,29 @@
  */
 import * as types from "../constant/actionType";
 
-export function reqLogin(loginId, password) {
-  console.log('reqLogin')
+export function login(loginId, password) {
   return {
-    type: types.REQ_LOGIN,
+    type: types.LOGIN,
     loginId,
     password
   }
 }
 
-export function doLogin() {
-  console.log('doLogin')
+export function loginRes(res) {
   return {
-    type: types.DO_LOGIN
+    type: types.LOGIN_RES,
+    res
   }
 }
 
-export function resLogin(...res) {
-  console.log('resLogin', res)
+export function logout() {
   return {
-    type: types.RES_LOGIN,
-    res
+    type: types.LOGOUT
+  }
+}
+
+export function logoutRes() {
+  return {
+    type: types.LOGOUT_RES
   }
 }

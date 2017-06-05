@@ -8,6 +8,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.remobile.toast.RCTToastPackage;
 import com.richardcao.exceptionsmanager.react.ExceptionsManager;
 import com.tencent.bugly.crashreport.CrashReport;
 
@@ -25,6 +26,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected String getJSBundleFile() {
       return UpdateContext.getBundleUrl(MainApplication.this);
     }
+
     @Override
     public boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
@@ -33,13 +35,14 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       List<ReactPackage> packages = Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-          new UpdatePackage(),
-          new RNDeviceInfo()
+              new MainReactPackage(),
+              new UpdatePackage(),
+              new RCTToastPackage(),
+              new RNDeviceInfo()
       );
       ArrayList<ReactPackage> packageList = new ArrayList<>(packages);
       if (!BuildConfig.DEBUG) {
-          packageList.add(new ExceptionsManager());
+        packageList.add(new ExceptionsManager());
       }
       return packageList;
     }

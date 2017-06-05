@@ -3,7 +3,7 @@
  */
 
 import React, {Component} from "react";
-import {ScrollView, StatusBar, Text, View} from "react-native";
+import {Button, DeviceEventEmitter, ScrollView, StatusBar, Text, View} from "react-native";
 import {CommonStyles, ComponentStyles} from "../style";
 import config from "../config";
 import {decodeHTML} from "../common";
@@ -17,7 +17,29 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      html: ''
+      html: '',
+      login: false
+    }
+  }
+
+  componentWillMount() {
+    DeviceEventEmitter.addListener('login', (flag) => {
+      this.setState({
+        login: true
+      })
+    })
+  }
+
+  componentWillUnmount() {
+    DeviceEventEmitter.removeAllListeners('login');
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let {user} = nextProps;
+    if (user) {
+      this.setState({
+        login: user.login
+      })
     }
   }
 
@@ -26,11 +48,6 @@ class Home extends Component {
     this.props.navigation.navigate('web', {
       url: url
     })
-  }
-
-  doLogin() {
-    const {userAction} = this.props;
-    userAction.reqLogin('18016052872', '111111')
   }
 
   showHtml() {
@@ -61,15 +78,34 @@ class Home extends Component {
     }
   }
 
-  renderLoading() {
-    const {user} = this.props;
-    if (user.loading === true) {
+  gotoLogin() {
+    this.props.navigation.navigate('login', {
+      title: '登录',
+      callback: (res) => {
+        this.setState({
+          login: true
+        })
+      }
+    })
+  }
+
+  doLogout() {
+    const {userAction} = this.props;
+    userAction.logout();
+  }
+
+  renderLogin() {
+    if (this.state.login === false) {
       return (
-        <Text style={{fontSize: 50, color: 'red'}}>Loading...</Text>
+        <Button onPress={this.gotoLogin.bind(this)} title='登录'/>
       )
-    } else {
+    }
+  }
+
+  renderLogout() {
+    if (this.state.login === true) {
       return (
-        <Text style={{fontSize: 50, color: 'green'}}>Loading...</Text>
+        <Button onPress={this.doLogout.bind(this)} title='退出'/>
       )
     }
   }
@@ -82,13 +118,13 @@ class Home extends Component {
           backgroundColor="rgba(0, 0, 0, 0.2)"
           barStyle="light-content"/>
         <HomeRender navigate={ this.props.navigation.navigate }>
+          {this.renderLogin()}
+          {this.renderLogout()}
           <Text onPress={() => {
             this.openWeb()
           }}>Open Web</Text>
           <Text style={{fontSize: 50, color: 'red'}} onPress={this.showHtml.bind(this)}>显示更多内容</Text>
-          <Text onPress={this.doLogin.bind(this)}>登录1</Text>
           {this.renderHTML()}
-          {this.renderLoading()}
         </HomeRender>
       </View>
     )

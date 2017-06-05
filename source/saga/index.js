@@ -4,8 +4,8 @@
 
 import {fork} from "redux-saga/effects";
 
-import {watchUserReq} from "./user";
+import userWatch from "./user";
 
 export default function* rootSaga() {
-  yield [fork(watchUserReq)];
+  yield [fork(userWatch)];
 }
