@@ -14,16 +14,28 @@ import {checkUpdate, downloadUpdate, switchVersion} from "react-native-update";
 import _updateConfig from "../../update.json";
 const {appKey} = _updateConfig[Platform.OS];
 
-class StartupPage extends Component {
+import {getItem}  from '../common/storage'
+import * as userAction from "../action/user";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 
+
+class StartupPage extends Component {
+  
   constructor(props) {
     super(props);
   }
-
+  
   componentWillMount() {
     //this.checkUpdate()
+    this.refreshToken();
   }
-
+  
+  refreshToken() {
+    const {userAction} = this.props;
+    userAction.refreshToken()
+  }
+  
   checkUpdate() {
     checkUpdate(appKey).then(info => {
       if (info.expired) {
@@ -44,11 +56,11 @@ class StartupPage extends Component {
       }
     })
   }
-
+  
   componentWillUnmount() {
     this.timer && TimerMixin.clearTimeout(this.timer);
   }
-
+  
   onPageContentShow() {
     const resetAction = NavigationActions.reset({
       index: 0,
@@ -64,7 +76,7 @@ class StartupPage extends Component {
       this.props.navigation.dispatch(resetAction)
     }, 300)
   }
-
+  
   renderContent() {
     return (
       <Animatable.View
@@ -74,7 +86,7 @@ class StartupPage extends Component {
       </Animatable.View>
     )
   }
-
+  
   render() {
     return (
       <View
@@ -92,4 +104,8 @@ const styles = StyleSheet.create({
   }
 });
 
-export default StartupPage
+export default connect(state => ({
+  user: state.user
+}), dispatch => ({
+  userAction: bindActionCreators(userAction, dispatch)
+}))(StartupPage)

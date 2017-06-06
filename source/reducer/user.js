@@ -17,10 +17,15 @@ export default function user(state = initialState, action) {
         res: {}
       });
     case types.LOGIN_RES:
+      let res = action.res;
+      let login = false;
+      if (res.code === 0 && res.isSuc === true) {
+        login = true
+      }
       return Object.assign({}, state, {
         res: action.res,
         loading: false,
-        login: true
+        login: login
       });
     case types.LOGOUT:
       return Object.assign({}, state, {
@@ -32,6 +37,8 @@ export default function user(state = initialState, action) {
         loading: false,
         login: false
       });
+    case types.REFRESH_TOKEN:
+      return Object.assign({}, state);
     default:
       return state;
   }

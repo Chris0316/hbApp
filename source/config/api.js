@@ -5,7 +5,8 @@
 export default  {
   home: {},
   user: {
-    auth: 'react/auth'
+    auth: 'api/auth',
+    logout: 'api/logout'
   },
   update: {}
 }
