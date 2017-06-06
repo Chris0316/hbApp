@@ -2,7 +2,8 @@
  * Created by kim on 2017/5/24.
  */
 import React, {Component} from "react";
-import {BackHandler, Platform, ToastAndroid} from "react-native";
+import {BackHandler, Platform} from "react-native";
+import Toast from "@remobile/react-native-toast";
 import {StackNavigator} from "react-navigation";
 import TimerMixin from "react-timer-mixin";
 import * as View from "./view";
@@ -43,7 +44,7 @@ class HBApp extends Component {
 
   handleHomeBackPress() {
     if (Platform.OS === "android") {
-      ToastAndroid.show("再按一次退出应用", ToastAndroid.SHORT);
+      Toast.show("再按一次退出应用");
       BackHandler.removeEventListener("hardwareBackPress", this._onHomeBackPress);
       BackHandler.addEventListener("hardwareBackPress", this._onExitApp);
       this.timer = TimerMixin.setInterval(() => {
@@ -86,14 +87,14 @@ const AppNavigator = StackNavigator({
   home: {
     screen: View.home,
     navigationOptions: ({navigation}) => ({
-      title: navigation.state.params.title || '主页',
+      title: '主页',
       header: null
     })
   },
   login: {
     screen: View.login,
     navigationOptions: ({navigation}) => ({
-      title: navigation.state.params.title || '登录'
+      title: '登录'
     })
   },
   web: {
@@ -104,11 +105,7 @@ const AppNavigator = StackNavigator({
     })
   }
 }, {
-  navigationOptions: {
-    headerBackTitle: null,
-    headerTintColor: '#333333',
-    showIcon: true
-  },
+  headerMode: 'none',
   mode: 'card'
 });
 

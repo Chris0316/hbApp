@@ -38,7 +38,8 @@ public class MainApplication extends Application implements ReactApplication {
               new MainReactPackage(),
               new UpdatePackage(),
               new RCTToastPackage(),
-              new RNDeviceInfo()
+              new RNDeviceInfo(),
+              new HBPackage()
       );
       ArrayList<ReactPackage> packageList = new ArrayList<>(packages);
       if (!BuildConfig.DEBUG) {

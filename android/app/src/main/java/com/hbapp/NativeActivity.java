@@ -24,7 +24,7 @@ public class NativeActivity extends AppCompatActivity {
     @Override
     public void onClick(View v) {
       Intent react = new Intent(act, MainActivity.class);
-      react.putExtra("view", "1");
+      react.putExtra("routeName", "login");
       startActivity(react);
       finish();
     }

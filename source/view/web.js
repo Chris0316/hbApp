@@ -14,7 +14,7 @@ class WebScene extends Component {
     super(props)
     this.state = {
       source: {}
-    }
+    };
     this.props.navigation.setParams({title: '加载中'})
   }
 

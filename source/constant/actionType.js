@@ -7,6 +7,9 @@ export const LOGIN_RES = 'LOGIN_RES';
 export const LOGOUT = 'LOGOUT';
 export const LOGOUT_RES = 'LOGOUT_RES';
 export const REFRESH_TOKEN = 'REFRESH_TOKEN';
-export const FETCH_USER_INFO = 'FETCH_USER_INFO';
-export const FETCH_USER_ASSET = 'FETCH_USER_ASSET';
-export const FETCH_USER_ASSET_WITHPAGE = 'FETCH_USER_ASSET_WITHPAGE';
+
+//
+export const TODO_ADD = 'TODO_ADD';
+export const TODO_ADD_RES = 'TODO_ADD_RES';
+export const TODO_FETCH = 'TODO_FETCH';
+export const TODO_FETCH_RES = 'TODO_FETCH_RES';

@@ -2,7 +2,7 @@
  * Created by kim on 2017/5/24.
  */
 import React, {Component} from "react";
-import {Alert, Platform, StyleSheet, View} from "react-native";
+import {Alert, NativeModules, Platform, StyleSheet, View} from "react-native";
 import {NavigationActions} from "react-navigation";
 import TimerMixin from "react-timer-mixin";
 import * as Animatable from "react-native-animatable";
@@ -12,30 +12,45 @@ import Logo from "../component/logo";
 import {checkUpdate, downloadUpdate, switchVersion} from "react-native-update";
 
 import _updateConfig from "../../update.json";
-const {appKey} = _updateConfig[Platform.OS];
-
-import {getItem}  from '../common/storage'
 import * as userAction from "../action/user";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-
+import AV from "leancloud-storage";
+import Config from "../config";
+import DeviceInfo from "react-native-device-info";
+const {appKey} = _updateConfig[Platform.OS];
 
 class StartupPage extends Component {
-  
+
   constructor(props) {
     super(props);
+    this.state = {
+      routeName: null
+    };
+    AV.init({
+      appId: Config.leanCloud.appId,
+      appKey: Config.leanCloud.appKey
+    });
+    NativeModules.HB.getDataFromIntent('routeName', res => {
+      this.setState({
+        routeName: res === 'No Data' ? '' : res
+      })
+    }, err => {
+      console.log(err)
+    })
+    console.log(DeviceInfo.getUniqueID())
   }
-  
+
   componentWillMount() {
     //this.checkUpdate()
     this.refreshToken();
   }
-  
+
   refreshToken() {
     const {userAction} = this.props;
     userAction.refreshToken()
   }
-  
+
   checkUpdate() {
     checkUpdate(appKey).then(info => {
       if (info.expired) {
@@ -56,27 +71,26 @@ class StartupPage extends Component {
       }
     })
   }
-  
+
   componentWillUnmount() {
     this.timer && TimerMixin.clearTimeout(this.timer);
   }
-  
+
   onPageContentShow() {
+    let routeName = this.state.routeName || 'home';
     const resetAction = NavigationActions.reset({
       index: 0,
       actions: [
         NavigationActions.navigate({
-          routeName: 'home', params: {
-            title: 'xx'
-          }
+          routeName: routeName
         })
       ]
-    })
+    });
     this.timer = TimerMixin.setTimeout(() => {
       this.props.navigation.dispatch(resetAction)
     }, 300)
   }
-  
+
   renderContent() {
     return (
       <Animatable.View
@@ -86,11 +100,10 @@ class StartupPage extends Component {
       </Animatable.View>
     )
   }
-  
+
   render() {
     return (
-      <View
-        style={ [ComponentStyles.container, CommonStyles.flexItemsCenter, CommonStyles.flexItemsMiddle, styles.container] }>
+      <View style={ [ComponentStyles.container, CommonStyles.flexItemsCenter, CommonStyles.flexItemsMiddle, styles.container] }>
         { this.renderContent() }
       </View>
     );

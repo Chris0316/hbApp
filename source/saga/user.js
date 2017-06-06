@@ -2,11 +2,11 @@
  * Created by kim on 2017/6/2.
  */
 import {call, fork, put, take} from "redux-saga/effects";
-import {request} from "../common/request";
+import {request} from "../service/request";
 import {loginRes, logoutRes} from "../action/user";
 import * as types from "../constant/actionType";
 import dataApi from "../config/api";
-import {removeItem, setItem, getItem} from "../common/storage";
+import {removeItem, setItem, getItem} from "../service/storage";
 
 export function* login(loginId, password) {
   try {

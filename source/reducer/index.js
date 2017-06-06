@@ -4,9 +4,11 @@
 
 import {combineReducers} from "redux";
 import user from "./user";
+import todo from "./todo";
 
 const rootReducer = combineReducers({
-  user
+  user,
+  todo
 });
 
 export default rootReducer;
