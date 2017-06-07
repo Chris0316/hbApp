@@ -184,8 +184,8 @@ class Home extends Component {
         <HomeRender navigate={ this.props.navigation.navigate }>
           {this.renderLogin()}
           {this.renderLogout()}
-          {this.renderBtn()}
-          {this.renderImg()}
+          {/*{this.renderBtn()}*/}
+          {/*{this.renderImg()}*/}
           {this.renderForm()}
           {this.renderList()}
         </HomeRender>
