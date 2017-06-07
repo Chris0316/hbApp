@@ -3,6 +3,7 @@ package com.hbapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -36,6 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       List<ReactPackage> packages = Arrays.<ReactPackage>asList(
               new MainReactPackage(),
+              new RCTCameraPackage(),
               new UpdatePackage(),
               new RCTToastPackage(),
               new RNDeviceInfo(),

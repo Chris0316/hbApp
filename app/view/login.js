@@ -8,7 +8,7 @@ import {ComponentStyles} from "../style";
 
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import * as userAction from "../action/user";
+import * as userAction from "../redux/action/user";
 class Login extends Component {
   
   constructor(props) {

@@ -2,7 +2,7 @@
  * Created by kim on 2017/6/2.
  */
 
-import * as types from "../constant/actionType";
+import * as types from "../action/actionType";
 
 const initialState = {
   loading: false

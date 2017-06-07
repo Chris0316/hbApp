@@ -1,7 +1,7 @@
 /**
  * Created by kim on 2017/6/2.
  */
-import * as types from "../constant/actionType";
+import * as types from "./actionType";
 
 export function login(loginId, password) {
   return {

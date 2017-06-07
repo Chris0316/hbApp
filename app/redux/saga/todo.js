@@ -4,12 +4,12 @@
 
 import {call, fork, put, take} from "redux-saga/effects";
 import {addRes, fetchRes} from "../action/todo";
-import * as types from "../constant/actionType";
-import {fetchObject, saveObject} from "../service/leanCloud";
+import * as types from "../action/actionType";
+import {leanCloud} from "../../service";
 
 export function* add(text) {
   try {
-    yield call(saveObject, 'Todo', {text});
+    yield call(leanCloud.saveObject, 'Todo', {text});
     yield put(addRes());
     yield fetch();
   } catch (err) {
@@ -19,7 +19,7 @@ export function* add(text) {
 
 export function* fetch() {
   try {
-    let res = yield call(fetchObject, 'Todo');
+    let res = yield call(leanCloud.fetchObject, 'Todo');
     yield put(fetchRes(res));
   } catch (err) {
     yield put(fetchRes(err))

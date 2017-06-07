@@ -3,14 +3,16 @@
  */
 
 import React, {Component} from "react";
-import {Button, Keyboard, ListView, NativeModules, StatusBar, Text, TextInput, TouchableOpacity, View} from "react-native";
-import {CommonStyles, ComponentStyles} from "../style";
+import {Button, Image, Keyboard, ListView, StatusBar, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {CommonStyles, ComponentStyles, HtmlConvertorStyles} from "../style";
 import HomeRender from "../component/header/home";
 import {connect} from "react-redux";
 import Toast from "@remobile/react-native-toast";
 import {bindActionCreators} from "redux";
-import * as userAction from "../action/user";
-import * as todoAction from "../action/todo";
+import * as userAction from "../redux/action/user";
+import * as todoAction from "../redux/action/todo";
+import AV from "leancloud-storage";
+let c_photo = '';
 class Home extends Component {
 
   constructor(props) {
@@ -43,14 +45,6 @@ class Home extends Component {
     userAction.logout();
   }
 
-  openNative() {
-    NativeModules.HB.startActivity('com.hbapp.NativeActivity').then(res => {
-      console.log(res)
-    }, err => {
-      Toast.show('打开app失败')
-    })
-  }
-
   renderLogin() {
     let {user} = this.props;
     if (user && !user.login) {
@@ -69,9 +63,56 @@ class Home extends Component {
     }
   }
 
-  renderNative() {
+  openCamera() {
+    let {navigation} = this.props;
+    navigation.navigate('camera');
+  }
+
+  doUpload() {
+    if (!c_photo) {
+      return
+    }
+    var data = {
+      'blob': {
+        uri: c_photo
+      }
+    };
+    var file = new AV.File('test.jpg', data);
+    file.save().then(function (f) {
+      console.log(f);
+    }, function (error) {
+      console.error(error);
+    });
+  }
+
+  renderBtn() {
     return (
-      <Button onPress={this.openNative.bind(this)} title='打开Native'/>
+      <View style={ComponentStyles.container}>
+        <Text
+          style={[ComponentStyles.btn_primary_outline, CommonStyles.m_t_1, CommonStyles.p_a_2, CommonStyles.text_center]}
+          onPress={this.openCamera.bind(this)}
+        >拍照</Text>
+        <Text
+          style={[ComponentStyles.btn_primary_outline, CommonStyles.m_t_1, CommonStyles.p_a_2, CommonStyles.text_center]}
+          onPress={this.doUpload.bind(this)}
+        >上传</Text>
+      </View>
+    );
+  }
+
+  renderImg() {
+    let {navigation} = this.props;
+    let params = navigation.state.params;
+    if (!params) {
+      return
+    }
+    let photo = params.photo;
+    if (!photo) {
+      return
+    }
+    c_photo = photo.mediaUri;
+    return (
+      <Image source={{uri: c_photo}} style={HtmlConvertorStyles.img}></Image>
     )
   }
 
@@ -143,7 +184,8 @@ class Home extends Component {
         <HomeRender navigate={ this.props.navigation.navigate }>
           {this.renderLogin()}
           {this.renderLogout()}
-          {this.renderNative()}
+          {this.renderBtn()}
+          {this.renderImg()}
           {this.renderForm()}
           {this.renderList()}
         </HomeRender>

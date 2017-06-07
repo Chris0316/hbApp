@@ -2,11 +2,10 @@
  * Created by kim on 2017/6/2.
  */
 import {call, fork, put, take} from "redux-saga/effects";
-import {request} from "../service/request";
+import {request, storage} from "../../service";
 import {loginRes, logoutRes} from "../action/user";
-import * as types from "../constant/actionType";
-import dataApi from "../config/api";
-import {removeItem, setItem, getItem} from "../service/storage";
+import * as types from "../action/actionType";
+import dataApi from "../../config/api";
 
 export function* login(loginId, password) {
   try {
@@ -14,7 +13,7 @@ export function* login(loginId, password) {
       loginId, password
     });
     if (res.isSuc) {
-      yield call(setItem, 'token', loginId);
+      yield call(storage.setItem, 'token', loginId);
     }
     yield put(loginRes(res));
   } catch (err) {
@@ -25,7 +24,7 @@ export function* login(loginId, password) {
 export function* logout() {
   try {
     yield call(request, dataApi.user.logout, 'post');
-    yield call(removeItem, 'token');
+    yield call(storage.removeItem, 'token');
     yield put(logoutRes(res))
   } catch (err) {
     yield put(logoutRes(err))
@@ -34,7 +33,7 @@ export function* logout() {
 
 export function* refreshToken() {
   try {
-    const token = yield call(getItem, 'token');
+    const token = yield call(storage.getItem, 'token');
     if (token) {
       yield login(token, '111111')
     }

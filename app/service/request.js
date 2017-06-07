@@ -2,10 +2,10 @@
  * Created by kim on 2017/6/2.
  */
 import _ from "lodash";
-import Config from '../config';
+import Config from "../config";
 const apiDomain = Config.apiDomain;
 
-export const request = (url, method, body) => {
+const request = (url, method, body) => {
   let isOk, headers = {}, data = body;
   if (method === 'post') {
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -43,3 +43,5 @@ export const request = (url, method, body) => {
     });
   });
 };
+
+export default request;

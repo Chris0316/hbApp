@@ -17,8 +17,8 @@
  */
 import React from "react";
 import {Provider} from "react-redux";
-import configureStore from "./store/configure";
-import rootSaga from "./saga/index";
+import configureStore from "./redux/configure";
+import rootSaga from "./redux/saga/index";
 import App from "./index";
 
 const store = configureStore();

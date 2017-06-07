@@ -12,7 +12,7 @@ import Logo from "../component/logo";
 import {checkUpdate, downloadUpdate, switchVersion} from "react-native-update";
 
 import _updateConfig from "../../update.json";
-import * as userAction from "../action/user";
+import * as userAction from "../redux/action/user";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import AV from "leancloud-storage";
@@ -31,14 +31,6 @@ class StartupPage extends Component {
       appId: Config.leanCloud.appId,
       appKey: Config.leanCloud.appKey
     });
-    NativeModules.HB.getDataFromIntent('routeName', res => {
-      this.setState({
-        routeName: res === 'No Data' ? '' : res
-      })
-    }, err => {
-      console.log(err)
-    })
-    console.log(DeviceInfo.getUniqueID())
   }
 
   componentWillMount() {
