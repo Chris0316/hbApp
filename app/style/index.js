@@ -8,7 +8,7 @@ const {height, width} = Dimensions.get('window');
 
 export const StyleConfig = {
   
-  color_primary: 'rgba(60, 177, 158, 1)',
+  color_primary: 'rgba(197, 4, 54,1)',
   color_danger: 'rgba(199, 85, 74, 1)',
   color_warning: 'rgba(216, 196, 128, 1)',
   color_success: 'rgba(69, 190, 174, 1)',
@@ -43,13 +43,13 @@ export const StyleConfig = {
   htmlRender_spaceHeight: 15,
   
   header_height: 200,
-  navbar_height: 70,
+  navbar_height: 40,
   bottomBar_height: 46,
   icon_size: 22,
   avatarSize_lg: 60,
   avatarSize_sm: 20,
   
-  border_width: 0.5,
+  border_width: 1,
   border_radius: 2,
   border_color: 'rgba(0, 0, 0, 0.05)',
   panel_bg_color: 'rgba(0, 0, 0, 0.02)',

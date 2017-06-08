@@ -1,86 +1,50 @@
 import React, {Component} from "react";
-import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import PureRenderMixin from "react-addons-pure-render-mixin";
-import {getImageSource} from "../common";
-import {CommonStyles, ComponentStyles, StyleConfig} from "../style";
+import {CommonStyles, StyleConfig} from "../style";
 
 class Navbar extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      navCover: null
-    };
-
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
-  componentDidMount() {
-    const navCover = getImageSource();
-    this.setState({
-      navCover: navCover
-    });
-  }
-
-  componentWillUnmount() {
-    this.setState({
-      navCover: null
-    });
-  }
-
-  renderCover() {
-    let {backgroundImage} = this.props;
-    if (!backgroundImage) {
-      backgroundImage = this.state.navCover;
-    }
-    return (
-      <Image
-        style={ [ComponentStyles.pos_absolute, styles.cover] }
-        source={ backgroundImage }/>
-    )
-  }
-
-  renderBackdrop() {
-    return (
-      <View style={ [ComponentStyles.pos_absolute, styles.backdrop] }>
-      </View>
-    )
-  }
 
   renderLeftContentText() {
     const {title} = this.props;
-    if (title) {
-      return (
-        <Text style={ [CommonStyles.text_white, CommonStyles.font_md, CommonStyles.background_transparent] }>
-          { title }
-        </Text>
-      )
+    if (!title) {
+      return;
     }
+    let titleText;
+    if (title.length < 20) {
+      titleText = title;
+    } else {
+      titleText = title.substring(0, 25) + "...";
+    }
+    return (
+      <Text style={ [CommonStyles.text_gray, CommonStyles.font_sm, CommonStyles.background_transparent, CommonStyles.flex_1] }>
+        { titleText }
+      </Text>
+    )
   }
 
   renderLeftContentIcon() {
     const {leftIconName = 'ios-arrow-round-back'} = this.props;
     if (leftIconName) {
-      if (typeof(leftIconName) === 'string') {
-        return (
-          <Icon
-            name={ leftIconName }
-            size={ StyleConfig.icon_size }
-            style={ [CommonStyles.m_r_2, CommonStyles.background_transparent] }
-            color={ StyleConfig.color_white }/>
-        )
-      }
       return (
-        <Image
-          source={ leftIconName }
-          style={ [ComponentStyles.avatar_mini, CommonStyles.m_r_2]}/>
+        <Icon
+          name={ leftIconName }
+          size={ StyleConfig.icon_size }
+          style={ [CommonStyles.m_r_2, CommonStyles.background_transparent] }
+          color={ StyleConfig.color_primary }/>
       )
     }
   }
 
   renderLeftContent() {
-    const {leftIconName, leftIconOnPress, title} = this.props;
+    const {leftIconOnPress} = this.props;
     return (
       <TouchableOpacity
         style={ [CommonStyles.flexRow, CommonStyles.flexItemsMiddle] }
@@ -131,9 +95,7 @@ class Navbar extends Component {
 
   render() {
     return (
-      <View style={ [CommonStyles.flexRow, CommonStyles.flexItemsBetween, CommonStyles.flexItemsBottom, CommonStyles.pos_absolute, styles.container] }>
-        { this.renderCover() }
-        { this.renderBackdrop() }
+      <View style={ [CommonStyles.border_b, CommonStyles.flexRow, CommonStyles.flexItemsBetween, CommonStyles.flexItemsBottom, CommonStyles.pos_absolute, styles.container] }>
         { this.renderLeftContent() }
         { this.renderRightContent() }
       </View>
@@ -147,18 +109,8 @@ const styles = StyleSheet.create({
     height: StyleConfig.navbar_height,
     width: StyleConfig.screen_width,
     paddingVertical: StyleConfig.space_2 + 2,
-    paddingHorizontal: StyleConfig.space_3
-  },
-  cover: {
-    top: 0,
-    height: StyleConfig.navbar_height,
-    width: StyleConfig.screen_width,
-  },
-  backdrop: {
-    top: 0,
-    height: StyleConfig.navbar_height,
-    width: StyleConfig.screen_width,
-    backgroundColor: StyleConfig.color_black
+    paddingHorizontal: StyleConfig.space_3,
+    backgroundColor: '#fff'
   }
 });
 

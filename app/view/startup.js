@@ -2,8 +2,7 @@
  * Created by kim on 2017/5/24.
  */
 import React, {Component} from "react";
-import {Alert, NativeModules, Platform, StyleSheet, View} from "react-native";
-import {NavigationActions} from "react-navigation";
+import {Alert, Platform, StyleSheet, View} from "react-native";
 import TimerMixin from "react-timer-mixin";
 import * as Animatable from "react-native-animatable";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../style";
@@ -12,15 +11,11 @@ import Logo from "../component/logo";
 import {checkUpdate, downloadUpdate, switchVersion} from "react-native-update";
 
 import _updateConfig from "../../update.json";
-import * as userAction from "../redux/action/user";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
 import AV from "leancloud-storage";
 import Config from "../config";
-import DeviceInfo from "react-native-device-info";
 const {appKey} = _updateConfig[Platform.OS];
 
-class StartupPage extends Component {
+class StartUp extends Component {
 
   constructor(props) {
     super(props);
@@ -35,12 +30,6 @@ class StartupPage extends Component {
 
   componentWillMount() {
     //this.checkUpdate()
-    this.refreshToken();
-  }
-
-  refreshToken() {
-    const {userAction} = this.props;
-    userAction.refreshToken()
   }
 
   checkUpdate() {
@@ -69,18 +58,8 @@ class StartupPage extends Component {
   }
 
   onPageContentShow() {
-    let routeName = this.state.routeName || 'home';
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({
-          routeName: routeName
-        })
-      ]
-    });
-    this.timer = TimerMixin.setTimeout(() => {
-      this.props.navigation.dispatch(resetAction)
-    }, 300)
+    const {router} = this.props;
+    router.resetTo('openAccount');
   }
 
   renderContent() {
@@ -109,8 +88,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(state => ({
-  user: state.user
-}), dispatch => ({
-  userAction: bindActionCreators(userAction, dispatch)
-}))(StartupPage)
+export default StartUp;

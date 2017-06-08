@@ -14,7 +14,7 @@ export default {
     appId: 'G1ooxgUmbxYegIkn1oF5cN71-gzGzoHsz',
     appKey: 'eDD28ddQiqUzF53Fl198PXQb'
   },
-  apiDomain: 'http://10.0.31.109:8080/',
+  apiDomain: 'https://kimbo.leanapp.cn/',
   news: '<img src="http://img5.cache.netease.com/photo/0003/2015-08-12/B0Q7E98P00AJ0003.jpg"/><img src="http://img2.cache.netease.com/photo/0003/2015-08-12/B0Q7E9JJ00AJ0003.jpg"/><a href="http://10.0.31.109/h5" target="_blank">Local</a><br><a href="https://m.touker.com/account/login/index.htm" target="_blank">Login</a><br><br><a href="http://10.0.31.38:3000/h5" target="_blank">zhouhua -local</a><br><a href="http://10.0.31.109:8080/oauth#/oauth/login" target="_blank">local-hbec-oauth</a><br><br><a href="http://10.0.31.109:8080/#/oauth/forgetGuide" target="_blank">local-hbec-oauth-paste</a><br><br><a href="https://bbs.touker.com/tel:18016052872" target="_blank">打电话试试</a><br><br><a href="http://fd.dev.hbec.com/qq/faq_h5" target="_blank">qq faq</a><br>'
 }
 
