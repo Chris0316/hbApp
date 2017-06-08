@@ -5,14 +5,14 @@ import PureRenderMixin from "react-addons-pure-render-mixin";
 import {CommonStyles, StyleConfig} from "../style";
 
 class Navbar extends Component {
-
+  
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
-
-
-  renderLeftContentText() {
+  
+  
+  renderTitle() {
     const {title} = this.props;
     if (!title) {
       return;
@@ -24,15 +24,18 @@ class Navbar extends Component {
       titleText = title.substring(0, 25) + "...";
     }
     return (
-      <Text style={ [CommonStyles.text_gray, CommonStyles.font_sm, CommonStyles.background_transparent, CommonStyles.flex_1] }>
+      <Text
+        style={ [this.props.back ? styles.back : '',
+          CommonStyles.text_dark, CommonStyles.text_center,
+          CommonStyles.font_sm, CommonStyles.background_transparent, styles.title] }>
         { titleText }
       </Text>
     )
   }
-
+  
   renderLeftContentIcon() {
-    const {leftIconName = 'ios-arrow-round-back'} = this.props;
-    if (leftIconName) {
+    const {back, leftIconName = 'ios-arrow-back-outline'} = this.props;
+    if (back) {
       return (
         <Icon
           name={ leftIconName }
@@ -42,7 +45,7 @@ class Navbar extends Component {
       )
     }
   }
-
+  
   renderLeftContent() {
     const {leftIconOnPress} = this.props;
     return (
@@ -51,35 +54,23 @@ class Navbar extends Component {
         activeOpacity={ StyleConfig.touchable_press_opacity }
         onPress={ () => leftIconOnPress() }>
         { this.renderLeftContentIcon() }
-        { this.renderLeftContentText() }
       </TouchableOpacity>
     )
   }
-
+  
   renderRightContentIcon() {
-    const {rightIconName} = this.props;
+    const {rightIconName = ''} = this.props;
     if (rightIconName) {
       return (
         <Icon
           name={ rightIconName }
           size={ StyleConfig.icon_size }
           style={ [CommonStyles.background_transparent] }
-          color={ StyleConfig.color_white }/>
+          color={ StyleConfig.color_primary }/>
       )
     }
   }
-
-  renderRightContentText() {
-    const {rightText = ''} = this.props;
-    if (rightText) {
-      return (
-        <Text style={[CommonStyles.text_white, CommonStyles.font_xs, CommonStyles.m_l_1]}>
-          { rightText }
-        </Text>
-      )
-    }
-  }
-
+  
   renderRightContent() {
     const {rightIconOnPress = (() => null)} = this.props;
     return (
@@ -88,15 +79,16 @@ class Navbar extends Component {
         activeOpacity={ StyleConfig.touchable_press_opacity }
         onPress={ () => rightIconOnPress() }>
         { this.renderRightContentIcon() }
-        { this.renderRightContentText() }
       </TouchableOpacity>
     )
   }
-
+  
   render() {
     return (
-      <View style={ [CommonStyles.border_b, CommonStyles.flexRow, CommonStyles.flexItemsBetween, CommonStyles.flexItemsBottom, CommonStyles.pos_absolute, styles.container] }>
+      <View
+        style={ [CommonStyles.border_b, CommonStyles.flexRow, CommonStyles.flexItemsBetween, CommonStyles.flexItemsBottom, CommonStyles.pos_absolute, styles.container] }>
         { this.renderLeftContent() }
+        { this.renderTitle() }
         { this.renderRightContent() }
       </View>
     );
@@ -108,9 +100,15 @@ const styles = StyleSheet.create({
     top: 0,
     height: StyleConfig.navbar_height,
     width: StyleConfig.screen_width,
-    paddingVertical: StyleConfig.space_2 + 2,
-    paddingHorizontal: StyleConfig.space_3,
+    paddingBottom: StyleConfig.space_1 + 2,
+    paddingHorizontal: StyleConfig.space_2,
     backgroundColor: '#fff'
+  },
+  title: {
+    flex: 1
+  },
+  back: {
+    marginLeft: -StyleConfig.icon_size
   }
 });
 

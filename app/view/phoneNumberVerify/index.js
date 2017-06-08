@@ -10,8 +10,12 @@ import Navbar from "../../component/navbar";
 class PhoneNumberVerify extends Component {
   constructor(props) {
     super(props)
+    const {navigator} = this.props;
+    this.state = {
+      back: navigator.getCurrentRoutes().length > 1
+    }
   }
-
+  
   renderNavbar() {
     const {title, router} = this.props;
     let titleText;
@@ -20,14 +24,15 @@ class PhoneNumberVerify extends Component {
     } else {
       titleText = title.substring(0, 25) + "...";
     }
-
+    
     return (
       <Navbar
+        back={this.state.back}
         title={ titleText }
         leftIconOnPress={ () => router.pop() }/>
     )
   }
-
+  
   render() {
     return (
       <View style={ComponentStyles.container}>

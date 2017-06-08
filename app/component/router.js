@@ -61,7 +61,7 @@ class Router {
 
   setRoute(route, props = {}) {
     route.props = props;
-    route.sceneConfig = route.sceneConfig ? route.sceneConfig : RouterSceneConfig.customPushFromRight;
+    // route.sceneConfig = route.sceneConfig ? route.sceneConfig : RouterSceneConfig.customPushFromRight;
     route.component = route.component;
   }
 

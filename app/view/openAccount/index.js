@@ -3,24 +3,30 @@
  */
 
 import React, {Component} from "react";
-import {Text, View} from "react-native";
+import {Text, View, Button} from "react-native";
 import {CommonStyles, ComponentStyles} from "../../style";
 import Navbar from "../../component/navbar";
+import styles from "./style";
 
 class OpenAccount extends Component {
   constructor(props) {
-    super(props)
+    super(props);
+    const {navigator} = this.props;
+    this.state = {
+      back: navigator.getCurrentRoutes().length > 1
+    }
   }
-
+  
   renderNavbar() {
     const {title, router} = this.props;
     return (
       <Navbar
+        back={this.state.back}
         title={ title }
         leftIconOnPress={ () => router.pop() }/>
     )
   }
-
+  
   render() {
     const {router} = this.props;
     return (
@@ -29,6 +35,11 @@ class OpenAccount extends Component {
         <Text style={[CommonStyles.text_danger, CommonStyles.m_t_3]} onPress={() => {
           router.push('phoneNumberVerify')
         }}>Open Account</Text>
+        <View style={[styles.container]}>
+          <Text
+            style={[ComponentStyles.btn, ComponentStyles.btn_primary, ComponentStyles.btn_block, CommonStyles.text_white, CommonStyles.text_center]}>我知道了</Text>
+        </View>
+      
       </View>
     )
   }
