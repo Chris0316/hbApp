@@ -1,0 +1,44 @@
+{
+  "name": "hb-app-server",
+  "version": "1.0.0",
+  "description": "hb react native app server for leancloud",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wjzheng/hbAppServer.git"
+  },
+  "keywords": [
+    "hb",
+    "react",
+    "native",
+    "leancloud",
+    "server"
+  ],
+  "author": "kim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wjzheng/hbAppServer/issues"
+  },
+  "homepage": "https://github.com/wjzheng/hbAppServer#readme",
+  "dependencies": {
+    "co": "^4.6.0",
+    "debug": "^2.2.0",
+    "koa": "^1.1.2",
+    "koa-body": "^1.6.0",
+    "koa-bodyparser": "^2.0.1",
+    "koa-cors": "0.0.16",
+    "koa-ejs": "^3.0.0",
+    "koa-json": "^1.1.1",
+    "koa-logger": "^1.3.0",
+    "koa-router": "^5.3.0",
+    "koa-send": "~3.1.0",
+    "koa-session": "^3.3.1",
+    "leanengine": "^2.0.3"
+  },
+  "engines": {
+    "node": "^6.9.2"
+  }
+}
