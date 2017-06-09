@@ -43,6 +43,13 @@ const ViewPage = {
       component: View.phoneNumberVerify,
       name: 'phoneNumberVerify'
     }
+  },
+  personInfo: () => {
+    return {
+      title: '个人信息确认',
+      component: View.personInfo,
+      name: 'personInfo'
+    }
   }
 };
 

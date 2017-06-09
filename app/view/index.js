@@ -9,3 +9,4 @@ export {default as login} from './login';
 export {default as camera} from './camera';
 export {default as openAccount} from './openAccount';
 export {default as phoneNumberVerify} from './phoneNumberVerify';
+export {default as personInfo} from './personInfo';

@@ -1,7 +1,6 @@
 import React, {BackHandler, Platform, ToastAndroid} from "react-native";
 
 import TimerMixin from "react-timer-mixin";
-import * as RouterSceneConfig from "../config/routerScene";
 import ViewPage from "./view";
 class Router {
   constructor(navigator) {
@@ -66,6 +65,7 @@ class Router {
   }
 
   pop() {
+    debugger
     this.navigator.pop();
   }
 

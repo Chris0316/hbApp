@@ -3,12 +3,10 @@
  */
 
 import React, {Component} from "react";
-import {View} from "react-native";
 import {Navigator} from "react-native-deprecated-custom-components";
 import Router from "./router";
 import ViewPage from "./view";
 import Plugin from "./plugin";
-import {ComponentStyles} from "../style";
 
 const defaultRoute = ViewPage.startup();
 
@@ -22,13 +20,11 @@ class Navigation extends Component {
     this.router = this.router || new Router(navigator);
     let Component = route.component;
     if (Component) {
-      return <Component
-        {...route.props}
-        navigator={ navigator }
-        router={this.router}
-        ref={(view) => {
+      return (
+        <Component {...route.props} navigator={ navigator } router={this.router} ref={(view) => {
           route.sceneRef = view
         } }/>
+      )
     }
   }
 
@@ -51,15 +47,13 @@ class Navigation extends Component {
 
   render() {
     return (
-      <View style={ ComponentStyles.container }>
-        <Navigator
-          initialRoute={ defaultRoute }
-          configureScene={ this.configureScene.bind(this) }
-          renderScene={ this.renderScene.bind(this) }
-          onDidFocus={ this.onDidFocus.bind(this) }>
-          <Plugin router={ this.router }/>
-        </Navigator>
-      </View>
+      <Navigator
+        initialRoute={ defaultRoute }
+        configureScene={ this.configureScene.bind(this) }
+        renderScene={ this.renderScene.bind(this) }
+        onDidFocus={ this.onDidFocus.bind(this) }>
+        <Plugin router={ this.router }/>
+      </Navigator>
     )
   }
 }
