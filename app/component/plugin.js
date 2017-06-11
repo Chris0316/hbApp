@@ -10,7 +10,7 @@ class Plugin extends Component {
     return (
       <View>
         <StatusBar
-          translucent={ true }
+          translucent={ false }
           backgroundColor="red"
           barStyle="light-content"/>
       </View>

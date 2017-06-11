@@ -3,12 +3,12 @@
  */
 
 import React, {Component} from "react";
-import {ScrollView, StyleSheet, View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import {ComponentStyles} from "../style";
 import Navbar from "../component/navbar";
 import DropDown from "../component/dropdown";
 class BaseView extends Component {
-
+  
   constructor(props) {
     super(props);
     const {navigator} = this.props;
@@ -17,7 +17,7 @@ class BaseView extends Component {
       showHelp: false
     }
   }
-
+  
   renderNavbar() {
     const {title, router} = this.props;
     return (
@@ -27,21 +27,19 @@ class BaseView extends Component {
         rightIconOnPress={() => this.setState({showHelp: true})}/>
     )
   }
-
+  
   renderHelp() {
     return (
       <DropDown showHelp={this.state.showHelp} onPress={() => this.setState({showHelp: false})}/>
     )
   }
-
+  
   render() {
     return (
       <View style={[ComponentStyles.container]}>
         <View style={styles.container}>
           {this.renderNavbar()}
-          {/*<ScrollView>*/}
-            {this.renderBody()}
-          {/*</ScrollView>*/}
+          {this.renderBody()}
         </View>
         {this.renderHelp()}
       </View>

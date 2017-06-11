@@ -1,4 +1,6 @@
 rootProject.name = 'hbApp'
+include ':react-native-picker'
+project(':react-native-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-picker/android')
 include ':app',':react-native-vector-icons',':RNDeviceInfo',':react-native-toast',':react-native-exceptions-manager',':react-native-update',':react-native-camera'
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
 project(':react-native-toast').projectDir = new File(settingsDir, '../node_modules/@remobile/react-native-toast/android')
