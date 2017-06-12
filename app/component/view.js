@@ -50,6 +50,13 @@ const ViewPage = {
       component: View.personInfo,
       name: 'personInfo'
     }
+  },
+  uploadPhoto: () => {
+    return {
+      title: '上传身份证',
+      component: View.uploadPhoto,
+      name: 'uploadPhoto'
+    }
   }
 };
 

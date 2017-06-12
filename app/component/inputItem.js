@@ -3,37 +3,82 @@
  */
 
 import React, {Component} from "react";
-import {StyleSheet, Text, TextInput, View, TouchableOpacity} from "react-native";
+import {StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../style";
 class InputItem extends Component {
   constructor(props) {
-    super(props)
+    super(props);
+    this.state = {
+      clear: false
+    }
   }
-  
+
   renderLabel() {
     const {label} = this.props;
     return (
       <Text style={styles.label}>{label}</Text>
     )
   }
-  
+
+  renderClearIcon() {
+    let clear = this.state.clear;
+    if (clear === true) {
+      return (
+        <TouchableOpacity style={{width: 30, height: 30, alignItems: 'center', justifyContent: 'center'}}>
+          <Icon
+            onPress={this.clearInput.bind(this)}
+            name={ 'ios-close-circle-outline' }
+            size={ StyleConfig.icon_size }
+            color={ StyleConfig.color_icon }/>
+        </TouchableOpacity>
+      )
+    }
+  }
+
+  clearInput() {
+    const {onChange} = this.props;
+    this.setState({
+      clear: false
+    });
+    onChange('');
+  }
+
+  onChange(text) {
+    const {onChange} = this.props;
+    if (text) {
+      this.setState({
+        clear: true
+      })
+    } else {
+      this.setState({
+        clear: false
+      })
+    }
+    onChange(text)
+  }
+
   renderInput() {
     const {maxLength, keyboardType, value, placeholder, onChange, autoFocus} = this.props;
     return (
-      <TextInput
-        maxLength={maxLength}
-        selectionColor={StyleConfig.color_black}
-        keyboardType={keyboardType}
-        underlineColorAndroid="transparent"
-        autoFocus={autoFocus}
-        value={value}
-        onChangeText={(text) => onChange(text)}
-        style={[CommonStyles.flex_1, ComponentStyles.input]}
-        placeholder={placeholder}
-      />
+      <View
+        style={[CommonStyles.flexRow, CommonStyles.flex_1, CommonStyles.flexItemsMiddle]}>
+        <TextInput
+          maxLength={maxLength}
+          selectionColor={StyleConfig.color_black}
+          keyboardType={keyboardType}
+          underlineColorAndroid="transparent"
+          autoFocus={autoFocus}
+          value={value}
+          onChangeText={this.onChange.bind(this)}
+          style={[CommonStyles.flex_1, ComponentStyles.input]}
+          placeholder={placeholder}
+        />
+        {this.renderClearIcon()}
+      </View>
     )
   }
-  
+
   renderPicker() {
     const {value, placeholder, onPress} = this.props;
     let str = placeholder;
@@ -41,12 +86,19 @@ class InputItem extends Component {
       str = value;
     }
     return (
-      <TouchableOpacity onPress={onPress}>
-        <Text style={[styles.value]}>{str}</Text>
+      <TouchableOpacity
+        style={[CommonStyles.flexRow, CommonStyles.flex_1, CommonStyles.flexItemsMiddle, CommonStyles.flexItemsCenter]}
+        onPress={onPress}>
+        <Text style={[styles.value, CommonStyles.flex_1]}>{str}</Text>
+        <Icon
+          style={{width: 30, textAlign: 'center'}}
+          name={ 'ios-arrow-down-outline' }
+          size={ StyleConfig.icon_size }
+          color={StyleConfig.color_icon }/>
       </TouchableOpacity>
     )
   }
-  
+
   render() {
     const {type} = this.props;
     if (type === 'picker') {

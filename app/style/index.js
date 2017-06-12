@@ -19,6 +19,7 @@ export const StyleConfig = {
   color_dark: 'rgba(0, 0, 0, 0.7)',
   color_black: 'rgba(0, 0, 0, 0.8)',
   color_transparent: "transparent",
+  color_icon:'#888',
 
   font_eg: 24,
   font_lg: 20,
@@ -45,7 +46,7 @@ export const StyleConfig = {
   header_height: 200,
   navbar_height: 40,
   bottomBar_height: 46,
-  icon_size: 22,
+  icon_size: 16,
   avatarSize_lg: 60,
   avatarSize_sm: 20,
 

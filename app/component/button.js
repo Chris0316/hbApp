@@ -8,6 +8,13 @@ import {CommonStyles, ComponentStyles, StyleConfig} from "../style";
 class Button extends Component {
   constructor(props) {
     super(props)
+    let modal = this.props;
+    this.btnWidth = StyleConfig.btn_block;
+    if (modal) {
+      this.btnWidth = {
+        width: StyleConfig.screen_width - 15 * 2 - StyleConfig.space_3 * 2
+      }
+    }
   }
 
   renderBlock() {
@@ -32,7 +39,7 @@ class Button extends Component {
         activeOpacity={ StyleConfig.touchable_press_opacity}
         onPress={onPress}>
         <View style={CommonStyles.flexItemsMiddle}>
-          <Text style={[ComponentStyles.btn, ComponentStyles.btn_primary, ComponentStyles.btn_block, CommonStyles.text_center, CommonStyles.text_white, CommonStyles.m_t_4]}>
+          <Text style={[ComponentStyles.btn, ComponentStyles.btn_primary, this.btnWidth, CommonStyles.text_center, CommonStyles.text_white, CommonStyles.m_t_4]}>
             { this.props.children }
           </Text>
         </View>

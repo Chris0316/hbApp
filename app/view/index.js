@@ -10,3 +10,4 @@ export {default as camera} from './camera';
 export {default as openAccount} from './openAccount';
 export {default as phoneNumberVerify} from './phoneNumberVerify';
 export {default as personInfo} from './personInfo';
+export {default as uploadPhoto} from './uploadPhoto';

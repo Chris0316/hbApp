@@ -3,26 +3,33 @@
  */
 
 import React from "react";
-import {StyleSheet, TouchableOpacity} from "react-native";
+import {Keyboard, ScrollView, StyleSheet, Text, View} from "react-native";
 import Btn from "../../component/button";
 import BaseView from "../BaseView";
-import {ScrollView, Text, View} from "react-native";
-import {CommonStyles, ComponentStyles, StyleConfig} from "../../style";
-import InputItem from '../../component/inputItem';
-import Picker from 'react-native-picker';
-import area from '../../../data/area.json';
-
-let p = null;
+import {ComponentStyles, StyleConfig} from "../../style";
+import {SjkhStyles} from "../../style/sjkh";
+import InputItem from "../../component/inputItem";
+import Picker from "react-native-picker";
+import edu from "../../../data/edu.json";
+import profession from "../../../data/profession.json";
 
 class PersonInfo extends BaseView {
   constructor(props) {
     super(props);
+    this.date_picker = this._createDateData();
     this.state = {
-      selectedValue: '1983年,2月,17日',
-      selectedAddress: ''
+      name: '',
+      idCard: '',
+      idCardAddress: '',
+      idCardGov: '',
+      validDate: '',
+      address: '',
+      postCode: '',
+      profession: '',
+      education: ''
     }
   }
-  
+
   _createDateData() {
     let date = [];
     for (let i = 1950; i < 2050; i++) {
@@ -58,114 +65,150 @@ class PersonInfo extends BaseView {
     }
     return date;
   }
-  
-  _createAreaData() {
-    let data = [];
-    let len = area.length;
-    for (let i = 0; i < len; i++) {
-      let city = [];
-      for (let j = 0, cityLen = area[i]['city'].length; j < cityLen; j++) {
-        let _city = {};
-        _city[area[i]['city'][j]['name']] = area[i]['city'][j]['area'];
-        city.push(_city);
-      }
-      
-      let _data = {};
-      _data[area[i]['name']] = city;
-      data.push(_data);
-    }
-    return data;
-  }
-  
-  showPicker() {
-    let data = [];
-    for (var i = 0; i < 100; i++) {
-      data.push(i);
-    }
-    if (p) {
-      p.show();
-      return;
-    }
-    p = Picker.init({
+
+  showDatePicker() {
+    this.setState({mask: true});
+    Picker.init({
       pickerConfirmBtnText: '确定',
       pickerCancelBtnText: '取消',
       pickerTitleText: '请选择日期',
-      pickerData: this._createDateData(),
+      pickerData: this.date_picker,
       pickerToolBarFontSize: 16,
       pickerFontSize: 16,
       pickerBg: [255, 255, 255, 1],
       pickerFontColor: [255, 0, 0, 1],
-      selectedValue: ['1983年', '2月', '17日'],
       onPickerConfirm: data => {
         this.setState({
-          selectedValue: data
+          validDate: data,
+          mask: false
         })
       },
       onPickerCancel: data => {
-        console.log(data);
-      },
-      onPickerSelect: data => {
-        console.log(data);
+        this.setState({
+          mask: false
+        })
       }
     });
     Picker.show();
   }
-  
-  showAddressPicker() {
-    Picker.isPickerShow(status=>{
-      alert(status)
-    });
-    // Picker.toggle();
-    // Picker.init({
-    //   pickerConfirmBtnText: '确定',
-    //   pickerCancelBtnText: '取消',
-    //   pickerTitleText: '请选择地址',
-    //   pickerData: this._createAreaData(),
-    //   pickerToolBarFontSize: 16,
-    //   pickerFontSize: 16,
-    //   pickerBg: [255, 255, 255, 1],
-    //   pickerFontColor: [255, 0, 0, 1],
-    //   selectedValue: ['河北', '唐山', '古冶区'],
-    //   onPickerConfirm: pickedValue => {
-    //     this.setState({
-    //       selectedAddress: pickedValue
-    //     })
-    //   },
-    //   onPickerCancel: pickedValue => {
-    //     console.log('area', pickedValue);
-    //   },
-    //   onPickerSelect: pickedValue => {
-    //     //Picker.select(['山东', '青岛', '黄岛区'])
-    //     console.log('area', pickedValue);
-    //   }
-    // });
-    // Picker.show();
+
+  showEduPicker() {
+    this.setState({mask: true});
+    Picker.init({
+      pickerConfirmBtnText: '确定',
+      pickerCancelBtnText: '取消',
+      pickerTitleText: '请选择学历',
+      pickerData: edu,
+      pickerToolBarFontSize: 16,
+      pickerFontSize: 16,
+      pickerBg: [255, 255, 255, 1],
+      pickerFontColor: [255, 0, 0, 1],
+      onPickerConfirm: data => {
+        this.setState({
+          education: data,
+          mask: false
+        })
+      },
+      onPickerCancel: data => {
+        this.setState({
+          mask: false
+        })
+      }
+    })
+    Picker.show();
   }
-  
-  renderBody() {
+
+  showProPicker() {
+    this.setState({mask: true});
+    Picker.init({
+      pickerConfirmBtnText: '确定',
+      pickerCancelBtnText: '取消',
+      pickerTitleText: '请选择职业',
+      pickerData: profession,
+      pickerToolBarFontSize: 16,
+      pickerFontSize: 16,
+      pickerBg: [255, 255, 255, 1],
+      pickerFontColor: [255, 0, 0, 1],
+      onPickerConfirm: data => {
+        this.setState({
+          profession: data,
+          mask: false
+        })
+      },
+      onPickerCancel: data => {
+        this.setState({
+          mask: false
+        })
+      }
+    })
+    Picker.show();
+  }
+
+  onHideMask() {
+    Picker.hide();
+  }
+
+  doNext() {
     const {router} = this.props;
+    Keyboard.dismiss();
+    router.push('uploadPhoto');
+  }
+
+  renderBody() {
     return (
       <View style={ComponentStyles.container}>
-        <ScrollView style={[styles.content]}>
-          <InputItem placeholder="请输入手机号码"
-                     label="手机号码"
+        <ScrollView keyboardShouldPersistTaps={'always'} style={[styles.content]}>
+          <Text style={SjkhStyles.tips_block}>
+            核对身份证正面信息
+          </Text>
+          <InputItem placeholder="请输入真实姓名"
+                     label="姓名"
+                     value={this.state.name}
                      keyboardType="phone-pad"
-                     onChange={(t) => console.log(t)}/>
-          <InputItem placeholder="请输入手机号码"
-                     label="手机号码"
-                     onChange={(t) => console.log(t)}/>
-          <InputItem placeholder="请选择日期"
-                     label="日期"
+                     onChange={(t) => this.setState({name: t})}/>
+          <InputItem placeholder="请输入身份证号"
+                     label="身份证号"
+                     value={this.state.idCard}
+                     onChange={(t) => this.setState({idCard: t})}/>
+          <InputItem placeholder="请输入身份证地址"
+                     label="证件地址"
+                     value={this.state.idCardAddress}
+                     onChange={(t) => this.setState({idCardAddress: t})}/>
+          <Text style={SjkhStyles.tips_block}>
+            核对身份证反面信息
+          </Text>
+          <InputItem placeholder="请输入签发机关"
+                     label="签发机关"
+                     value={this.state.idCardGov}
+                     onChange={(t) => this.setState({idCardGov: t})}/>
+          <InputItem placeholder="请选择"
+                     label="有效期至"
                      type="picker"
-                     value={this.state.selectedValue}
-                     onPress={this.showPicker.bind(this)}/>
-          <InputItem placeholder="请选择地址"
-                     label="地址"
+                     value={this.state.validDate}
+                     onPress={this.showDatePicker.bind(this)}/>
+          <Text style={SjkhStyles.tips_block}>
+            其他信息
+          </Text>
+          <InputItem placeholder="请输入通讯地址"
+                     label="通讯地址"
+                     value={this.state.address}
+                     onChange={(t) => this.setState({address: t})}/>
+          <InputItem placeholder="请输入邮编"
+                     label="邮编"
+                     value={this.state.postCode}
+                     onChange={(t) => this.setState({postCode: t})}/>
+          <InputItem label="职业"
+                     placeholder="请选择"
+                     value={this.state.profession}
                      type="picker"
-                     value={this.state.selectedAddress}
-                     onPress={this.showAddressPicker.bind(this)}/>
+                     onPress={this.showProPicker.bind(this)}/>
+          <InputItem label="学历"
+                     placeholder="请选择"
+                     value={this.state.education}
+                     type="picker"
+                     onPress={this.showEduPicker.bind(this)}/>
         </ScrollView>
-        <Btn type="block">保存</Btn>
+        <Btn type="block" onPress={this.doNext.bind(this)}>下一步</Btn>
       </View>
     )
   }
