@@ -3,11 +3,12 @@
  */
 
 import React from "react";
-import {Text, TextInput, View, Keyboard} from "react-native";
-import {CommonStyles, ComponentStyles, StyleConfig} from "../../style";
+import {Keyboard, Text, View} from "react-native";
+import {CommonStyles} from "../../style";
 import Btn from "../../component/button";
 import Toast from "@remobile/react-native-toast";
 import BaseView from "../BaseView";
+import InputItem from "../../component/inputItem";
 
 class PhoneNumberVerify extends BaseView {
   constructor(props) {
@@ -29,20 +30,14 @@ class PhoneNumberVerify extends BaseView {
   
   renderInput() {
     return (
-      <View style={[CommonStyles.background_white, CommonStyles.p_a_2, CommonStyles.flexRow]}>
-        <Text style={{height: 30, fontSize: 16, lineHeight: 26, marginRight: 12}}>手机号码</Text>
-        <TextInput
-          maxLength={11}
-          selectionColor={StyleConfig.color_black}
-          keyboardType="phone-pad"
-          underlineColorAndroid="transparent"
-          autoFocus={true}
-          value={this.state.phone}
-          onChangeText={(text) => this.setState({'phone': text})}
-          style={[CommonStyles.flex_1, ComponentStyles.input]}
-          placeholder='请输入手机号'
-        />
-      </View>
+      <InputItem
+        label="手机号码"
+        placeholder="请输入手机号"
+        maxLength={11}
+        keyboardType="phone-pad"
+        value={this.state.phone}
+        onChange={(text) => this.setState({'phone': text})}
+      />
     )
   }
   
