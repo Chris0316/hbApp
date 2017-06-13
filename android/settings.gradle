@@ -1,12 +1,12 @@
 rootProject.name = 'hbApp'
+include ':react-native-fetch-blob'
+project(':react-native-fetch-blob').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fetch-blob/android')
 include ':react-native-image-crop-picker'
 project(':react-native-image-crop-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-crop-picker/android')
 include ':react-native-picker'
 project(':react-native-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-picker/android')
-include ':app',':react-native-vector-icons',':RNDeviceInfo',':react-native-toast',':react-native-exceptions-manager',':react-native-update',':react-native-camera'
+include ':app',':react-native-vector-icons',':react-native-toast',':react-native-exceptions-manager',':react-native-update'
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
 project(':react-native-toast').projectDir = new File(settingsDir, '../node_modules/@remobile/react-native-toast/android')
-project(':RNDeviceInfo').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-device-info/android')
 project(':react-native-exceptions-manager').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-exceptions-manager/android/app')
 project(':react-native-update').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-update/android')
-project(':react-native-camera').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-camera/android')

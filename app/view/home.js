@@ -63,11 +63,6 @@ class Home extends Component {
     }
   }
 
-  openCamera() {
-    let {navigation} = this.props;
-    navigation.navigate('camera');
-  }
-
   doUpload() {
     if (!c_photo) {
       return
@@ -88,10 +83,6 @@ class Home extends Component {
   renderBtn() {
     return (
       <View style={ComponentStyles.container}>
-        <Text
-          style={[ComponentStyles.btn_primary_outline, CommonStyles.m_t_1, CommonStyles.p_a_2, CommonStyles.text_center]}
-          onPress={this.openCamera.bind(this)}
-        >拍照</Text>
         <Text
           style={[ComponentStyles.btn_primary_outline, CommonStyles.m_t_1, CommonStyles.p_a_2, CommonStyles.text_center]}
           onPress={this.doUpload.bind(this)}

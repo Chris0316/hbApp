@@ -103,13 +103,6 @@ const AppNavigator = StackNavigator({
       headerStyle: {backgroundColor: 'white'},
       title: navigation.state.params.title
     })
-  },
-  camera:{
-    screen: View.camera,
-    navigationOptions: ({navigation}) => ({
-      headerStyle: {backgroundColor: 'white'},
-      title: '拍照'
-    })
   }
 }, {
   headerMode: 'none',

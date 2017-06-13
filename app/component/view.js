@@ -57,6 +57,21 @@ const ViewPage = {
       component: View.uploadPhoto,
       name: 'uploadPhoto'
     }
+  },
+
+  setPwd: () => {
+    return {
+      title: '设置密码',
+      component: View.setPwd,
+      name: 'setPwd'
+    }
+  },
+  login: () => {
+    return {
+      title: '登录',
+      component: View.login,
+      name: 'login'
+    }
   }
 };
 

@@ -10,7 +10,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import * as userAction from "../redux/action/user";
 class Login extends Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -18,11 +18,11 @@ class Login extends Component {
       password: ''
     }
   }
-  
+
   componentWillMount() {
-  
+
   }
-  
+
   componentWillReceiveProps(nextProps) {
     let {user, navigation} = nextProps;
     if (user.res && user.res.code === 0) {
@@ -33,7 +33,7 @@ class Login extends Component {
       }
     }
   }
-  
+
   doLogin() {
     let {password, login} = this.state;
     if (!password) {
@@ -44,7 +44,7 @@ class Login extends Component {
     userAction.login(login, password);
     Keyboard.dismiss();
   }
-  
+
   render() {
     return (
       <View style={ ComponentStyles.container }>

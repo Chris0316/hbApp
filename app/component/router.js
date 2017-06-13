@@ -65,7 +65,6 @@ class Router {
   }
 
   pop() {
-    debugger
     this.navigator.pop();
   }
 

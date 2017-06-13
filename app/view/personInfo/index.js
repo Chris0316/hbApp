@@ -9,6 +9,8 @@ import BaseView from "../BaseView";
 import {ComponentStyles, StyleConfig} from "../../style";
 import {SjkhStyles} from "../../style/sjkh";
 import InputItem from "../../component/inputItem";
+import CheckBox from "../../component/checkbox";
+import Link from "../../component/link";
 import Picker from "react-native-picker";
 import edu from "../../../data/edu.json";
 import profession from "../../../data/profession.json";
@@ -161,52 +163,67 @@ class PersonInfo extends BaseView {
           <Text style={SjkhStyles.tips_block}>
             核对身份证正面信息
           </Text>
-          <InputItem placeholder="请输入真实姓名"
-                     label="姓名"
-                     value={this.state.name}
-                     keyboardType="phone-pad"
-                     onChange={(t) => this.setState({name: t})}/>
-          <InputItem placeholder="请输入身份证号"
-                     label="身份证号"
-                     value={this.state.idCard}
-                     onChange={(t) => this.setState({idCard: t})}/>
-          <InputItem placeholder="请输入身份证地址"
-                     label="证件地址"
-                     value={this.state.idCardAddress}
-                     onChange={(t) => this.setState({idCardAddress: t})}/>
+          <InputItem
+            placeholder="请输入真实姓名"
+            label="姓名"
+            value={this.state.name}
+            keyboardType="phone-pad"
+            onChange={(t) => this.setState({name: t})}/>
+          <InputItem
+            placeholder="请输入身份证号"
+            label="身份证号"
+            value={this.state.idCard}
+            onChange={(t) => this.setState({idCard: t})}/>
+          <InputItem
+            placeholder="请输入身份证地址"
+            label="证件地址"
+            value={this.state.idCardAddress}
+            onChange={(t) => this.setState({idCardAddress: t})}/>
           <Text style={SjkhStyles.tips_block}>
             核对身份证反面信息
           </Text>
-          <InputItem placeholder="请输入签发机关"
-                     label="签发机关"
-                     value={this.state.idCardGov}
-                     onChange={(t) => this.setState({idCardGov: t})}/>
-          <InputItem placeholder="请选择"
-                     label="有效期至"
-                     type="picker"
-                     value={this.state.validDate}
-                     onPress={this.showDatePicker.bind(this)}/>
+          <InputItem
+            placeholder="请输入签发机关"
+            label="签发机关"
+            value={this.state.idCardGov}
+            onChange={(t) => this.setState({idCardGov: t})}/>
+          <InputItem
+            placeholder="请选择"
+            label="有效期至"
+            type="picker"
+            value={this.state.validDate}
+            onPress={this.showDatePicker.bind(this)}/>
           <Text style={SjkhStyles.tips_block}>
             其他信息
           </Text>
-          <InputItem placeholder="请输入通讯地址"
-                     label="通讯地址"
-                     value={this.state.address}
-                     onChange={(t) => this.setState({address: t})}/>
-          <InputItem placeholder="请输入邮编"
-                     label="邮编"
-                     value={this.state.postCode}
-                     onChange={(t) => this.setState({postCode: t})}/>
-          <InputItem label="职业"
-                     placeholder="请选择"
-                     value={this.state.profession}
-                     type="picker"
-                     onPress={this.showProPicker.bind(this)}/>
-          <InputItem label="学历"
-                     placeholder="请选择"
-                     value={this.state.education}
-                     type="picker"
-                     onPress={this.showEduPicker.bind(this)}/>
+          <InputItem
+            placeholder="请输入通讯地址"
+            label="通讯地址"
+            value={this.state.address}
+            onChange={(t) => this.setState({address: t})}/>
+          <InputItem
+            placeholder="请输入邮编"
+            label="邮编"
+            value={this.state.postCode}
+            onChange={(t) => this.setState({postCode: t})}/>
+          <InputItem
+            label="职业"
+            placeholder="请选择"
+            value={this.state.profession}
+            type="picker"
+            onPress={this.showProPicker.bind(this)}/>
+          <InputItem
+            label="学历"
+            placeholder="请选择"
+            value={this.state.education}
+            type="picker"
+            onPress={this.showEduPicker.bind(this)}/>
+          <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', paddingTop: 10, paddingBottom: 10}}>
+            <CheckBox checked={true} color="#4883F6"/>
+            <Text style={SjkhStyles.link}>已阅读并同意</Text>
+            <Link href="setPwd" router={this.props.router}>《电子签名约定书协议》</Link>
+            <Link href="http://www.163.com" router={this.props.router}>《中登申请协议》</Link>
+          </View>
         </ScrollView>
         <Btn type="block" onPress={this.doNext.bind(this)}>下一步</Btn>
       </View>

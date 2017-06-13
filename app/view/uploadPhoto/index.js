@@ -3,31 +3,47 @@
  */
 
 import React from "react";
-import {Image, Modal, ScrollView, StyleSheet, Text, View, TouchableWithoutFeedback} from "react-native";
-import ActionSheet from 'react-native-actionsheet';
-import ImagePicker from 'react-native-image-crop-picker';
+import {Image, Modal, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
+import ActionSheet from "react-native-actionsheet";
+import ImagePicker from "react-native-image-crop-picker";
 import BaseView from "../BaseView";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../../style";
 import {SjkhStyles} from "../../style/sjkh";
 import Btn from "../../component/button";
+import RNFetchBlob from "react-native-fetch-blob";
 const card1 = require('../../image/sjkh/card.png');
 const card2 = require('../../image/sjkh/card-face.png');
+
 class UploadPhoto extends BaseView {
-  
+
   constructor(props) {
     super(props);
     this.state = {
       showModal: false,
+      imageType: 1,
       image1: card1,
       image2: card2
     }
   }
-  
-  showUploadModal() {
+
+  showUploadModal(type) {
+    this.imageType = type;
     this.ActionSheet.show()
   }
-  
-  handleAS(i) {
+
+  checkOCR(base64) {
+    RNFetchBlob.fetch('POST', 'http://imgs3.intsig.net/icr/recog_idcard_demo?head_portrait=1&crop_image=1', {
+      'Content-Type': 'application/octet-stream',
+    }, base64).then((res) => {
+      console.log(res)
+    }, err => {
+      console.log(err)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
+
+  doUpload(i) {
     if (i === 1) {
       ImagePicker.openPicker({
         width: 400,
@@ -35,10 +51,12 @@ class UploadPhoto extends BaseView {
         cropping: true,
         includeBase64: true
       }).then(image => {
-        alert(`data:${image.mime};base64,` + image.data.length)
+        let imageSource = {uri: `data:${image.mime};base64,` + image.data};
+        let key = this.imageType === 1 ? 'image1' : 'image2';
         this.setState({
-          image1: {uri:`data:${image.mime};base64,` + image.data}
-        })
+          [key]: imageSource
+        });
+        this.checkOCR(image.data);
       });
     } else if (i === 2) {
       ImagePicker.openCamera({
@@ -47,29 +65,32 @@ class UploadPhoto extends BaseView {
         cropping: true,
         includeBase64: true
       }).then(image => {
+        let imageSource = {uri: `data:${image.mime};base64,` + image.data};
+        let key = this.imageType === 1 ? 'image1' : 'image2';
         this.setState({
-          image2: {uri:`data:${image.mime};base64,` + image.data}
-        })
+          [key]: imageSource
+        });
+        this.checkOCR(image.data);
       });
     }
   }
-  
+
   doNext() {
-    alert('next')
+    const {router} = this.props;
+    router.push('setPwd')
   }
-  
+
   renderUploadModal() {
     return (
       <ActionSheet
         ref={o => this.ActionSheet = o}
-        title={'选择照片'}
         options={['取消', '从相册选择', '拍照上传']}
         cancelButtonIndex={0}
-        onPress={this.handleAS.bind(this)}
+        onPress={this.doUpload.bind(this)}
       />)
   }
-  
-  
+
+
   renderModal() {
     let showModal = this.state.showModal;
     if (showModal) {
@@ -133,7 +154,7 @@ class UploadPhoto extends BaseView {
       )
     }
   }
-  
+
   renderBody() {
     return (
       <View style={ComponentStyles.container}>
@@ -146,17 +167,15 @@ class UploadPhoto extends BaseView {
               this.setState({showModal: true})
             }} style={[SjkhStyles.tips_block, CommonStyles.text_warning]}>查看示例</Text>
           </View>
-          <TouchableWithoutFeedback onPress={this.showUploadModal.bind(this)}>
+          <TouchableWithoutFeedback onPress={this.showUploadModal.bind(this, 1)}>
             <View style={styles.idCard}>
-              <Image source={this.state.image1}
-                     style={{width: 260, height: 182}}/>
+              <Image source={this.state.image1} style={{width: 260, height: 182}}/>
               <Text>正面</Text>
             </View>
           </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={this.showUploadModal.bind(this)}>
+          <TouchableWithoutFeedback onPress={this.showUploadModal.bind(this, 2)}>
             <View style={styles.idCard}>
-              <Image source={this.state.image2}
-                     style={{width: 260, height: 182}}/>
+              <Image source={this.state.image2} style={{width: 260, height: 182}}/>
               <Text>反面</Text>
             </View>
           </TouchableWithoutFeedback>

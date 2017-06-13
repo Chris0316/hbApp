@@ -11,5 +11,10 @@ export const SjkhStyles = StyleSheet.create({
     padding: StyleConfig.space_2,
     fontSize: StyleConfig.font_xs,
     backgroundColor: '#f7f7f7'
+  },
+
+  link: {
+    fontSize: 12,
+    color: '#4B83F4'
   }
 });

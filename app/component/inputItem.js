@@ -10,7 +10,8 @@ class InputItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      clear: false
+      clear: false,
+      secureTextEntry: this.props.secureTextEntry
     }
   }
 
@@ -19,6 +20,28 @@ class InputItem extends Component {
     return (
       <Text style={styles.label}>{label}</Text>
     )
+  }
+
+  renderEyeIcon() {
+    let secureTextEntry = this.state.secureTextEntry;
+    if (secureTextEntry === undefined) {
+      return
+    }
+    let icon = 'ios-eye-outline';
+    if (secureTextEntry === false) {
+      icon = 'ios-eye-off-outline';
+    }
+    if (secureTextEntry !== undefined) {
+      return (
+        <TouchableOpacity style={{width: 30, height: 30, alignItems: 'center', justifyContent: 'center'}}>
+          <Icon
+            onPress={this.toggleIput.bind(this)}
+            name={ icon }
+            size={ 24 }
+            color={ StyleConfig.color_icon }/>
+        </TouchableOpacity>
+      )
+    }
   }
 
   renderClearIcon() {
@@ -34,6 +57,13 @@ class InputItem extends Component {
         </TouchableOpacity>
       )
     }
+  }
+
+  toggleIput() {
+    let se = this.state.secureTextEntry;
+    this.setState({
+      secureTextEntry: !se
+    })
   }
 
   clearInput() {
@@ -59,7 +89,7 @@ class InputItem extends Component {
   }
 
   renderInput() {
-    const {maxLength, keyboardType, value, placeholder, onChange, autoFocus} = this.props;
+    const {maxLength, keyboardType, value, placeholder, autoFocus, defaultValue} = this.props;
     return (
       <View
         style={[CommonStyles.flexRow, CommonStyles.flex_1, CommonStyles.flexItemsMiddle]}>
@@ -70,11 +100,14 @@ class InputItem extends Component {
           underlineColorAndroid="transparent"
           autoFocus={autoFocus}
           value={value}
+          secureTextEntry={this.state.secureTextEntry}
+          defaultValue={defaultValue}
           onChangeText={this.onChange.bind(this)}
           style={[CommonStyles.flex_1, ComponentStyles.input]}
           placeholder={placeholder}
         />
         {this.renderClearIcon()}
+        {this.renderEyeIcon()}
       </View>
     )
   }
