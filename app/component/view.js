@@ -72,6 +72,22 @@ const ViewPage = {
       component: View.login,
       name: 'login'
     }
+  },
+
+  thirdDepository: () => {
+    return {
+      title: '三方存管',
+      component: View.thirdDepository,
+      name: 'thirdDepository'
+    }
+  },
+
+  banks: () => {
+    return {
+      title: '银行选择',
+      component: View.banks,
+      name: 'banks'
+    }
   }
 };
 

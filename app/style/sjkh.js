@@ -16,5 +16,23 @@ export const SjkhStyles = StyleSheet.create({
   link: {
     fontSize: 12,
     color: '#4B83F4'
+  },
+
+  modal: {},
+  modal_container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    marginTop: -50
+  },
+  modal_body: {
+    borderRadius: 4,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 15
+  },
+  modal_btn: {
+    width: StyleConfig.screen_width - 20 * 2 - 15 * 2
   }
 });

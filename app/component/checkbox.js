@@ -21,7 +21,7 @@ class CheckBox extends Component {
     }
     const {onChecked, color} = this.props;
     return (
-      <TouchableOpacity style={{width: 30, height: 30, alignItems: 'center', justifyContent: 'center'}}>
+      <TouchableOpacity style={{marginLeft: 10, width: 20, height: 20, alignItems: 'center', justifyContent: 'center'}}>
         <Icon
           onPress={() => {
             let checked = this.state.checked;
@@ -31,7 +31,7 @@ class CheckBox extends Component {
             onChecked && onChecked.call(this, !checked)
           }}
           name={ icon }
-          size={ 24 }
+          size={ 20 }
           color={ color || StyleConfig.color_icon }/>
       </TouchableOpacity>
     )

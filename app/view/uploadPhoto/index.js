@@ -10,6 +10,7 @@ import BaseView from "../BaseView";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../../style";
 import {SjkhStyles} from "../../style/sjkh";
 import Btn from "../../component/button";
+import Steps from "../../component/steps";
 import RNFetchBlob from "react-native-fetch-blob";
 const card1 = require('../../image/sjkh/card.png');
 const card2 = require('../../image/sjkh/card-face.png');
@@ -103,8 +104,8 @@ class UploadPhoto extends BaseView {
             this.setState({showModal: false})
           }}
         >
-          <View style={[styles.modal_container]}>
-            <View style={[styles.modal_body]}>
+          <View style={[SjkhStyles.modal_container]}>
+            <View style={[SjkhStyles.modal_body]}>
               <Text style={[CommonStyles.font_bold, CommonStyles.color_dark, CommonStyles.font_md, CommonStyles.p_a_2]}>身份证照片要求</Text>
               <View style={[CommonStyles.flexItemsLeft]}>
                 <Text style={[CommonStyles.font_xs, CommonStyles.color_dark]}>1.需要您本人的有效二代身份证；</Text>
@@ -145,7 +146,7 @@ class UploadPhoto extends BaseView {
                   </View>
                 </View>
               </View>
-              <Btn onPress={() => {
+              <Btn style={SjkhStyles.modal_btn} onPress={() => {
                 this.setState({showModal: false})
               }}>我知道了</Btn>
             </View>
@@ -159,6 +160,7 @@ class UploadPhoto extends BaseView {
     return (
       <View style={ComponentStyles.container}>
         <ScrollView style={[styles.content]}>
+          <Steps current={1}/>
           <View style={[CommonStyles.flexRow, CommonStyles.flexItemsCenter, CommonStyles.flexItemsMiddle]}>
             <Text style={[SjkhStyles.tips_block, CommonStyles.flex_1]}>
               请上传你的有效二代身份证照片
@@ -193,19 +195,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: StyleConfig.screen_height - StyleConfig.navbar_height - 63,
     backgroundColor: StyleConfig.color_white
-  },
-  modal_container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    marginTop: -50
-  },
-  modal_body: {
-    borderRadius: 4,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    padding: 15
   },
   idCard: {
     flexDirection: 'row',

@@ -9,6 +9,7 @@ import BaseView from "../BaseView";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../../style";
 import {SjkhStyles} from "../../style/sjkh";
 import InputItem from "../../component/inputItem";
+import Steps from "../../component/steps";
 class SetPwd extends BaseView {
   constructor(props) {
     super(props);
@@ -42,6 +43,7 @@ class SetPwd extends BaseView {
     return (
       <View style={ComponentStyles.container}>
         <ScrollView style={[styles.content]} keyboardShouldPersistTaps={'always'}>
+          <Steps current={1}/>
           <Text style={[SjkhStyles.tips_block, CommonStyles.flex_1]}>
             设置的密码适用于华宝证券各交易平台
           </Text>
@@ -65,7 +67,7 @@ class SetPwd extends BaseView {
             </View>
           </View>
           {this.renderAssetPwd()}
-          <Btn>确定</Btn>
+          <Btn onPress={()=>this.props.router.push('thirdDepository')}>确定</Btn>
         </ScrollView>
       </View>
     )

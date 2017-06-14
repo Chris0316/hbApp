@@ -7,14 +7,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../style";
 class Button extends Component {
   constructor(props) {
-    super(props)
-    let modal = this.props;
-    this.btnWidth = StyleConfig.btn_block;
-    if (modal) {
-      this.btnWidth = {
-        width: StyleConfig.screen_width - 15 * 2 - StyleConfig.space_3 * 2
-      }
-    }
+    super(props);
   }
 
   renderBlock() {
@@ -24,7 +17,7 @@ class Button extends Component {
         activeOpacity={ StyleConfig.touchable_press_opacity}
         onPress={onPress}>
         <View style={CommonStyles.flexItemsMiddle}>
-          <Text style={[ComponentStyles.btn, ComponentStyles.btn_primary, CommonStyles.text_center, CommonStyles.text_white, styles.blockBtn]}>
+          <Text style={[ComponentStyles.btn, styles.btn, styles.btn_block]}>
             { this.props.children }
           </Text>
         </View>
@@ -33,13 +26,13 @@ class Button extends Component {
   }
 
   renderPrimary() {
-    const {onPress} = this.props;
+    const {onPress, style} = this.props;
     return (
       <TouchableOpacity
         activeOpacity={ StyleConfig.touchable_press_opacity}
         onPress={onPress}>
         <View style={CommonStyles.flexItemsMiddle}>
-          <Text style={[ComponentStyles.btn, ComponentStyles.btn_primary, this.btnWidth, CommonStyles.text_center, CommonStyles.text_white, CommonStyles.m_t_4]}>
+          <Text style={[ComponentStyles.btn, styles.btn, style]}>
             { this.props.children }
           </Text>
         </View>
@@ -66,7 +59,14 @@ class Button extends Component {
 }
 
 const styles = StyleSheet.create({
-  blockBtn: {
+  btn: {
+    backgroundColor: StyleConfig.color_primary,
+    color: StyleConfig.color_white,
+    width: StyleConfig.screen_width - (StyleConfig.space_3 * 2),
+    marginTop: StyleConfig.space_4,
+    textAlign: 'center'
+  },
+  btn_block: {
     width: StyleConfig.screen_width,
     borderRadius: 0
   }

@@ -10,6 +10,7 @@ import {ComponentStyles, StyleConfig} from "../../style";
 import {SjkhStyles} from "../../style/sjkh";
 import InputItem from "../../component/inputItem";
 import CheckBox from "../../component/checkbox";
+import Steps from "../../component/steps";
 import Link from "../../component/link";
 import Picker from "react-native-picker";
 import edu from "../../../data/edu.json";
@@ -159,7 +160,8 @@ class PersonInfo extends BaseView {
   renderBody() {
     return (
       <View style={ComponentStyles.container}>
-        <ScrollView keyboardShouldPersistTaps={'always'} style={[styles.content]}>
+        <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={'always'} style={[styles.content]}>
+          <Steps current={1}/>
           <Text style={SjkhStyles.tips_block}>
             核对身份证正面信息
           </Text>
