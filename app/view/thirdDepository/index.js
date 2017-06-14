@@ -21,7 +21,12 @@ class ThirdDepository extends BaseView {
       bankId: ''
     }
   }
-
+  
+  showBankList() {
+    let {router} = this.props;
+    router.push('banks');
+  }
+  
   renderBody() {
     const {router} = this.props;
     return (
@@ -33,7 +38,7 @@ class ThirdDepository extends BaseView {
           </Text>
           <InputItem
             type="picker" label="选择银行" placeholder="请选择存管银行"
-            onPress={() => this.router.push('banks')}/>
+            onPress={this.showBankList.bind(this)}/>
           <InputItem
             label="银行卡号" placeholder="请输入银行卡号" maxLength={10}
             onChange={(t) => this.setState({bankId: t})}/>
@@ -41,7 +46,13 @@ class ThirdDepository extends BaseView {
             温馨提示:{'\n'}
             您选择的银行不支持同一张银行卡在多家券商办理三方存管，如该银行卡已在其他券商办理三方存管业务，请您使用另一张银行卡办理。
           </Text>
-          <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', paddingTop: 10, paddingBottom: 10}}>
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            paddingTop: 10,
+            paddingBottom: 10
+          }}>
             <CheckBox checked={true} color="#4883F6"/>
             <Text style={SjkhStyles.link}>已阅读并同意</Text>
             <Link href="http://www.touker.com" router={this.props.router}>《投客网用户协议》</Link>
