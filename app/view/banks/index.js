@@ -7,35 +7,39 @@ import {Image, ListView, StyleSheet, Text, TouchableOpacity, View} from "react-n
 import Icon from "react-native-vector-icons/Ionicons";
 import BaseView from "../BaseView";
 import {StyleConfig} from "../../style";
-import Bank from "../../../data/bank.json";
-import * as BankIcons from "../../component/banks"
-
+import * as BankIcons from "../../component/banks";
+import bankSource from "../../../data/bank.json";
 class Banks extends BaseView {
   constructor(props) {
     super(props);
-    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.state = {
-      selectedIndex: -1,
-      dataSource: this.ds.cloneWithRows(Bank)
-    };
-  }
-  
-  selectBank(rowID) {
-    let newData = Bank;
-    newData[rowID].selected = true;
-    this.setState({
-      selectedIndex: rowID,
-      dataSource: this.state.dataSource.cloneWithRows(newData)
+    this.ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => {
+        r1 !== r2
+      }
     });
   }
-  
+
+  componentWillMount() {
+    this.setState({
+      dataSource: this.ds.cloneWithRows(bankSource)
+    });
+  }
+
+  selectBank(bank, rowID) {
+    let newData = bankSource.slice();
+    newData[rowID].selected = true;
+    this.setState({
+      dataSource: this.ds.cloneWithRows(newData)
+    });
+  }
+
   renderRow(row, sessionID, rowID) {
-    let bankSource = BankIcons[row.bankcode]
+    let bankSource = BankIcons[row.bankcode];
     let renderChecked = () => {
-      if (this.state.selectedIndex === rowID) {
+      if (row.selected === true) {
         return (
           <Icon
-            style={{marginRight: 15}}
+            style={styles.selected_icon}
             name={ 'ios-checkmark' }
             size={ 40 }
             color={ StyleConfig.color_primary }/>
@@ -44,18 +48,17 @@ class Banks extends BaseView {
     };
     return (
       <TouchableOpacity onPress={() => {
-        this.selectBank(rowID)
+        this.selectBank(row, rowID)
       }}>
         <View style={styles.bank_item}>
-          <Image style={styles.bank_icon}
-                 source={bankSource}/>
+          <Image style={styles.bank_icon} source={bankSource}/>
           <Text style={styles.bank_name}>{row.bankname}</Text>
           {renderChecked()}
         </View>
       </TouchableOpacity>
     )
   }
-  
+
   renderBody() {
     return (
       <ListView
@@ -84,6 +87,10 @@ const styles = StyleSheet.create({
     borderBottomColor: StyleConfig.border_color,
     borderBottomWidth: StyleConfig.border_width,
     padding: StyleConfig.space_3
+  },
+  selected_icon: {
+    position: 'absolute',
+    right: 15
   }
 });
 

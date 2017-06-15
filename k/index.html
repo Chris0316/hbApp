@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <script src="https://img.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="./echarts.min.js"></script>
+
+  <style>body {
+    margin: 0
+  }</style>
+</head>
+<body>
+<div id="container" style="height:200px"></div>
+<div id="content"></div>
+<script>
+  var zoomRange = [0, 40];
+  var selcted = '2015/4/30';
+</script>
+<script src="./options.js"></script>
+<script>
+  var chart = echarts.init(document.getElementById('container'));
+  var total = rawData.length;
+  chart.showLoading();
+  var zoomOption = {
+    type: 'inside'
+  };
+  if (selcted) {
+    var idx = getIndex(selcted);
+    var start = idx / total - 0.04;
+    var end = start + 0.15;
+    zoomOption.start = start * 100;
+    zoomOption.end = end * 100;
+    $('#content').html(getPonit(selcted).name);
+  } else {
+    zoomOption.start = zoomRange[0];
+    zoomOption.end = zoomRange[1];
+  }
+  option.dataZoom.push(zoomOption);
+  chart.setOption(option);
+  chart.hideLoading();
+  chart.on('click', function (obj) {
+    var type = obj.componentType;
+    var val = '', index = -1;
+    if (type === 'markPoint') {
+      var data = obj.data;
+      val = data.value;
+      index = getIndex(val);
+      var start = index / total - 0.04;
+      var end = start + 0.15;
+
+      var zoomOption = {
+        start: start * 100,
+        end: end * 100
+      };
+      option.dataZoom[0] = zoomOption;
+      chart.setOption(option);
+      $('#content').html(getPonit(val).name);
+    }
+  });
+  chart.on('datazoom', function (obj) {
+    var range = obj.batch[0];
+    var gap = range.end - range.start;
+    if (gap <= 14.5) {
+      //lockZoom()
+    }
+  });
+
+  function lockZoom() {
+    chart.setOption({
+      dataZoom: {
+        zoomLock: true
+      }
+    });
+    setTimeout(function () {
+      chart.setOption({
+        dataZoom: {
+          zoomLock: false
+        }
+      });
+    }, 300)
+  }
+</script>
+</body>
+</html>

@@ -21,9 +21,13 @@ class Navigation extends Component {
     let Component = route.component;
     if (Component) {
       return (
-        <Component {...route.props} navigator={ navigator } router={this.router} ref={(view) => {
-          route.sceneRef = view
-        } }/>
+        <Component
+          {...route.props}
+          navigator={ navigator }
+          router={this.router}
+          ref={(view) => {
+            route.sceneRef = view
+          } }/>
       )
     }
   }
