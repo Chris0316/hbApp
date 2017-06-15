@@ -17,14 +17,20 @@ class ThirdDepository extends BaseView {
   constructor(props) {
     super(props);
     this.state = {
-      bank: '建设银行',
-      bankId: ''
+      bank: {}
     }
   }
   
   showBankList() {
     let {router} = this.props;
-    router.push('banks');
+    router.push('banks', {
+      callback: (bank) => {
+        this.setState({
+          bank: bank
+        })
+      },
+      bankcode: this.state.bank.bankcode
+    });
   }
   
   renderBody() {
@@ -38,6 +44,7 @@ class ThirdDepository extends BaseView {
           </Text>
           <InputItem
             type="picker" label="选择银行" placeholder="请选择存管银行"
+            value={this.state.bank.bankname}
             onPress={this.showBankList.bind(this)}/>
           <InputItem
             label="银行卡号" placeholder="请输入银行卡号" maxLength={10}
