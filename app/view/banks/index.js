@@ -15,23 +15,23 @@ class Banks extends BaseView {
       }
     });
     this.state = {
-      bankSource: require('../../../data/bank.json'),
       ds
     }
   }
-  
-  componentDidMount() {
+
+  componentWillMount() {
+    let bankSource = require('../../../data/bank.json');
     this.setState({
-      ds: this.state.ds.cloneWithRows(this.state.bankSource)
+      ds: this.state.ds.cloneWithRows(bankSource)
     })
   }
-  
+
   selectBank(bank) {
     const {router, callback} = this.props;
     callback(bank);
     router.pop();
   }
-  
+
   renderRow(row) {
     const {bankcode} = this.props;
     let selected = false;
@@ -42,7 +42,7 @@ class Banks extends BaseView {
       <Row data={row} selected={selected} onPress={this.selectBank.bind(this)}/>
     );
   }
-  
+
   renderBody() {
     return (
       <ListView

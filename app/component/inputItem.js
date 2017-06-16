@@ -4,6 +4,7 @@
 
 import React, {Component} from "react";
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import TimerMixin from "react-timer-mixin";
 import Icon from "react-native-vector-icons/Ionicons";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../style";
 class InputItem extends Component {
@@ -11,8 +12,15 @@ class InputItem extends Component {
     super(props);
     this.state = {
       clear: false,
-      secureTextEntry: this.props.secureTextEntry
+      secureTextEntry: this.props.secureTextEntry,
+      sms_start: this.props.start || false,
+      sms_again: false,
+      sms_countdown: this.props.countdown || 60
     }
+  }
+
+  componentWillUnmount() {
+    this.timer && TimerMixin.clearInterval(this.timer);
   }
 
   renderLabel() {
@@ -132,6 +140,34 @@ class InputItem extends Component {
     )
   }
 
+  resetSmsCode() {
+    this.setState({
+      sms_start: true
+    });
+    let cd = this.state.sms_countdown;
+    cd = --cd;
+    if (cd === 0) {
+      TimerMixin.clearInterval(this.timer)
+    }
+    this.timer = TimerMixin.setInterval(() => {
+      this.setState({
+        sms_countdown: --cd
+      })
+    }, 1000);
+  }
+
+  renderSmsBtn() {
+    let label = '立即获取';
+    if (this.state.sms_start) {
+      label = this.state.sms_countdown + 's后重发';
+    }
+    return (
+      <TouchableOpacity onPress={this.resetSmsCode.bind(this)}>
+        <Text style={styles.sms_btn}>{label}</Text>
+      </TouchableOpacity>
+    )
+  }
+
   render() {
     const {type} = this.props;
     if (type === 'picker') {
@@ -139,6 +175,14 @@ class InputItem extends Component {
         <View style={styles.input_item}>
           {this.renderLabel()}
           {this.renderPicker()}
+        </View>
+      )
+    } else if (type === 'sms') {
+      return (
+        <View style={styles.input_item}>
+          {this.renderLabel()}
+          {this.renderInput()}
+          {this.renderSmsBtn()}
         </View>
       )
     } else {
@@ -158,7 +202,9 @@ const styles = StyleSheet.create({
     padding: StyleConfig.space_2,
     backgroundColor: StyleConfig.color_white,
     borderBottomWidth: StyleConfig.border_width,
-    borderBottomColor: StyleConfig.border_color
+    borderBottomColor: StyleConfig.border_color,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   label: {
     height: 30,
@@ -173,6 +219,17 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     marginRight: 12,
     flex: 1
+  },
+  sms_btn: {
+    backgroundColor: StyleConfig.color_white,
+    fontSize: 12,
+    paddingTop: 4,
+    paddingBottom: 4,
+    width: 75,
+    borderRadius: StyleConfig.border_radius,
+    borderWidth: StyleConfig.border_width,
+    borderColor: StyleConfig.border_color,
+    textAlign: 'center'
   }
 });
 

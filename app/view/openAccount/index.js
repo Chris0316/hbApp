@@ -17,7 +17,7 @@ class OpenAccount extends BaseView {
     return (
       <View>
         <Btn onPress={() => {
-          router.push('thirdDepository')
+          router.push('phoneNumberVerify')
         }}>我知道了</Btn>
       </View>
     )

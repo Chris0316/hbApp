@@ -48,7 +48,7 @@ class PhoneNumberVerify extends BaseView {
     }
     const {router} = this.props;
     Keyboard.dismiss();
-    router.push('personInfo')
+    router.push('phoneToukerRegister')
   }
   
   renderBody() {

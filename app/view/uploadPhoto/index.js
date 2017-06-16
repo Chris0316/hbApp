@@ -78,7 +78,7 @@ class UploadPhoto extends BaseView {
 
   doNext() {
     const {router} = this.props;
-    router.push('setPwd')
+    router.push('personInfo')
   }
 
   renderUploadModal() {

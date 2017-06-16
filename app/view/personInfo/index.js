@@ -154,7 +154,7 @@ class PersonInfo extends BaseView {
   doNext() {
     const {router} = this.props;
     Keyboard.dismiss();
-    router.push('uploadPhoto');
+    router.push('setPwd');
   }
 
   renderBody() {

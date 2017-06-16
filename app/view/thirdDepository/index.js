@@ -32,9 +32,14 @@ class ThirdDepository extends BaseView {
       bankcode: this.state.bank.bankcode
     });
   }
+
+  doNext(){
+    const {router} = this.props;
+    alert('x')
+  }
   
   renderBody() {
-    const {router} = this.props;
+
     return (
       <View style={ComponentStyles.container}>
         <ScrollView style={[styles.content]} keyboardShouldPersistTaps={'always'}>
@@ -64,7 +69,7 @@ class ThirdDepository extends BaseView {
             <Text style={SjkhStyles.link}>已阅读并同意</Text>
             <Link href="http://www.touker.com" router={this.props.router}>《投客网用户协议》</Link>
           </View>
-          <Btn>下一步</Btn>
+          <Btn onPress={this.doNext.bind(this)}>下一步</Btn>
         </ScrollView>
       </View>
     )

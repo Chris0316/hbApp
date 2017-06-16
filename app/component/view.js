@@ -88,6 +88,13 @@ const ViewPage = {
       component: View.banks,
       name: 'banks'
     }
+  },
+  phoneToukerRegister: () => {
+    return {
+      title: '注册投客网',
+      component: View.phoneToukerRegister,
+      name: 'phoneToukerRegister'
+    }
   }
 };
 
