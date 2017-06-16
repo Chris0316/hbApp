@@ -227,7 +227,7 @@ class PersonInfo extends BaseView {
             <Link href="http://www.163.com" router={this.props.router}>《中登申请协议》</Link>
           </View>
         </ScrollView>
-        <Btn type="block" onPress={this.doNext.bind(this)}>下一步</Btn>
+        <Btn disabled={true} type="block" onPress={this.doNext.bind(this)}>下一步</Btn>
       </View>
     )
   }

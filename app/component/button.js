@@ -8,44 +8,57 @@ import {CommonStyles, ComponentStyles, StyleConfig} from "../style";
 class Button extends Component {
   constructor(props) {
     super(props);
+    let disabled = this.props.disabled;
+    this.state = {
+      activeOpacity: disabled === true ? 1 : StyleConfig.touchable_press_opacity
+    }
   }
-
+  
+  handlePress() {
+    const {onPress, disabled} = this.props;
+    if (!disabled) {
+      onPress.call(this)
+    }
+  }
+  
   renderBlock() {
-    const {onPress} = this.props;
+    const {disabled, style} = this.props;
     return (
       <TouchableOpacity
-        activeOpacity={ StyleConfig.touchable_press_opacity}
-        onPress={onPress}>
+        activeOpacity={ this.state.activeOpacity}
+        onPress={this.handlePress.bind(this)}>
         <View style={CommonStyles.flexItemsMiddle}>
-          <Text style={[ComponentStyles.btn, styles.btn, styles.btn_block]}>
+          <Text
+            style={[ComponentStyles.btn, styles.btn, styles.btn_block, style, disabled ? ComponentStyles.btn_disabled : styles.btn_common]}>
             { this.props.children }
           </Text>
         </View>
       </TouchableOpacity>
     )
   }
-
+  
   renderPrimary() {
-    const {onPress, style} = this.props;
+    const {style, disabled} = this.props;
     return (
       <TouchableOpacity
-        activeOpacity={ StyleConfig.touchable_press_opacity}
-        onPress={onPress}>
+        activeOpacity={ this.state.activeOpacity}
+        onPress={this.handlePress.bind(this)}>
         <View style={CommonStyles.flexItemsMiddle}>
-          <Text style={[ComponentStyles.btn, styles.btn, style]}>
+          <Text
+            style={[ComponentStyles.btn, styles.btn, style, disabled ? ComponentStyles.btn_disabled : styles.btn_common]}>
             { this.props.children }
           </Text>
         </View>
       </TouchableOpacity>
     )
   }
-
+  
   renderPlain() {
     return (
       <Text>{ this.props.children }</Text>
     )
   }
-
+  
   render() {
     const {type} = this.props;
     if (type === 'block') {
@@ -60,11 +73,13 @@ class Button extends Component {
 
 const styles = StyleSheet.create({
   btn: {
-    backgroundColor: StyleConfig.color_primary,
-    color: StyleConfig.color_white,
     width: StyleConfig.screen_width - (StyleConfig.space_3 * 2),
     marginTop: StyleConfig.space_4,
     textAlign: 'center'
+  },
+  btn_common: {
+    backgroundColor: StyleConfig.color_primary,
+    color: StyleConfig.color_white,
   },
   btn_block: {
     width: StyleConfig.screen_width,

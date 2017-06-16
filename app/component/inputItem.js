@@ -18,18 +18,24 @@ class InputItem extends Component {
       sms_countdown: this.props.countdown || 60
     }
   }
-
+  
+  componentDidMount() {
+    if (this.state.sms_start === true) {
+      this.startTimer();
+    }
+  }
+  
   componentWillUnmount() {
     this.timer && TimerMixin.clearInterval(this.timer);
   }
-
+  
   renderLabel() {
     const {label} = this.props;
     return (
       <Text style={styles.label}>{label}</Text>
     )
   }
-
+  
   renderEyeIcon() {
     let secureTextEntry = this.state.secureTextEntry;
     if (secureTextEntry === undefined) {
@@ -51,7 +57,7 @@ class InputItem extends Component {
       )
     }
   }
-
+  
   renderClearIcon() {
     let clear = this.state.clear;
     if (clear === true) {
@@ -66,14 +72,14 @@ class InputItem extends Component {
       )
     }
   }
-
+  
   toggleIput() {
     let se = this.state.secureTextEntry;
     this.setState({
       secureTextEntry: !se
     })
   }
-
+  
   clearInput() {
     const {onChange} = this.props;
     this.setState({
@@ -81,7 +87,7 @@ class InputItem extends Component {
     });
     onChange('');
   }
-
+  
   onChange(text) {
     const {onChange} = this.props;
     if (text) {
@@ -95,7 +101,7 @@ class InputItem extends Component {
     }
     onChange(text)
   }
-
+  
   renderInput() {
     const {maxLength, keyboardType, value, placeholder, autoFocus, defaultValue} = this.props;
     return (
@@ -111,7 +117,7 @@ class InputItem extends Component {
           secureTextEntry={this.state.secureTextEntry}
           defaultValue={defaultValue}
           onChangeText={this.onChange.bind(this)}
-          style={[CommonStyles.flex_1, ComponentStyles.input]}
+          style={styles.value}
           placeholder={placeholder}
         />
         {this.renderClearIcon()}
@@ -119,7 +125,7 @@ class InputItem extends Component {
       </View>
     )
   }
-
+  
   renderPicker() {
     const {value, placeholder, onPress} = this.props;
     let str = placeholder;
@@ -130,7 +136,7 @@ class InputItem extends Component {
       <TouchableOpacity
         style={[CommonStyles.flexRow, CommonStyles.flex_1, CommonStyles.flexItemsMiddle, CommonStyles.flexItemsCenter]}
         onPress={onPress}>
-        <Text style={[styles.value, CommonStyles.flex_1]}>{str}</Text>
+        <Text style={styles.value}>{str}</Text>
         <Icon
           style={{width: 30, textAlign: 'center'}}
           name={ 'ios-arrow-down-outline' }
@@ -139,27 +145,41 @@ class InputItem extends Component {
       </TouchableOpacity>
     )
   }
-
+  
+  startTimer() {
+    let cd = this.state.sms_countdown;
+    this.timer = TimerMixin.setInterval(() => {
+      if (cd === 1 && this.timer) {
+        TimerMixin.clearInterval(this.timer);
+        this.setState({
+          sms_start: false,
+          sms_countdown: this.props.countdown || 60,
+          sms_again: true
+        });
+      } else {
+        this.setState({
+          sms_countdown: --cd
+        })
+      }
+    }, 1000);
+  }
+  
   resetSmsCode() {
+    if (this.state.sms_start === true) {
+      return;
+    }
     this.setState({
       sms_start: true
     });
-    let cd = this.state.sms_countdown;
-    cd = --cd;
-    if (cd === 0) {
-      TimerMixin.clearInterval(this.timer)
-    }
-    this.timer = TimerMixin.setInterval(() => {
-      this.setState({
-        sms_countdown: --cd
-      })
-    }, 1000);
+    this.startTimer();
   }
-
+  
   renderSmsBtn() {
     let label = '立即获取';
     if (this.state.sms_start) {
       label = this.state.sms_countdown + 's后重发';
+    } else if (this.state.sms_again) {
+      label = '重新获取';
     }
     return (
       <TouchableOpacity onPress={this.resetSmsCode.bind(this)}>
@@ -167,7 +187,7 @@ class InputItem extends Component {
       </TouchableOpacity>
     )
   }
-
+  
   render() {
     const {type} = this.props;
     if (type === 'picker') {
@@ -207,18 +227,17 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   label: {
-    height: 30,
-    fontSize: 16,
-    lineHeight: 26,
+    fontSize: 14,
+    width: 60,
     marginRight: 12,
-    width: 80
+    height: 30,
+    lineHeight: 24
   },
   value: {
-    height: 30,
-    fontSize: 16,
-    lineHeight: 26,
-    marginRight: 12,
-    flex: 1
+    fontSize: 14,
+    textAlign: 'left',
+    flex: 1,
+    padding: 0
   },
   sms_btn: {
     backgroundColor: StyleConfig.color_white,

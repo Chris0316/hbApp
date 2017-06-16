@@ -20,7 +20,7 @@ class PhoneToukerRegister extends BaseView {
       smsCode: ''
     }
   }
-
+  
   renderBody() {
     const {router} = this.props;
     return (
@@ -32,7 +32,7 @@ class PhoneToukerRegister extends BaseView {
           type="sms"
           maxLength={4}
           placeholder="请输入验证码"
-          countdown={10}
+          start={true}
           label="验证码"
           value={this.state.smsCode}
           keyboardType="numeric"
@@ -44,7 +44,13 @@ class PhoneToukerRegister extends BaseView {
           value={this.state.password}
           keyboardType="numeric"
           onChange={(t) => this.setState({password: t})}/>
-        <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', paddingTop: 10, paddingBottom: 10}}>
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          paddingTop: 10,
+          paddingBottom: 10
+        }}>
           <CheckBox checked={true} color="#4883F6"/>
           <Text style={SjkhStyles.link}>已阅读并同意</Text>
           <Link href="setPwd" router={this.props.router}>《投客网用户协议》</Link>
