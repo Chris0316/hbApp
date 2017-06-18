@@ -12,12 +12,12 @@ export const SjkhStyles = StyleSheet.create({
     fontSize: StyleConfig.font_xs,
     backgroundColor: '#f7f7f7'
   },
-
+  
   link: {
     fontSize: 12,
     color: '#4B83F4'
   },
-
+  
   modal: {},
   modal_container: {
     flex: 1,
@@ -26,12 +26,19 @@ export const SjkhStyles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     marginTop: -50
   },
+  modal_header: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderBottomWidth: StyleConfig.border_width,
+    borderBottomColor: StyleConfig.border_color
+  },
   modal_body: {
     borderRadius: 4,
     alignItems: 'center',
     backgroundColor: '#fff',
     padding: 15
   },
+  modal_footer: {},
   modal_btn: {
     width: StyleConfig.screen_width - 20 * 2 - 15 * 2
   }
