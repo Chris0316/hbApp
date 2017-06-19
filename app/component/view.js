@@ -29,6 +29,13 @@ const ViewPage = {
       name: 'startup'
     }
   },
+
+  web: () => {
+    return {
+      component: View.web,
+      name: 'web'
+    }
+  },
   openAccount: () => {
     return {
       title: '开户须知',

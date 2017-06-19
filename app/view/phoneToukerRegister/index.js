@@ -50,7 +50,7 @@ class PhoneToukerRegister extends BaseView {
         }}>
           <CheckBox checked={true} color="#4883F6"/>
           <Text style={SjkhStyles.link}>已阅读并同意</Text>
-          <Link href="setPwd" router={this.props.router}>《投客网用户协议》</Link>
+          <Link href="http://fd.dev.hbec.com/h5" router={this.props.router} title="用户协议">《投客网用户协议》</Link>
         </View>
         <Button onPress={() => router.push('uploadPhoto')}>下一步</Button>
       </View>

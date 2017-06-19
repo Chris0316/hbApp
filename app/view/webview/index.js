@@ -1,59 +1,94 @@
 /**
  * Created by kim on 2017/5/25.
  */
-import React, {Component} from "react";
-import {InteractionManager, StyleSheet, View, WebView} from "react-native";
+import React from "react";
+import {StyleSheet, View, WebView} from "react-native";
+import Toast from "@remobile/react-native-toast";
+import TimerMixin from "react-timer-mixin";
+import BaseView from "../BaseView";
+import {Spinner} from "../../component";
+import {ComponentStyles, StyleConfig} from "../../style";
 
-class WebScene extends Component {
+const loadTimeout = 6000;
 
-  state: {
-    source: Object
-  }
+class WebScene extends BaseView {
 
-  constructor(props: Object) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
-      source: {}
+      loaded: false,
+      title: this.props.title
     };
-    this.props.navigation.setParams({title: '加载中'})
   }
 
-  componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.setState({source: {uri: this.props.navigation.state.params.url}})
-    })
+  componentWillUnmount() {
+    this.timer && TimerMixin.clearTimeout(this.timer);
   }
 
-  render() {
+  onError() {
+    Toast.show("加载外部链接失败");
+    this.setWebViewLoaded();
+  }
+
+  onLoadStart() {
+    this.timer = TimerMixin.setTimeout(() => {
+      if (this.state.loaded === false) {
+        Toast.show("页面响应不太给力");
+      }
+      this.setWebViewLoaded();
+      TimerMixin.clearTimeout(this.timer);
+    }, loadTimeout);
+  }
+
+  onLoadEnd(e) {
+    const title = e.nativeEvent.title;
+    this.setWebViewLoaded();
+    this.setState({
+      title: title
+    });
+  }
+
+  setWebViewLoaded() {
+    this.setState({
+      loaded: true
+    });
+  }
+
+  renderLoading() {
+    if (this.state.loaded === false) {
+      return (
+        <Spinner style={ [ComponentStyles.pending_container, styles.pending] }/>
+      );
+    }
+  }
+
+  renderWebView() {
+    const {url} = this.props;
     return (
-      <View style={styles.container}>
-        <WebView
-          ref='webView'
-          automaticallyAdjustContentInsets={false}
-          style={styles.webView}
-          source={this.state.source}
-          onLoadEnd={(e) => this.onLoadEnd(e)}
-          scalesPageToFit={true}
-        />
-      </View>
+      <WebView
+        source={{uri: url}}
+        onError={ this.onError.bind(this)}
+        onLoadEnd={this.onLoadEnd.bind(this)}
+        onLoadStart={ this.onLoadStart.bind(this)}
+      />
     );
   }
 
-  onLoadEnd(e: any) {
-    if (e.nativeEvent.title.length > 0) {
-      this.props.navigation.setParams({title: e.nativeEvent.title})
-    }
+  renderBody() {
+    return (
+      <View style={ [ComponentStyles.container] }>
+        { this.renderWebView() }
+        { this.renderLoading() }
+      </View>
+    );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#2c3e50',
-  },
-  webView: {
-    flex: 1,
-    backgroundColor: 'white',
+  pending: {
+    top: StyleConfig.navbar_height,
+    height: StyleConfig.screen_height - (StyleConfig.navbar_height * 3),
+    backgroundColor: 'transparent'
   }
 });
 
