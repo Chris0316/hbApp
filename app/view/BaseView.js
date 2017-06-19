@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: StyleConfig.screen_width,
     height: StyleConfig.screen_height,
-    backgroundColor: 'rgba(0,0,0,.6)'
+    backgroundColor: 'transparent'
   },
   dropdown: {
     position: 'absolute',

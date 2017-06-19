@@ -4,12 +4,10 @@
 
 import React from "react";
 import {ScrollView, StyleSheet, Switch, Text, View} from "react-native";
-import Btn from "../../component/button";
 import BaseView from "../BaseView";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../../style";
 import {SjkhStyles} from "../../style/sjkh";
-import InputItem from "../../component/inputItem";
-import Steps from "../../component/steps";
+import {Button, InputItem, Steps} from "../../component";
 class SetPwd extends BaseView {
   constructor(props) {
     super(props);
@@ -67,7 +65,7 @@ class SetPwd extends BaseView {
             </View>
           </View>
           {this.renderAssetPwd()}
-          <Btn onPress={()=>this.props.router.push('thirdDepository')}>确定</Btn>
+          <Button onPress={() => this.props.router.push('thirdDepository')}>确定</Button>
         </ScrollView>
       </View>
     )

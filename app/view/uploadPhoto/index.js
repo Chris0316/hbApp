@@ -9,8 +9,7 @@ import ImagePicker from "react-native-image-crop-picker";
 import BaseView from "../BaseView";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../../style";
 import {SjkhStyles} from "../../style/sjkh";
-import Btn from "../../component/button";
-import Steps from "../../component/steps";
+import {Button, Steps} from "../../component";
 import RNFetchBlob from "react-native-fetch-blob";
 const card1 = require('../../image/sjkh/card.png');
 const card2 = require('../../image/sjkh/card-face.png');
@@ -146,9 +145,9 @@ class UploadPhoto extends BaseView {
                   </View>
                 </View>
               </View>
-              <Btn style={SjkhStyles.modal_btn} onPress={() => {
+              <Button style={SjkhStyles.modal_btn} onPress={() => {
                 this.setState({showModal: false})
-              }}>我知道了</Btn>
+              }}>我知道了</Button>
             </View>
           </View>
         </Modal>
@@ -184,7 +183,7 @@ class UploadPhoto extends BaseView {
         </ScrollView>
         {this.renderModal()}
         {this.renderUploadModal()}
-        <Btn type="block" onPress={this.doNext.bind(this)}>下一步</Btn>
+        <Button type="block" onPress={this.doNext.bind(this)}>下一步</Button>
       </View>
     )
   }

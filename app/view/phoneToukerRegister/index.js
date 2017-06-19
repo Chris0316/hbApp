@@ -6,11 +6,8 @@ import React from "react";
 import {Text, View} from "react-native";
 import {ComponentStyles} from "../../style";
 import {SjkhStyles} from "../../style/sjkh";
-import Btn from "../../component/button";
+import {Button, CheckBox, InputItem, Link} from "../../component";
 import BaseView from "../BaseView";
-import CheckBox from "../../component/checkbox";
-import Link from "../../component/link";
-import InputItem from "../../component/inputItem";
 
 class PhoneToukerRegister extends BaseView {
   constructor(props) {
@@ -20,7 +17,7 @@ class PhoneToukerRegister extends BaseView {
       smsCode: ''
     }
   }
-  
+
   renderBody() {
     const {router} = this.props;
     return (
@@ -55,7 +52,7 @@ class PhoneToukerRegister extends BaseView {
           <Text style={SjkhStyles.link}>已阅读并同意</Text>
           <Link href="setPwd" router={this.props.router}>《投客网用户协议》</Link>
         </View>
-        <Btn onPress={() => router.push('uploadPhoto')}>下一步</Btn>
+        <Button onPress={() => router.push('uploadPhoto')}>下一步</Button>
       </View>
     )
   }

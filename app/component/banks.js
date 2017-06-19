@@ -3,7 +3,6 @@
  */
 
 export const BJYH = require('../image/sjkh/bank/BJYH.png');
-
 export const DLYH = require('../image/sjkh/bank/DLYH.png');
 export const GDYH = require('../image/sjkh/bank/GDYH.png');
 export const GFYH = require('../image/sjkh/bank/GFYH.png');

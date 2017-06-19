@@ -1,9 +1,10 @@
 /**
  * Created by Vickey on 2017/6/18.
  */
-import React, {Component} from 'react';
-import {Modal, View, Text} from 'react-native';
-import {SjkhStyles} from '../style/sjkh'
+import React, {Component} from "react";
+import {Modal, Text, TouchableOpacity, View} from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
+import {SjkhStyles} from "../style/sjkh";
 
 
 class MModal extends Component {
@@ -13,37 +14,80 @@ class MModal extends Component {
       showModal: this.props.visible || false
     }
   }
-  
+
   renderHeader() {
-    const {header} = this.props;
-    if (header !== false) {
-      return (
-        <View style={[SjkhStyles.modal_header]}>
-          <Text style={{flex: 1, alignItems: 'center', padding: 10}}>{header}</Text>
-        </View>
-      )
+    const {header, close, onRequestClose} = this.props;
+    const renderClose = () => {
+      if (close !== false) {
+        return (
+          <Icon
+            onPress={onRequestClose}
+            name={ 'md-close' }
+            style={[SjkhStyles.modal_header_close]}
+            size={ 20 }
+          />
+        )
+      }
+    };
+    if (!header) {
+      return
     }
-  }
-  
-  renderBody() {
     return (
-      <View style={[SjkhStyles.modal_body]}>
+      <View style={[SjkhStyles.modal_header]}>
+        <Text style={SjkhStyles.modal_header_text}>{header}</Text>
+        {renderClose()}
+      </View>
+    )
+  }
+
+  renderBody() {
+    const {header, footer, onConfirm, onCancel} = this.props;
+    const noFooter = footer === false || (!onConfirm && !onCancel);
+    return (
+      <View style={[SjkhStyles.modal_body,
+        !header ? SjkhStyles.modal_body_no_header : '',
+        noFooter === true ? SjkhStyles.modal_body_no_footer : ''
+      ]}>
         {this.props.children}
       </View>
     )
   }
-  
+
   renderFooter() {
-    const {footer} = this.props;
-    if (footer !== false) {
-      return (
-        <View style={[SjkhStyles.modal_footer]}>
-          <Text>Footer</Text>
-        </View>
-      )
+    const {footer, onConfirm, onCancel} = this.props;
+    const renderConfirmBtn = () => {
+      if (onConfirm) {
+        return (
+          <View style={[SjkhStyles.modal_footer_btn, SjkhStyles.modal_footer_btn_confirm]}>
+            <TouchableOpacity onPress={onConfirm}>
+              <Text style={[SjkhStyles.modal_footer_btn_text, SjkhStyles.modal_footer_btn_text_confirm]}>确定</Text>
+            </TouchableOpacity>
+          </View>
+        )
+      }
+    };
+    const renderCancelBtn = () => {
+      if (onCancel) {
+        return (
+          <View style={[SjkhStyles.modal_footer_btn]}>
+            <TouchableOpacity onPress={onCancel}>
+              <Text style={[SjkhStyles.modal_footer_btn_text]}>取消</Text>
+            </TouchableOpacity>
+          </View>
+        )
+      }
+    };
+    if (footer === false) {
+      return
     }
+    return (
+      <View style={[SjkhStyles.modal_footer]}>
+        {renderCancelBtn()}
+        {renderConfirmBtn()}
+      </View>
+    )
   }
-  
+
   render() {
     const {onRequestClose} = this.props;
     return (
@@ -61,7 +105,7 @@ class MModal extends Component {
       </Modal>
     )
   }
-  
+
 }
 
 export default MModal;

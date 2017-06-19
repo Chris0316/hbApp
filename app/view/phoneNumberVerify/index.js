@@ -5,10 +5,9 @@
 import React from "react";
 import {Keyboard, Text, View} from "react-native";
 import {CommonStyles} from "../../style";
-import Btn from "../../component/button";
+import {Button, InputItem} from "../../component";
 import Toast from "@remobile/react-native-toast";
 import BaseView from "../BaseView";
-import InputItem from "../../component/inputItem";
 
 class PhoneNumberVerify extends BaseView {
   constructor(props) {
@@ -17,7 +16,7 @@ class PhoneNumberVerify extends BaseView {
       phone: '18016052872'
     }
   }
-  
+
   renderTip() {
     return (
       <View>
@@ -27,7 +26,7 @@ class PhoneNumberVerify extends BaseView {
       </View>
     )
   }
-  
+
   renderInput() {
     return (
       <InputItem
@@ -40,7 +39,7 @@ class PhoneNumberVerify extends BaseView {
       />
     )
   }
-  
+
   doNext() {
     if (!this.state.phone) {
       Toast.show('请输入手机号码');
@@ -50,13 +49,13 @@ class PhoneNumberVerify extends BaseView {
     Keyboard.dismiss();
     router.push('phoneToukerRegister')
   }
-  
+
   renderBody() {
     return (
       <View>
         {this.renderTip()}
         {this.renderInput()}
-        <Btn onPress={this.doNext.bind(this)}>下一步</Btn>
+        <Button onPress={this.doNext.bind(this)}>下一步</Button>
       </View>
     )
   }

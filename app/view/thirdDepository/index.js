@@ -8,11 +8,7 @@ import {ScrollView, StyleSheet, Text, View} from "react-native";
 import BaseView from "../BaseView";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../../style";
 import {SjkhStyles} from "../../style/sjkh";
-import InputItem from "../../component/inputItem";
-import Steps from "../../component/steps";
-import CheckBox from "../../component/checkbox";
-import Btn from "../../component/button";
-import Link from "../../component/link";
+import {Button, CheckBox, InputItem, Link, Steps} from "../../component";
 class ThirdDepository extends BaseView {
   constructor(props) {
     super(props);
@@ -20,7 +16,7 @@ class ThirdDepository extends BaseView {
       bank: {}
     }
   }
-  
+
   showBankList() {
     let {router} = this.props;
     router.push('banks', {
@@ -33,11 +29,11 @@ class ThirdDepository extends BaseView {
     });
   }
 
-  doNext(){
+  doNext() {
     const {router} = this.props;
     alert('x')
   }
-  
+
   renderBody() {
 
     return (
@@ -69,7 +65,7 @@ class ThirdDepository extends BaseView {
             <Text style={SjkhStyles.link}>已阅读并同意</Text>
             <Link href="http://www.touker.com" router={this.props.router}>《投客网用户协议》</Link>
           </View>
-          <Btn onPress={this.doNext.bind(this)}>下一步</Btn>
+          <Button onPress={this.doNext.bind(this)}>下一步</Button>
         </ScrollView>
       </View>
     )

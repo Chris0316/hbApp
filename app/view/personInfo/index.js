@@ -4,14 +4,10 @@
 
 import React from "react";
 import {Keyboard, ScrollView, StyleSheet, Text, View} from "react-native";
-import Btn from "../../component/button";
 import BaseView from "../BaseView";
 import {ComponentStyles, StyleConfig} from "../../style";
 import {SjkhStyles} from "../../style/sjkh";
-import InputItem from "../../component/inputItem";
-import CheckBox from "../../component/checkbox";
-import Steps from "../../component/steps";
-import Link from "../../component/link";
+import {Button, CheckBox, InputItem, Link, Steps} from "../../component";
 import Picker from "react-native-picker";
 import edu from "../../../data/edu.json";
 import profession from "../../../data/profession.json";
@@ -227,7 +223,7 @@ class PersonInfo extends BaseView {
             <Link href="http://www.163.com" router={this.props.router}>《中登申请协议》</Link>
           </View>
         </ScrollView>
-        <Btn disabled={true} type="block" onPress={this.doNext.bind(this)}>下一步</Btn>
+        <Button type="block" onPress={this.doNext.bind(this)}>下一步</Button>
       </View>
     )
   }

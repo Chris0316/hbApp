@@ -5,21 +5,6 @@
 import entities from "entities";
 import _ from "lodash";
 
-const headerImgSource = [
-
-  require('../image/header/1.jpg'),
-  require('../image/header/2.jpg'),
-  require('../image/header/3.jpg'),
-  require('../image/header/4.jpg'),
-  require('../image/header/5.jpg'),
-  require('../image/header/6.jpg'),
-  require('../image/header/7.jpg'),
-  require('../image/header/8.jpg'),
-  require('../image/header/9.jpg'),
-  require('../image/header/10.jpg'),
-  require('../image/header/11.jpg')
-];
-
 export const logoImage = require('../image/logo.png');
 
 export function decodeHTML(htmlStr) {
