@@ -3,7 +3,7 @@
  */
 
 import React from "react";
-import {View} from "react-native";
+import {Image, View} from "react-native";
 import {Button} from "../../component";
 import BaseView from "../BaseView";
 
@@ -22,7 +22,7 @@ class OpenAccount extends BaseView {
 
   renderBody() {
     return (
-      <View>
+      <View style={{backgroundColor: 'red'}}>
         <Button onPress={this.onPress.bind(this)}>我知道了</Button>
       </View>
     )

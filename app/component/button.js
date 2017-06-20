@@ -3,7 +3,7 @@
  */
 
 import React, {Component} from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../style";
 class Button extends Component {
   constructor(props) {
@@ -13,14 +13,14 @@ class Button extends Component {
       activeOpacity: disabled === true ? 1 : StyleConfig.touchable_press_opacity
     }
   }
-  
+
   handlePress() {
     const {onPress, disabled} = this.props;
     if (!disabled) {
       onPress.call(this)
     }
   }
-  
+
   renderBlock() {
     const {disabled, style} = this.props;
     return (
@@ -36,29 +36,30 @@ class Button extends Component {
       </TouchableOpacity>
     )
   }
-  
+
   renderPrimary() {
     const {style, disabled} = this.props;
     return (
       <TouchableOpacity
         activeOpacity={ this.state.activeOpacity}
         onPress={this.handlePress.bind(this)}>
-        <View style={CommonStyles.flexItemsMiddle}>
+        <View style={[CommonStyles.flexItemsMiddle, CommonStyles.flexRow]}>
           <Text
             style={[ComponentStyles.btn, styles.btn, style, disabled ? ComponentStyles.btn_disabled : styles.btn_common]}>
             { this.props.children }
           </Text>
+          <Image source={require('../image/loading.gif')} style={{width: 20, height: 20, marginLeft: 5}}/>
         </View>
       </TouchableOpacity>
     )
   }
-  
+
   renderPlain() {
     return (
       <Text>{ this.props.children }</Text>
     )
   }
-  
+
   render() {
     const {type} = this.props;
     if (type === 'block') {
