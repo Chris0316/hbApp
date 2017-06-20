@@ -3,8 +3,9 @@
  */
 
 import React, {Component} from "react";
-import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator} from "react-native";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../style";
+const Loading = require('../image/loading.gif');
 class Button extends Component {
   constructor(props) {
     super(props);
@@ -13,14 +14,14 @@ class Button extends Component {
       activeOpacity: disabled === true ? 1 : StyleConfig.touchable_press_opacity
     }
   }
-
+  
   handlePress() {
     const {onPress, disabled} = this.props;
     if (!disabled) {
       onPress.call(this)
     }
   }
-
+  
   renderBlock() {
     const {disabled, style} = this.props;
     return (
@@ -36,30 +37,32 @@ class Button extends Component {
       </TouchableOpacity>
     )
   }
-
+  
   renderPrimary() {
     const {style, disabled} = this.props;
     return (
       <TouchableOpacity
         activeOpacity={ this.state.activeOpacity}
         onPress={this.handlePress.bind(this)}>
-        <View style={[CommonStyles.flexItemsMiddle, CommonStyles.flexRow]}>
+        <View style={[styles.btn]}>
           <Text
-            style={[ComponentStyles.btn, styles.btn, style, disabled ? ComponentStyles.btn_disabled : styles.btn_common]}>
+            style={[disabled ? ComponentStyles.btn_disabled : styles.btn_common]}>
             { this.props.children }
           </Text>
-          <Image source={require('../image/loading.gif')} style={{width: 20, height: 20, marginLeft: 5}}/>
+          <View style={{flex: 1, paddingTop: 10, paddingBottom: 10}}>
+            <Image source={Loading} style={[styles.loading]}/>
+          </View>
         </View>
       </TouchableOpacity>
     )
   }
-
+  
   renderPlain() {
     return (
       <Text>{ this.props.children }</Text>
     )
   }
-
+  
   render() {
     const {type} = this.props;
     if (type === 'block') {
@@ -74,17 +77,29 @@ class Button extends Component {
 
 const styles = StyleSheet.create({
   btn: {
-    width: StyleConfig.screen_width - (StyleConfig.space_3 * 2),
-    marginTop: StyleConfig.space_4,
-    textAlign: 'center'
+    marginLeft: 15,
+    marginRight: 15,
+    backgroundColor: StyleConfig.color_primary,
+    borderRadius: 4,
+    flexDirection: 'row'
   },
   btn_common: {
-    backgroundColor: StyleConfig.color_primary,
     color: StyleConfig.color_white,
+    textAlign: 'right',
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginRight: -20,
+    flex: 1
   },
   btn_block: {
     width: StyleConfig.screen_width,
     borderRadius: 0
+  },
+  loading: {
+    alignSelf: 'flex-start',
+    width: 20,
+    height: 20,
+    marginLeft: 20
   }
 });
 

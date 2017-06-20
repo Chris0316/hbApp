@@ -22,7 +22,7 @@ class OpenAccount extends BaseView {
 
   renderBody() {
     return (
-      <View style={{backgroundColor: 'red'}}>
+      <View>
         <Button onPress={this.onPress.bind(this)}>我知道了</Button>
       </View>
     )
