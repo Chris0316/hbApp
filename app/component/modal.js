@@ -16,12 +16,12 @@ class MModal extends Component {
   }
 
   renderHeader() {
-    const {header, close, onRequestClose} = this.props;
+    const {header, close} = this.props;
     const renderClose = () => {
       if (close !== false) {
         return (
           <Icon
-            onPress={onRequestClose}
+            onPress={() => this.setState({showModal: false})}
             name={ 'md-close' }
             style={[SjkhStyles.modal_header_close]}
             size={ 20 }
@@ -89,13 +89,16 @@ class MModal extends Component {
   }
 
   render() {
-    const {onRequestClose} = this.props;
+    const {visible} = this.props;
+    if (!visible) {
+      return null;
+    }
     return (
       <Modal
         animationType={"fade"}
         transparent={true}
         visible={this.state.showModal}
-        onRequestClose={onRequestClose}
+        onRequestClose={() => this.setState({showModal: false})}
       >
         <View style={[SjkhStyles.modal_container]}>
           {this.renderHeader()}

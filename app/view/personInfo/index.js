@@ -7,7 +7,7 @@ import {Keyboard, ScrollView, StyleSheet, Text, View} from "react-native";
 import BaseView from "../BaseView";
 import {ComponentStyles, StyleConfig} from "../../style";
 import {SjkhStyles} from "../../style/sjkh";
-import {Button, CheckBox, InputItem, Link, Steps} from "../../component";
+import {Button, CheckBox, InputItem, Link, Modal, Steps} from "../../component";
 import Picker from "react-native-picker";
 import edu from "../../../data/edu.json";
 import profession from "../../../data/profession.json";
@@ -25,7 +25,8 @@ class PersonInfo extends BaseView {
       address: '',
       postCode: '',
       profession: '',
-      education: ''
+      education: '',
+      showModal: true
     }
   }
 
@@ -153,6 +154,34 @@ class PersonInfo extends BaseView {
     router.push('setPwd');
   }
 
+  closeModal() {
+    this.setState({
+      showModal: false
+    })
+  }
+
+  gotoUpload() {
+    const {router} = this.props;
+    this.setState({
+      showModal: false
+    });
+    router.pop();
+  }
+
+  renderModal() {
+    return (
+      <Modal
+        header="身份证已经过期"
+        close={false}
+        visible={this.state.showModal}
+        onCancel={this.closeModal.bind(this)}
+        onConfirm={this.gotoUpload.bind(this)}
+      >
+        <Text>您的身份证已过期，请使用最新身份证开户操作请使用最新身份证开户操作。</Text>
+      </Modal>
+    )
+  }
+
   renderBody() {
     return (
       <View style={ComponentStyles.container}>
@@ -224,6 +253,7 @@ class PersonInfo extends BaseView {
           </View>
         </ScrollView>
         <Button type="block" onPress={this.doNext.bind(this)}>下一步</Button>
+        {this.renderModal()}
       </View>
     )
   }

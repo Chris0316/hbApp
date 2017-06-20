@@ -36,8 +36,8 @@ export const SjkhStyles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     padding: 10,
-    borderBottomWidth: StyleConfig.border_width,
-    borderBottomColor: StyleConfig.border_color,
+    // borderBottomWidth: StyleConfig.border_width,
+    // borderBottomColor: StyleConfig.border_color,
     fontSize: 17
   },
   modal_header_close: {
