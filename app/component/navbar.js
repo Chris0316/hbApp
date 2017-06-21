@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
 import PureRenderMixin from "react-addons-pure-render-mixin";
+import Icon from "react-native-vector-icons/Ionicons";
 import {CommonStyles, StyleConfig} from "../style";
 class Navbar extends Component {
 
@@ -20,14 +20,17 @@ class Navbar extends Component {
     if (title.length < 20) {
       titleText = title;
     } else {
-      titleText = title.substring(0, 25) + "...";
+      titleText = title.substring(0, 15) + "...";
     }
+    let pgStyle = {
+      color: this.props.color
+    };
     return (
       <TouchableOpacity
         style={ [CommonStyles.flexRow, CommonStyles.flexItemsMiddle, CommonStyles.background_transparent, CommonStyles.flex_1] }>
         <Text
           style={ [this.props.back ? styles.back : '',
-            CommonStyles.text_dark, CommonStyles.text_center, CommonStyles.font_sm, CommonStyles.flex_1] }>
+            CommonStyles.text_dark, CommonStyles.text_center, CommonStyles.font_sm, CommonStyles.flex_1, pgStyle] }>
           { titleText }
         </Text>
       </TouchableOpacity>
@@ -35,17 +38,38 @@ class Navbar extends Component {
   }
 
   renderLeftContent() {
-    const {back, leftIconOnPress} = this.props;
-    if (back) {
-      return (
-        <TouchableOpacity
-          style={ [CommonStyles.flexRow, CommonStyles.flexItemsMiddle] }
-          activeOpacity={ StyleConfig.touchable_press_opacity }
-          onPress={ () => leftIconOnPress() }>
-          <Image source={require('../image/sjkh/back.png')} style={styles.nav_icon}/>
-        </TouchableOpacity>
-      )
-    }
+    const {back, close, leftIconOnPress, closeIconOnPress} = this.props;
+    let renderBackIcon = () => {
+      if (back) {
+        return (
+          <Icon
+            onPress={ () => leftIconOnPress() }
+            name={ 'ios-arrow-back' }
+            style={{color: StyleConfig.color_primary}}
+            size={ 30 }
+          />
+        )
+      }
+    };
+
+    let renderCloseIcon = () => {
+      if (close) {
+        return (
+          <Icon
+            onPress={ () => closeIconOnPress() }
+            name={ 'md-close' }
+            style={{color: StyleConfig.color_primary, paddingLeft: 15}}
+            size={ 24 }
+          />
+        )
+      }
+    };
+    return (
+      <View style={ [CommonStyles.flexRow, CommonStyles.flexItemsMiddle] }>
+        {renderBackIcon()}
+        {renderCloseIcon()}
+      </View>
+    )
   }
 
   renderRightContentIcon() {
@@ -67,9 +91,12 @@ class Navbar extends Component {
   }
 
   render() {
+    let pgStyle = {
+      backgroundColor: this.props.backgroundColor
+    };
     return (
       <View
-        style={ [CommonStyles.border_b, CommonStyles.flexRow, CommonStyles.pos_absolute, styles.container] }>
+        style={ [CommonStyles.border_b, CommonStyles.flexRow, CommonStyles.pos_absolute, styles.container, pgStyle] }>
         { this.renderLeftContent() }
         { this.renderTitle() }
         { this.renderRightContent() }

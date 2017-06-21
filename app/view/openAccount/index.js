@@ -3,7 +3,8 @@
  */
 
 import React from "react";
-import {Image, View} from "react-native";
+import {View} from "react-native";
+import TimerMixin from "react-timer-mixin";
 import {Button} from "../../component";
 import BaseView from "../BaseView";
 
@@ -11,19 +12,28 @@ class OpenAccount extends BaseView {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false
+      showModal: false,
+      loading: false
     }
   }
 
   onPress() {
     const {router} = this.props;
-    router.push('phoneNumberVerify');
+    this.setState({
+      loading: true
+    });
+    TimerMixin.setTimeout(() => {
+      this.setState({
+        loading: false
+      });
+      router.push('phoneNumberVerify');
+    }, 300);
   }
 
   renderBody() {
     return (
       <View>
-        <Button onPress={this.onPress.bind(this)}>我知道了</Button>
+        <Button loading={this.state.loading} onPress={this.onPress.bind(this)}>我知道了</Button>
       </View>
     )
   }

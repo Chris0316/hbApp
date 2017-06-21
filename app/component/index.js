@@ -8,4 +8,3 @@ export {default as InputItem} from './inputItem';
 export {default as Modal} from './modal';
 export {default as Link} from './link';
 export {default as Steps} from './steps';
-export {default as Spinner} from './spinner';

@@ -13,8 +13,17 @@ class Router {
   }
 
   onHomeBackPress() {
-    let currentRoute = this.getCurrentRoute();
-    if (currentRoute.name != 'openAccount') {
+    const currentRoute = this.getCurrentRoute();
+    const routeName = currentRoute.name;
+    if (routeName === 'web') {
+      const webview = currentRoute.sceneRef.refs['webview'];
+      if (currentRoute.sceneRef.state.canGoBack) {
+        webview.goBack();
+      } else {
+        this.navigator.pop();
+      }
+      return true;
+    } else if (routeName !== 'openAccount') {
       this.navigator.pop();
       return true;
     }

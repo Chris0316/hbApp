@@ -11,7 +11,7 @@ class Link extends Component {
   }
 
   onPress() {
-    const {href, router, title} = this.props;
+    const {href, router, title = ' '} = this.props;
     if (href) {
       if (href.indexOf('http') === 0) {
         router.push('web', {

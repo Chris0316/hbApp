@@ -2,74 +2,110 @@
  * Created by kim on 2017/5/25.
  */
 import React from "react";
-import {StyleSheet, View, WebView} from "react-native";
+import {ActivityIndicator, StyleSheet, View, WebView} from "react-native";
 import Toast from "@remobile/react-native-toast";
-import TimerMixin from "react-timer-mixin";
 import BaseView from "../BaseView";
-import {Spinner} from "../../component";
 import {ComponentStyles, StyleConfig} from "../../style";
-
-const loadTimeout = 6000;
 
 class WebScene extends BaseView {
 
   constructor(props) {
     super(props);
     this.state = {
-      loaded: false,
-      title: this.props.title
+      title: this.props.title,
+      canGoBack: false
     };
   }
 
   componentWillUnmount() {
-    this.timer && TimerMixin.clearTimeout(this.timer);
+  }
+
+  leftIconOnPress() {
+    const {router} = this.props;
+    if (this.state.canGoBack) {
+      this.refs['webview'].goBack();
+    } else {
+      router.pop();
+    }
   }
 
   onError() {
     Toast.show("加载外部链接失败");
-    this.setWebViewLoaded();
-  }
-
-  onLoadStart() {
-    this.timer = TimerMixin.setTimeout(() => {
-      if (this.state.loaded === false) {
-        Toast.show("页面响应不太给力");
-      }
-      this.setWebViewLoaded();
-      TimerMixin.clearTimeout(this.timer);
-    }, loadTimeout);
   }
 
   onLoadEnd(e) {
     const title = e.nativeEvent.title;
-    this.setWebViewLoaded();
+    if (!title || title.indexOf('http') === 0) {
+      return;
+    }
     this.setState({
       title: title
     });
   }
 
-  setWebViewLoaded() {
+  /**
+   * 获取H5页面发送的消息
+   * @param e
+   */
+  onMessage(e) {
+    let data = e.nativeEvent.data;
+    if (data) {
+      let message = JSON.parse(data);
+      if (message.action === 'config') {//配置app
+        let params = message.params;
+        if (params.navbar) {
+          this.setState({
+            navbar_backgroundColor: params.navbar.backgroundColor,
+            navbar_color: params.navbar.color
+          })
+        }
+      } else if (message.action === 'callNative') {//打开原生页面
+        const {router} = this.props;
+        let routerName = message.routerName;
+        let callback = message.callback;
+        router.push(routerName, message.params);
+        if (callback) {
+          //执行回调方法
+          this.refs['webview'].injectJavaScript('window["' + callback + '"]();');
+        }
+      }
+    }
+  }
+
+  onNavigationStateChange(navState) {
     this.setState({
-      loaded: true
+      canGoBack: navState.canGoBack
     });
   }
 
   renderLoading() {
-    if (this.state.loaded === false) {
-      return (
-        <Spinner style={ [ComponentStyles.pending_container, styles.pending] }/>
-      );
-    }
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator
+          animating={ true }
+          size={ 'large' }
+          color={ StyleConfig.color_primary }
+        />
+      </View>
+    );
   }
 
   renderWebView() {
     const {url} = this.props;
     return (
       <WebView
+        ref="webview"
         source={{uri: url}}
-        onError={ this.onError.bind(this)}
+        javaScriptEnabled={true}
+        domStorageEnabled={true}
+        scalesPageToFit={true}
+        startInLoadingState={true}
+        injectedJavaScript="window."
+        renderLoading={this.renderLoading.bind(this)}
+        onMessage={this.onMessage.bind(this)}
         onLoadEnd={this.onLoadEnd.bind(this)}
-        onLoadStart={ this.onLoadStart.bind(this)}
+        onError={ this.onError.bind(this)}
+        onNavigationStateChange={this.onNavigationStateChange.bind(this)}
       />
     );
   }
@@ -78,17 +114,17 @@ class WebScene extends BaseView {
     return (
       <View style={ [ComponentStyles.container] }>
         { this.renderWebView() }
-        { this.renderLoading() }
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  pending: {
-    top: StyleConfig.navbar_height,
-    height: StyleConfig.screen_height - (StyleConfig.navbar_height * 3),
-    backgroundColor: 'transparent'
+  loading: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    marginTop: -30
   }
 });
 

@@ -10,21 +10,46 @@ class BaseView extends Component {
 
   constructor(props) {
     super(props);
-    const {navigator} = this.props;
+    const {navigator, router} = this.props;
     this.back = navigator.getCurrentRoutes().length > 1;
+    this.close = router.getCurrentRoute().name === 'web';
     this.state = {
       help: false,
       mask: false
     };
-    // this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({
+      //页面标题
+      title: this.props.title,
+      //导航栏背景色
+      navbar_backgroundColor: this.props.navbar_backgroundColor || StyleConfig.color_white,
+      //导航栏字体颜色
+      navbar_color: this.props.navbar_color || StyleConfig.color_black
+    })
+  }
+
+  leftIconOnPress() {
+    const {router} = this.props;
+    router.pop()
+  }
+
+  closeIconOnPress() {
+    const {router} = this.props;
+    router.pop()
   }
 
   renderNavbar() {
-    const {title, router} = this.props;
     return (
       <Navbar
-        back={this.back} title={ title }
-        leftIconOnPress={ () => router.pop() }
+        back={this.back}
+        close={this.close}
+        backgroundColor={this.state.navbar_backgroundColor}
+        color={this.state.navbar_color}
+        title={ this.state.title }
+        leftIconOnPress={ this.leftIconOnPress.bind(this) }
+        closeIconOnPress={ this.closeIconOnPress.bind(this) }
         rightIconOnPress={() => this.setState({help: true, mask: true})}/>
     )
   }
