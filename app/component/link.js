@@ -9,21 +9,24 @@ class Link extends Component {
   constructor(props) {
     super(props)
   }
-
+  
   onPress() {
-    const {href, router, title = ' '} = this.props;
+    const {href, router, title = ' ', color, backgroundColor} = this.props;
     if (href) {
       if (href.indexOf('http') === 0) {
+        
         router.push('web', {
           url: href,
-          title
+          title,
+          navbar_color: color,
+          navbar_backgroundColor: backgroundColor
         })
       } else {
         router.push(href);
       }
     }
   }
-
+  
   render() {
     const {href} = this.props;
     if (href) {

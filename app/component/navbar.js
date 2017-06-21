@@ -4,13 +4,13 @@ import PureRenderMixin from "react-addons-pure-render-mixin";
 import Icon from "react-native-vector-icons/Ionicons";
 import {CommonStyles, StyleConfig} from "../style";
 class Navbar extends Component {
-
+  
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
-
-
+  
+  
   renderTitle() {
     const {title} = this.props;
     if (!title) {
@@ -23,42 +23,43 @@ class Navbar extends Component {
       titleText = title.substring(0, 15) + "...";
     }
     let pgStyle = {
-      color: this.props.color
+      color: this.props.color || StyleConfig.color_black
     };
     return (
-      <TouchableOpacity
+      <View
         style={ [CommonStyles.flexRow, CommonStyles.flexItemsMiddle, CommonStyles.background_transparent, CommonStyles.flex_1] }>
         <Text
           style={ [this.props.back ? styles.back : '',
             CommonStyles.text_dark, CommonStyles.text_center, CommonStyles.font_sm, CommonStyles.flex_1, pgStyle] }>
           { titleText }
         </Text>
-      </TouchableOpacity>
+      </View>
     )
   }
-
+  
   renderLeftContent() {
-    const {back, close, leftIconOnPress, closeIconOnPress} = this.props;
+    const {back, close, leftIconOnPress, closeIconOnPress, color} = this.props;
+    let iconColor = color || StyleConfig.color_primary;
     let renderBackIcon = () => {
       if (back) {
         return (
           <Icon
             onPress={ () => leftIconOnPress() }
             name={ 'ios-arrow-back' }
-            style={{color: StyleConfig.color_primary}}
+            style={{color: iconColor}}
             size={ 30 }
           />
         )
       }
     };
-
+    
     let renderCloseIcon = () => {
       if (close) {
         return (
           <Icon
             onPress={ () => closeIconOnPress() }
             name={ 'md-close' }
-            style={{color: StyleConfig.color_primary, paddingLeft: 15}}
+            style={{color: iconColor, paddingLeft: 15}}
             size={ 24 }
           />
         )
@@ -71,13 +72,13 @@ class Navbar extends Component {
       </View>
     )
   }
-
+  
   renderRightContentIcon() {
     return (
       <Image source={require('../image/sjkh/custom.png')} style={styles.nav_icon}/>
     )
   }
-
+  
   renderRightContent() {
     const {rightIconOnPress} = this.props;
     return (
@@ -89,10 +90,10 @@ class Navbar extends Component {
       </TouchableOpacity>
     )
   }
-
+  
   render() {
     let pgStyle = {
-      backgroundColor: this.props.backgroundColor
+      backgroundColor: this.props.backgroundColor || StyleConfig.color_white
     };
     return (
       <View

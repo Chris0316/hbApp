@@ -2,7 +2,7 @@
  * Created by kim on 2017/5/24.
  */
 import React, {Component} from "react";
-import {Alert, Platform, StyleSheet, View} from "react-native";
+import {Alert, Platform, StyleSheet, View, StatusBar} from "react-native";
 import TimerMixin from "react-timer-mixin";
 import * as Animatable from "react-native-animatable";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../style";
@@ -16,7 +16,7 @@ import Config from "../config";
 const {appKey} = _updateConfig[Platform.OS];
 
 class StartUp extends Component {
-
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -27,11 +27,11 @@ class StartUp extends Component {
       appKey: Config.leanCloud.appKey
     });
   }
-
+  
   componentWillMount() {
     //this.checkUpdate()
   }
-
+  
   checkUpdate() {
     checkUpdate(appKey).then(info => {
       if (info.expired) {
@@ -52,16 +52,16 @@ class StartUp extends Component {
       }
     })
   }
-
+  
   componentWillUnmount() {
     this.timer && TimerMixin.clearTimeout(this.timer);
   }
-
+  
   onPageContentShow() {
     const {router} = this.props;
     router.resetTo('openAccount');
   }
-
+  
   renderContent() {
     return (
       <Animatable.View
@@ -71,10 +71,12 @@ class StartUp extends Component {
       </Animatable.View>
     )
   }
-
+  
   render() {
     return (
-      <View style={ [ComponentStyles.container, CommonStyles.flexItemsCenter, CommonStyles.flexItemsMiddle, styles.container] }>
+      <View
+        style={ [ComponentStyles.container, CommonStyles.flexItemsCenter, CommonStyles.flexItemsMiddle, styles.container] }>
+        <StatusBar hidden={true}/>
         { this.renderContent() }
       </View>
     );
