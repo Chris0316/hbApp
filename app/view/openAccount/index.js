@@ -33,10 +33,20 @@ class OpenAccount extends BaseView {
     }, 300);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const {user, router} = nextProps;
+    if (user.res && user.res.code === 0) {
+      if (user.res.isSuc) {
+        router.push('phoneNumberVerify');
+      } else {
+        alert('密码错误');
+      }
+    }
+  }
+
   onPress2() {
     const {userAction, router} = this.props;
     userAction.login('18016052872', '111111');
-    router.push('phoneNumberVerify');
   }
 
   renderBody() {
