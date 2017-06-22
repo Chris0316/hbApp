@@ -6,7 +6,7 @@ import Config from "../config";
 const apiDomain = Config.apiDomain;
 
 const request = (url, method, body) => {
-  let isOk, headers = {}, data = body;
+  let headers = {}, data = body;
   if (method === 'post') {
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
     if (_.isObject(data)) {
@@ -27,16 +27,18 @@ const request = (url, method, body) => {
       body: data
     }).then((response) => {
       if (response.ok) {
-        isOk = true;
+        return response
       } else {
-        isOk = false;
+        throw new Error('server exception');
       }
-      return response.json();
-    }).then((responseData) => {
-      if (isOk) {
-        resolve(responseData);
-      } else {
-        reject(responseData);
+    }).then((response) => {
+      try {
+        if (response.headers.get("content-length") > 0) {
+          resolve(response.json())
+        }
+      }
+      catch (e) {
+        throw new Error('data format error');
       }
     }).catch((error) => {
       reject(error);

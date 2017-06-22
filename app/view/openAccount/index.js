@@ -19,7 +19,7 @@ class OpenAccount extends BaseView {
       loading: false
     }
   }
-
+  
   onPress() {
     const {router} = this.props;
     this.setState({
@@ -32,25 +32,29 @@ class OpenAccount extends BaseView {
       router.push('phoneNumberVerify');
     }, 300);
   }
-
+  
   componentWillReceiveProps(nextProps) {
     const {user, router} = nextProps;
+    if (user.loading === true) {
+      return;
+    }
     if (user.res && user.res.code === 0) {
       if (user.res.isSuc) {
         router.push('phoneNumberVerify');
       } else {
         alert('密码错误');
       }
+    } else {
+      alert(user.res.message)
     }
   }
-
+  
   onPress2() {
-    const {userAction, router} = this.props;
+    const {userAction} = this.props;
     userAction.login('18016052872', '111111');
   }
-
+  
   renderBody() {
-    // console.log('user--------------',this.props.user)
     return (
       <View>
         <Button loading={this.props.user.loading} onPress={this.onPress2.bind(this)}>我知道了</Button>
