@@ -3,6 +3,7 @@
  */
 
 export default  {
+  common: 'api/common',
   home: {},
   user: {
     auth: 'api/auth',

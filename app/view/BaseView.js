@@ -3,11 +3,12 @@
  */
 
 import React, {Component} from "react";
-import {Image, StyleSheet, Text, View, StatusBar} from "react-native";
+import {Image, StyleSheet, Text, View} from "react-native";
+
 import {ComponentStyles, StyleConfig} from "../style";
 import Navbar from "../component/navbar";
 class BaseView extends Component {
-  
+
   constructor(props) {
     super(props);
     const {navigator, router} = this.props;
@@ -18,7 +19,7 @@ class BaseView extends Component {
       mask: false
     };
   }
-  
+
   componentDidMount() {
     this.setState({
       //页面标题
@@ -29,17 +30,17 @@ class BaseView extends Component {
       navbar_color: this.props.navbar_color
     })
   }
-  
+
   leftIconOnPress() {
     const {router} = this.props;
     router.pop()
   }
-  
+
   closeIconOnPress() {
     const {router} = this.props;
     router.pop()
   }
-  
+
   renderNavbar() {
     return (
       <Navbar
@@ -53,7 +54,7 @@ class BaseView extends Component {
         rightIconOnPress={() => this.setState({help: true, mask: true})}/>
     )
   }
-  
+
   renderHelp() {
     let help = this.state.help;
     if (help === true) {
@@ -75,7 +76,7 @@ class BaseView extends Component {
       )
     }
   }
-  
+
   renderMask() {
     let mask = this.state.mask;
     if (mask === true) {
@@ -84,7 +85,7 @@ class BaseView extends Component {
       )
     }
   }
-  
+
   hideMask() {
     this.setState({
       mask: false,
@@ -92,11 +93,11 @@ class BaseView extends Component {
     });
     this.onHideMask();
   }
-  
+
   onHideMask() {
-  
+
   }
-  
+
   render() {
     return (
       <View style={[ComponentStyles.container]}>
@@ -155,4 +156,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default BaseView
+
+export default BaseView;

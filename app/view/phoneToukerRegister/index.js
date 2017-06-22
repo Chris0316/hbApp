@@ -51,9 +51,7 @@ class PhoneToukerRegister extends BaseView {
           <CheckBox checked={true} color="#4883F6"/>
           <Text style={SjkhStyles.link}>已阅读并同意</Text>
           <Link
-            href="http://fd.dev.hbec.com/h5"
-            color="#fff"
-            backgroundColor="red"
+            href="http://10.0.31.109/h5/native"
             router={this.props.router}
             title="用户协议">《投客网用户协议》</Link>
         </View>
