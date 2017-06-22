@@ -3,7 +3,6 @@
  */
 
 import * as View from "../view";
-
 const ViewPage = {
   getRoute: (routeName) => {
     let view = ViewPage[routeName], options = {}, route = {};
@@ -11,7 +10,7 @@ const ViewPage = {
       return null;
     }
     let page = view();
-    let routePrefix = ['name', 'component'];
+    let routePrefix = ['name', 'component', 'sceneConfig'];
     for (let key in page) {
       if (routePrefix.indexOf(key) > -1) {
         route[key] = page[key];

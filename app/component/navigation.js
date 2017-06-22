@@ -3,20 +3,20 @@
  */
 
 import React, {Component} from "react";
-import {View, StatusBar} from 'react-native'
+import {StatusBar, View} from "react-native";
 import {Navigator} from "react-native-deprecated-custom-components";
-import {ComponentStyles} from '../style';
+import {ComponentStyles} from "../style";
 import Router from "./router";
 import ViewPage from "./view";
 
 const defaultRoute = ViewPage.startup();
 
 class Navigation extends Component {
-  
+
   constructor(props) {
     super(props);
   }
-  
+
   renderScene(route, navigator) {
     this.router = this.router || new Router(navigator);
     let Component = route.component;
@@ -32,7 +32,7 @@ class Navigation extends Component {
       )
     }
   }
-  
+
   onDidFocus(route) {
     if (route.sceneRef.getWrappedInstance) {
       const wrappedComponent = route.sceneRef.getWrappedInstance();
@@ -40,16 +40,16 @@ class Navigation extends Component {
         wrappedComponent.componentDidFocus && wrappedComponent.componentDidFocus();
       }
     }
-    route.sceneRef.componentDidFocus && route.sceneRef.componentDidFocus();
+    route.sceneRef.componentDidFocus && route.sceneRef.componentDidFocus(route);
   }
-  
+
   configureScene(route) {
     if (route.sceneConfig) {
       return route.sceneConfig
     }
     return Navigator.SceneConfigs.PushFromRight
   }
-  
+
   render() {
     return (
       <View style={ComponentStyles.container}>

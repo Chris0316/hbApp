@@ -1,16 +1,16 @@
 import React, {Component} from "react";
-import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PureRenderMixin from "react-addons-pure-render-mixin";
 import Icon from "react-native-vector-icons/Ionicons";
 import {CommonStyles, StyleConfig} from "../style";
 class Navbar extends Component {
-  
+
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
-  
-  
+
+
   renderTitle() {
     const {title} = this.props;
     if (!title) {
@@ -26,17 +26,12 @@ class Navbar extends Component {
       color: this.props.color || StyleConfig.color_black
     };
     return (
-      <View
-        style={ [CommonStyles.flexRow, CommonStyles.flexItemsMiddle, CommonStyles.background_transparent, CommonStyles.flex_1] }>
-        <Text
-          style={ [this.props.back ? styles.back : '',
-            CommonStyles.text_dark, CommonStyles.text_center, CommonStyles.font_sm, CommonStyles.flex_1, pgStyle] }>
-          { titleText }
-        </Text>
-      </View>
+      <Text style={ [CommonStyles.text_dark, CommonStyles.text_center, CommonStyles.font_sm, styles.title, pgStyle] }>
+        { titleText }
+      </Text>
     )
   }
-  
+
   renderLeftContent() {
     const {back, close, leftIconOnPress, closeIconOnPress, color} = this.props;
     let iconColor = color || StyleConfig.color_primary;
@@ -46,20 +41,20 @@ class Navbar extends Component {
           <Icon
             onPress={ () => leftIconOnPress() }
             name={ 'ios-arrow-back' }
-            style={{color: iconColor}}
+            style={{color: iconColor, paddingLeft: 10, paddingRight: 10}}
             size={ 30 }
           />
         )
       }
     };
-    
+
     let renderCloseIcon = () => {
       if (close) {
         return (
           <Icon
             onPress={ () => closeIconOnPress() }
             name={ 'md-close' }
-            style={{color: iconColor, paddingLeft: 15}}
+            style={{color: iconColor, paddingRight: 10, paddingLeft: 10}}
             size={ 24 }
           />
         )
@@ -72,13 +67,19 @@ class Navbar extends Component {
       </View>
     )
   }
-  
+
   renderRightContentIcon() {
+    const {color} = this.props;
+    let iconColor = color || StyleConfig.color_primary;
     return (
-      <Image source={require('../image/sjkh/custom.png')} style={styles.nav_icon}/>
+      <Icon
+        name={ 'ios-help-circle-outline' }
+        style={{color: iconColor, paddingRight: 10}}
+        size={ 24 }
+      />
     )
   }
-  
+
   renderRightContent() {
     const {rightIconOnPress} = this.props;
     return (
@@ -90,16 +91,16 @@ class Navbar extends Component {
       </TouchableOpacity>
     )
   }
-  
+
   render() {
     let pgStyle = {
       backgroundColor: this.props.backgroundColor || StyleConfig.color_white
     };
     return (
-      <View
-        style={ [CommonStyles.border_b, CommonStyles.flexRow, CommonStyles.pos_absolute, styles.container, pgStyle] }>
-        { this.renderLeftContent() }
+      <View style={ [CommonStyles.border_b, styles.container, pgStyle] }>
         { this.renderTitle() }
+        { this.renderLeftContent() }
+        <Text style={{flex: 1}}></Text>
         { this.renderRightContent() }
       </View>
     );
@@ -108,18 +109,22 @@ class Navbar extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    top: 0,
+    flexDirection: 'row',
     height: StyleConfig.navbar_height,
     width: StyleConfig.screen_width,
-    paddingHorizontal: StyleConfig.space_2,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  back: {
-    marginLeft: -StyleConfig.icon_size
-  },
-  nav_icon: {
-    width: 21,
-    height: 21
+
+  title: {
+    position: 'absolute',
+    height: StyleConfig.navbar_height,
+    width: StyleConfig.screen_width,
+    top: 0,
+    left: 0,
+    textAlign: 'center',
+    paddingVertical: 8
   }
 });
 

@@ -2,6 +2,8 @@ import React, {BackHandler, Platform, ToastAndroid} from "react-native";
 
 import TimerMixin from "react-timer-mixin";
 import ViewPage from "./view";
+import * as RouterSceneConfig from "../config/routerScene";
+
 class Router {
   constructor(navigator) {
     this.navigator = navigator;
@@ -69,7 +71,7 @@ class Router {
 
   setRoute(route, props = {}) {
     route.props = props;
-    // route.sceneConfig = route.sceneConfig ? route.sceneConfig : RouterSceneConfig.customPushFromRight;
+    route.sceneConfig = route.sceneConfig ? route.sceneConfig : RouterSceneConfig.customPushFromRight;
     route.component = route.component;
   }
 

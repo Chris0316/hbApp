@@ -2,11 +2,10 @@
  * Created by kim on 2017/5/24.
  */
 import React, {Component} from "react";
-import {Alert, Platform, StyleSheet, View, StatusBar} from "react-native";
+import {Alert, Image, Platform, StatusBar, StyleSheet, View} from "react-native";
 import TimerMixin from "react-timer-mixin";
 import * as Animatable from "react-native-animatable";
-import {CommonStyles, ComponentStyles, StyleConfig} from "../style";
-import Logo from "../component/logo";
+import {StyleConfig} from "../style";
 
 import {checkUpdate, downloadUpdate, switchVersion} from "react-native-update";
 
@@ -16,22 +15,29 @@ import Config from "../config";
 const {appKey} = _updateConfig[Platform.OS];
 
 class StartUp extends Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
-      routeName: null
+      routeName: null,
+      loading: false
     };
     AV.init({
       appId: Config.leanCloud.appId,
       appKey: Config.leanCloud.appKey
     });
   }
-  
+
   componentWillMount() {
-    //this.checkUpdate()
+    this.timer = TimerMixin.setTimeout(() => {
+      this.startApp();
+    }, 2000)
   }
-  
+
+  componentWillUnmount() {
+    this.timer && TimerMixin.clearTimeout(this.timer)
+  }
+
   checkUpdate() {
     checkUpdate(appKey).then(info => {
       if (info.expired) {
@@ -52,32 +58,35 @@ class StartUp extends Component {
       }
     })
   }
-  
+
   componentWillUnmount() {
     this.timer && TimerMixin.clearTimeout(this.timer);
   }
-  
-  onPageContentShow() {
+
+  startApp() {
     const {router} = this.props;
     router.resetTo('openAccount');
   }
-  
-  renderContent() {
-    return (
-      <Animatable.View
-        onAnimationEnd={this.onPageContentShow.bind(this)}
-        animation="fadeInDown">
-        <Logo/>
-      </Animatable.View>
-    )
+
+  renderLoading() {
+    if (this.state.loading) {
+      return (
+        <Animatable.View animation="fadeIn" style={{position: 'absolute', left: 0, bottom: 80, right: 0, alignItems: 'center'}}>
+          <Animatable.Text iterationCount="infinite" animation="pulse">加载中...</Animatable.Text>
+        </Animatable.View>
+      )
+    }
   }
-  
+
   render() {
     return (
-      <View
-        style={ [ComponentStyles.container, CommonStyles.flexItemsCenter, CommonStyles.flexItemsMiddle, styles.container] }>
+      <View style={styles.container }>
         <StatusBar hidden={true}/>
-        { this.renderContent() }
+        <Image source={ require('../image/welcome.png') } style={styles.welcome}/>
+        <Animatable.View onAnimationEnd={() => this.setState({loading: true})} animation="fadeInDown" style={{position: 'absolute', left: 0, top: 0, bottom: 0, right: 0, justifyContent: 'center', alignItems: 'center'}}>
+          <Image source={ require('../image/logo.png') } style={[styles.logo]}/>
+          {this.renderLoading()}
+        </Animatable.View>
       </View>
     );
   }
@@ -85,8 +94,23 @@ class StartUp extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    flexDirection: 'column',
+    width: StyleConfig.screen_width,
+    height: StyleConfig.screen_height,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: StyleConfig.color_transparent
+  },
+  welcome: {
+    flex: 1,
     width: StyleConfig.screen_width,
     height: StyleConfig.screen_height
+  },
+  logo: {
+    width: StyleConfig.avatarSize_lg,
+    height: StyleConfig.avatarSize_lg,
+    borderRadius: StyleConfig.border_radius
   }
 });
 
