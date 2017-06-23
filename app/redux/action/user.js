@@ -8,7 +8,7 @@ export function login(loginId, password, callback) {
     type: types.LOGIN,
     loginId,
     password,
-    callback: callback
+    callback
   }
 }
 

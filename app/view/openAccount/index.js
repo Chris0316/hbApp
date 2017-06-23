@@ -3,12 +3,13 @@
  */
 
 import React from "react";
-import {View} from "react-native";
+import {Text, View} from "react-native";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {Button} from "../../component";
 import FormView from "../common/FormView";
 import * as userAction from "../../redux/action/user";
+import * as todoAction from "../../redux/action/todo";
 
 class OpenAccount extends FormView {
   constructor(props) {
@@ -26,19 +27,27 @@ class OpenAccount extends FormView {
     });
   }
 
+  renderRow(row) {
+    return (
+      <Text>{row}</Text>
+    )
+  }
+
   renderBody() {
+    const {page} = this.props;
     return (
       <View>
-        <Button loading={this.props.user.loading} onPress={this.onSubmit.bind(this)}>我知道了</Button>
+        <Button loading={page.loading} onPress={this.onSubmit.bind(this)}>我知道了</Button>
       </View>
     )
   }
 }
 
 export default connect(state => ({
-  user: state.user
+  page: state.user
 }), dispatch => ({
-  userAction: bindActionCreators(userAction, dispatch)
+  userAction: bindActionCreators(userAction, dispatch),
+  todoAction: bindActionCreators(todoAction, dispatch)
 }), null, {
   withRef: true
 })(OpenAccount)
