@@ -6,10 +6,9 @@ import React from "react";
 import {Keyboard, Text, View} from "react-native";
 import {CommonStyles} from "../../style";
 import {Button, InputItem} from "../../component";
-import Toast from "@remobile/react-native-toast";
-import BaseView from "../BaseView";
+import FormView from "../common/FormView";
 
-class PhoneNumberVerify extends BaseView {
+class PhoneNumberVerify extends FormView {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,11 +39,14 @@ class PhoneNumberVerify extends BaseView {
     )
   }
 
-  doNext() {
+  validator() {
     if (!this.state.phone) {
-      Toast.show('请输入手机号码');
-      return;
+      return '请输入手机号码'
     }
+    return true;
+  }
+
+  onSubmit() {
     const {router} = this.props;
     Keyboard.dismiss();
     router.push('phoneToukerRegister')
@@ -55,7 +57,7 @@ class PhoneNumberVerify extends BaseView {
       <View>
         {this.renderTip()}
         {this.renderInput()}
-        <Button onPress={this.doNext.bind(this)}>下一步</Button>
+        <Button onPress={this.onSubmit.bind(this)}>下一步</Button>
       </View>
     )
   }

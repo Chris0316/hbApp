@@ -4,11 +4,11 @@
 
 import React from "react";
 import {ScrollView, StyleSheet, Switch, Text, View} from "react-native";
-import BaseView from "../BaseView";
+import FormView from "../common/FormView";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../../style";
 import {SjkhStyles} from "../../style/sjkh";
 import {Button, InputItem, Steps} from "../../component";
-class SetPwd extends BaseView {
+class SetPwd extends FormView {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,6 +35,11 @@ class SetPwd extends BaseView {
         </View>
       )
     }
+  }
+
+  onSubmit() {
+    const {router} = this.props;
+    router.push('thirdDepository')
   }
 
   renderBody() {
@@ -65,7 +70,7 @@ class SetPwd extends BaseView {
             </View>
           </View>
           {this.renderAssetPwd()}
-          <Button onPress={() => this.props.router.push('thirdDepository')}>确定</Button>
+          <Button onPress={this.onSubmit.bind(this)}>确定</Button>
         </ScrollView>
       </View>
     )

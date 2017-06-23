@@ -1,13 +1,14 @@
 /**
  * Created by kim on 2017/6/2.
  */
+import Toast from "@remobile/react-native-toast";
 import {call, fork, put, take} from "redux-saga/effects";
 import {request, storage} from "../../service";
 import {loginRes, logoutRes} from "../action/user";
 import * as types from "../action/actionType";
 import dataApi from "../../config/api";
 
-export function* login(loginId, password) {
+export function* login(loginId, password, callback) {
   try {
     const res = yield call(request, dataApi.user.auth, 'post', {
       loginId, password
@@ -16,8 +17,10 @@ export function* login(loginId, password) {
       yield call(storage.setItem, 'token', loginId);
     }
     yield put(loginRes(res));
+    callback && callback(res);
   } catch (err) {
-    yield put(loginRes(err))
+    yield put(loginRes(err));
+    Toast.show(err.message);
   }
 }
 
@@ -44,8 +47,8 @@ export function* refreshToken() {
 
 export function* doLogin() {
   while (true) {
-    const {loginId, password} = yield take(types.LOGIN);
-    yield fork(login, loginId, password);
+    const {loginId, password, callback} = yield take(types.LOGIN);
+    yield fork(login, loginId, password, callback);
   }
 }
 

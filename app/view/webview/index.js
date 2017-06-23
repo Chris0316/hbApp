@@ -4,7 +4,7 @@
 import React from "react";
 import {ActivityIndicator, StyleSheet, View, WebView} from "react-native";
 import Toast from "@remobile/react-native-toast";
-import BaseView from "../BaseView";
+import BaseView from "../common/BaseView";
 import {ComponentStyles, StyleConfig} from "../../style";
 
 class WebScene extends BaseView {

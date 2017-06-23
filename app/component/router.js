@@ -1,5 +1,5 @@
-import React, {BackHandler, Platform, ToastAndroid} from "react-native";
-
+import React, {BackHandler, Platform} from "react-native";
+import Toast from "@remobile/react-native-toast";
 import TimerMixin from "react-timer-mixin";
 import ViewPage from "./view";
 import * as RouterSceneConfig from "../config/routerScene";
@@ -35,7 +35,7 @@ class Router {
 
   handleHomeBackPress() {
     if (Platform.OS === "android") {
-      ToastAndroid.show("再按一次退出应用", ToastAndroid.SHORT);
+      Toast.show("再按一次退出应用");
       BackHandler.removeEventListener("hardwareBackPress", this._onHomeBackPress);
       BackHandler.addEventListener("hardwareBackPress", this._onExitApp);
       this.timer = TimerMixin.setInterval(() => {

@@ -4,7 +4,7 @@
 
 import React from "react";
 import {Keyboard, ScrollView, StyleSheet, Text, View} from "react-native";
-import BaseView from "../BaseView";
+import FormView from "../common/FormView";
 import {ComponentStyles, StyleConfig} from "../../style";
 import {SjkhStyles} from "../../style/sjkh";
 import {Button, CheckBox, InputItem, Link, Modal, Steps} from "../../component";
@@ -12,7 +12,7 @@ import Picker from "react-native-picker";
 import edu from "../../../data/edu.json";
 import profession from "../../../data/profession.json";
 
-class PersonInfo extends BaseView {
+class PersonInfo extends FormView {
   constructor(props) {
     super(props);
     this.date_picker = this._createDateData();
@@ -144,11 +144,7 @@ class PersonInfo extends BaseView {
     Picker.show();
   }
 
-  onHideMask() {
-    Picker.hide();
-  }
-
-  doNext() {
+  onSubmit() {
     const {router} = this.props;
     Keyboard.dismiss();
     router.push('setPwd');
@@ -252,7 +248,7 @@ class PersonInfo extends BaseView {
             <Link href="http://www.163.com" router={this.props.router}>《中登申请协议》</Link>
           </View>
         </ScrollView>
-        <Button type="block" onPress={this.doNext.bind(this)}>下一步</Button>
+        <Button type="block" onPress={this.onSubmit.bind(this)}>下一步</Button>
         {this.renderModal()}
       </View>
     )

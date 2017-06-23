@@ -3,11 +3,12 @@
  */
 import * as types from "./actionType";
 
-export function login(loginId, password) {
+export function login(loginId, password, callback) {
   return {
     type: types.LOGIN,
     loginId,
-    password
+    password,
+    callback: callback
   }
 }
 

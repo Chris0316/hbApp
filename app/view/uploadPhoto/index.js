@@ -6,7 +6,7 @@ import React from "react";
 import {Image, Modal, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
 import ActionSheet from "react-native-actionsheet";
 import ImagePicker from "react-native-image-crop-picker";
-import BaseView from "../BaseView";
+import FormView from "../common/FormView";
 import {CommonStyles, ComponentStyles, StyleConfig} from "../../style";
 import {SjkhStyles} from "../../style/sjkh";
 import {Button, Steps} from "../../component";
@@ -14,7 +14,7 @@ import RNFetchBlob from "react-native-fetch-blob";
 const card1 = require('../../image/sjkh/card.png');
 const card2 = require('../../image/sjkh/card-face.png');
 
-class UploadPhoto extends BaseView {
+class UploadPhoto extends FormView {
 
   constructor(props) {
     super(props);
@@ -75,7 +75,7 @@ class UploadPhoto extends BaseView {
     }
   }
 
-  doNext() {
+  doSubmit() {
     const {router} = this.props;
     router.push('personInfo')
   }
@@ -183,7 +183,7 @@ class UploadPhoto extends BaseView {
         </ScrollView>
         {this.renderModal()}
         {this.renderUploadModal()}
-        <Button type="block" onPress={this.doNext.bind(this)}>下一步</Button>
+        <Button type="block" onPress={this.doSubmit.bind(this)}>下一步</Button>
       </View>
     )
   }

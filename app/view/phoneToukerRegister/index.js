@@ -7,9 +7,9 @@ import {Text, View} from "react-native";
 import {ComponentStyles} from "../../style";
 import {SjkhStyles} from "../../style/sjkh";
 import {Button, CheckBox, InputItem, Link} from "../../component";
-import BaseView from "../BaseView";
+import FormView from "../common/FormView";
 
-class PhoneToukerRegister extends BaseView {
+class PhoneToukerRegister extends FormView {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,8 +18,12 @@ class PhoneToukerRegister extends BaseView {
     }
   }
 
-  renderBody() {
+  onSubmit() {
     const {router} = this.props;
+    router.push('uploadPhoto')
+  }
+
+  renderBody() {
     return (
       <View style={ComponentStyles.container}>
         <Text style={SjkhStyles.tips_block}>
@@ -55,7 +59,7 @@ class PhoneToukerRegister extends BaseView {
             router={this.props.router}
             title="用户协议">《投客网用户协议》</Link>
         </View>
-        <Button onPress={() => router.push('uploadPhoto')}>下一步</Button>
+        <Button onPress={this.onSubmit.bind(this)}>下一步</Button>
       </View>
     )
   }

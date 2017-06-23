@@ -4,60 +4,32 @@
 
 import React from "react";
 import {View} from "react-native";
-import TimerMixin from "react-timer-mixin";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {Button} from "../../component";
-import BaseView from "../BaseView";
+import FormView from "../common/FormView";
 import * as userAction from "../../redux/action/user";
 
-class OpenAccount extends BaseView {
+class OpenAccount extends FormView {
   constructor(props) {
     super(props);
-    this.state = {
-      showModal: false,
-      loading: false
-    }
   }
-  
-  onPress() {
-    const {router} = this.props;
-    this.setState({
-      loading: true
-    });
-    TimerMixin.setTimeout(() => {
-      this.setState({
-        loading: false
-      });
-      router.push('phoneNumberVerify');
-    }, 300);
-  }
-  
-  componentWillReceiveProps(nextProps) {
-    const {user, router} = nextProps;
-    if (user.loading === true) {
-      return;
-    }
-    if (user.res && user.res.code === 0) {
-      if (user.res.isSuc) {
+
+  doSubmit() {
+    const {router, userAction} = this.props;
+    userAction.login('18016052872', '111111', (res) => {
+      if (res.isSuc) {
         router.push('phoneNumberVerify');
       } else {
         alert('密码错误');
       }
-    } else {
-      alert(user.res.message)
-    }
+    });
   }
-  
-  onPress2() {
-    const {userAction} = this.props;
-    userAction.login('18016052872', '111111');
-  }
-  
+
   renderBody() {
     return (
       <View>
-        <Button loading={this.props.user.loading} onPress={this.onPress2.bind(this)}>我知道了</Button>
+        <Button loading={this.props.user.loading} onPress={this.onSubmit.bind(this)}>我知道了</Button>
       </View>
     )
   }

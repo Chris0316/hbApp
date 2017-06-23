@@ -4,9 +4,9 @@
 
 import React from "react";
 import {ListView} from "react-native";
-import BaseView from "../BaseView";
+import ListViewPage from "../common/ListView";
 import Row from "./row";
-class Banks extends BaseView {
+class Banks extends ListViewPage {
   constructor(props) {
     super(props);
     let ds = new ListView.DataSource({
