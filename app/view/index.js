@@ -12,3 +12,4 @@ export {default as setPwd} from './setPwd';
 export {default as thirdDepository} from './thirdDepository';
 export {default as banks} from './banks';
 export {default as phoneToukerRegister} from './phoneToukerRegister';
+export {default as todos} from './todos'

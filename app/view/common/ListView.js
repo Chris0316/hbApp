@@ -2,10 +2,13 @@
  * Created by kim on 2017/6/23.
  */
 
-import BaseView from "./BaseView";
+import FormView from "./FormView";
 
-class ListView extends BaseView {
-
+class ListView extends FormView {
+  
+  constructor(props) {
+    super(props)
+  }
 }
 
 export default ListView

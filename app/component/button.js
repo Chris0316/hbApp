@@ -13,14 +13,14 @@ class Button extends Component {
       activeOpacity: disabled === true ? 1 : StyleConfig.touchable_press_opacity
     }
   }
-
+  
   handlePress() {
     const {onPress, disabled, loading} = this.props;
     if (!disabled && loading !== true) {
       onPress.call(this)
     }
   }
-
+  
   renderBlock() {
     const {disabled, style} = this.props;
     return (
@@ -36,7 +36,7 @@ class Button extends Component {
       </TouchableOpacity>
     )
   }
-
+  
   renderLoadingIcon() {
     if (this.props.loading === true) {
       return (
@@ -48,7 +48,7 @@ class Button extends Component {
       )
     }
   }
-
+  
   renderPrimary() {
     const {disabled, style} = this.props;
     return (
@@ -64,13 +64,13 @@ class Button extends Component {
       </TouchableOpacity>
     )
   }
-
+  
   renderPlain() {
     return (
       <Text>{ this.props.children }</Text>
     )
   }
-
+  
   render() {
     const {type} = this.props;
     if (type === 'block') {
@@ -91,7 +91,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    minWidth: 86
   },
   btn_common: {
     backgroundColor: StyleConfig.color_primary,

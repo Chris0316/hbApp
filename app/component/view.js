@@ -28,7 +28,7 @@ const ViewPage = {
       name: 'startup'
     }
   },
-
+  
   web: () => {
     return {
       component: View.web,
@@ -42,7 +42,7 @@ const ViewPage = {
       name: 'openAccount'
     }
   },
-
+  
   phoneNumberVerify: () => {
     return {
       title: '验证手机',
@@ -64,7 +64,7 @@ const ViewPage = {
       name: 'uploadPhoto'
     }
   },
-
+  
   setPwd: () => {
     return {
       title: '设置密码',
@@ -79,7 +79,7 @@ const ViewPage = {
       name: 'login'
     }
   },
-
+  
   thirdDepository: () => {
     return {
       title: '三方存管',
@@ -87,7 +87,7 @@ const ViewPage = {
       name: 'thirdDepository'
     }
   },
-
+  
   banks: () => {
     return {
       title: '银行选择',
@@ -100,6 +100,14 @@ const ViewPage = {
       title: '注册投客网',
       component: View.phoneToukerRegister,
       name: 'phoneToukerRegister'
+    }
+  },
+  
+  todos: () => {
+    return {
+      title: 'TODOS',
+      component: View.todos,
+      name: 'todos'
     }
   }
 };

@@ -5,19 +5,21 @@
 import * as types from "../action/actionType";
 
 const initialState = {
-  loading: false
+  loading: false,
+  saving: false
 };
 
 export default function user(state = initialState, action) {
   switch (action.type) {
     case types.TODO_ADD:
-      return Object.assign({
-        loading: true
-      }, state);
+      let ret = Object.assign({}, state, {
+        saving: true
+      });
+      return ret;
     case types.TODO_ADD_RES:
-      return Object.assign({
-        loading: false
-      }, state);
+      return Object.assign({}, state, {
+        saving: false
+      });
     case types.TODO_FETCH:
       return Object.assign({}, state, {
         loading: true

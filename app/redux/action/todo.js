@@ -11,9 +11,10 @@ export function add(text) {
   }
 }
 
-export function addRes() {
+export function addRes(res) {
   return {
-    type: types.TODO_ADD_RES
+    type: types.TODO_ADD_RES,
+    res
   }
 }
 
