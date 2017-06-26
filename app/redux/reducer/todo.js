@@ -29,6 +29,14 @@ export default function user(state = initialState, action) {
         todos: action.todos,
         loading: false
       });
+    case types.TODO_REMOVE:
+      return Object.assign({}, state, {
+        loading: true
+      });
+    case types.TODO_REMOVE_RES:
+      return Object.assign({}, state, {
+        loading: false
+      });
     default:
       return state;
   }

@@ -30,3 +30,17 @@ export function fetchRes(todos) {
     todos
   }
 }
+
+export function remove(objectId, callback) {
+  return {
+    type: types.TODO_REMOVE,
+    objectId,
+    callback
+  }
+}
+
+export function removeRes() {
+  return {
+    type: types.TODO_REMOVE_RES
+  }
+}

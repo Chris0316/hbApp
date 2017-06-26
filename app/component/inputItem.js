@@ -19,24 +19,24 @@ class InputItem extends Component {
       sms_countdown: this.props.countdown || 60
     }
   }
-  
+
   componentDidMount() {
     if (this.state.sms_start === true) {
       this.startTimer();
     }
   }
-  
+
   componentWillUnmount() {
     this.timer && TimerMixin.clearInterval(this.timer);
   }
-  
+
   renderLabel() {
     const {label} = this.props;
     return (
       <Text style={styles.label}>{label}</Text>
     )
   }
-  
+
   renderEyeIcon() {
     let secureTextEntry = this.state.secureTextEntry;
     if (secureTextEntry === undefined) {
@@ -58,7 +58,7 @@ class InputItem extends Component {
       )
     }
   }
-  
+
   renderClearIcon() {
     let clear = this.state.clear;
     if (clear === true && this.props.value) {
@@ -73,14 +73,14 @@ class InputItem extends Component {
       )
     }
   }
-  
+
   toggleIput() {
     let se = this.state.secureTextEntry;
     this.setState({
       secureTextEntry: !se
     })
   }
-  
+
   clearInput() {
     const {onChange} = this.props;
     this.setState({
@@ -88,7 +88,7 @@ class InputItem extends Component {
     });
     onChange && onChange('');
   }
-  
+
   onChange(text) {
     const {onChange} = this.props;
     if (text) {
@@ -102,7 +102,7 @@ class InputItem extends Component {
     }
     onChange && onChange(text)
   }
-  
+
   renderInput() {
     const {maxLength, keyboardType, value, placeholder, autoFocus, defaultValue} = this.props;
     return (
@@ -126,7 +126,7 @@ class InputItem extends Component {
       </View>
     )
   }
-  
+
   renderPicker() {
     const {value, placeholder, onPress} = this.props;
     let str = placeholder;
@@ -146,7 +146,7 @@ class InputItem extends Component {
       </TouchableOpacity>
     )
   }
-  
+
   startTimer() {
     let cd = this.state.sms_countdown;
     this.timer = TimerMixin.setInterval(() => {
@@ -164,7 +164,7 @@ class InputItem extends Component {
       }
     }, 1000);
   }
-  
+
   resetSmsCode() {
     if (this.state.sms_start === true) {
       return;
@@ -174,7 +174,7 @@ class InputItem extends Component {
     });
     this.startTimer();
   }
-  
+
   renderSmsBtn() {
     let label = '立即获取';
     if (this.state.sms_start) {
@@ -188,15 +188,14 @@ class InputItem extends Component {
       </TouchableOpacity>
     )
   }
-  
+
   renderSubmitBtn() {
     const {onSubmit, btnLabel, loading} = this.props;
     return (
-      <Button onPress={onSubmit} loading={loading}
-              style={{marginTop: 0, marginRight: 0, marginLeft: 0}}>{btnLabel || '提交'}</Button>
+      <Button onPress={onSubmit} loading={loading} style={styles.submit_btn}>{btnLabel || '提交'}</Button>
     )
   }
-  
+
   render() {
     const {type} = this.props;
     if (type === 'picker') {
@@ -266,6 +265,11 @@ const styles = StyleSheet.create({
     borderWidth: StyleConfig.border_width,
     borderColor: StyleConfig.border_color,
     textAlign: 'center'
+  },
+  submit_btn: {
+    marginTop: 0,
+    marginRight: 0,
+    marginLeft: 0
   }
 });
 

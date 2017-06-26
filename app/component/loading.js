@@ -22,7 +22,7 @@ import {StyleConfig} from '../style'
 const LoadingView = () => (
   <View style={styles.loading}>
     <ActivityIndicator size="large" color={StyleConfig.color_primary}/>
-    <Text style={styles.loadingText}>数据加载中...</Text>
+    {/*<Text style={styles.loadingText}>数据加载中...</Text>*/}
   </View>
 );
 

@@ -5,6 +5,7 @@ import React, {Component} from "react";
 import {Alert, Image, Platform, StatusBar, StyleSheet, View} from "react-native";
 import TimerMixin from "react-timer-mixin";
 import * as Animatable from "react-native-animatable";
+import SplashScreen from "react-native-splash-screen";
 import {StyleConfig} from "../style";
 
 import {checkUpdate, downloadUpdate, switchVersion} from "react-native-update";
@@ -34,6 +35,10 @@ class StartUp extends Component {
     }, 2000)
   }
 
+  componentDidMount() {
+    SplashScreen.hide();
+  }
+
   componentWillUnmount() {
     this.timer && TimerMixin.clearTimeout(this.timer)
   }
@@ -57,10 +62,6 @@ class StartUp extends Component {
         });
       }
     })
-  }
-
-  componentWillUnmount() {
-    this.timer && TimerMixin.clearTimeout(this.timer);
   }
 
   startApp() {

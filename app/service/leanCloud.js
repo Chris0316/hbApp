@@ -5,12 +5,17 @@
 import AV from "leancloud-storage";
 const leanCloud = {
   saveObject(collection, obj) {
-    let feedback = AV.Object.new(collection);
-    feedback.set('text', obj.text);
-    return feedback.save();
+    let object = AV.Object.new(collection);
+    object.set('text', obj.text);
+    return object.save();
   },
-  fetchObject(collection, obj) {
+  removeObj(collection, obejctId){
+    let object = AV.Object.createWithoutData(collection, obejctId);
+    return object.destroy();
+  },
+  fetchObject(collection) {
     let query = new AV.Query(collection);
+    query.descending('createdAt');
     return query.find();
   }
 };

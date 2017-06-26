@@ -143,6 +143,7 @@ dependencies {
     compile project(':react-native-picker')
     compile project(':react-native-image-crop-picker')
     compile project(':react-native-fetch-blob')
+    compile project(':react-native-splash-screen')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.react:react-native:+'
     compile 'com.facebook.fresco:animated-gif:1.0.1'

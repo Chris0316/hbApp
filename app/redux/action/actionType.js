@@ -13,3 +13,5 @@ export const TODO_ADD = 'TODO_ADD';
 export const TODO_ADD_RES = 'TODO_ADD_RES';
 export const TODO_FETCH = 'TODO_FETCH';
 export const TODO_FETCH_RES = 'TODO_FETCH_RES';
+export const TODO_REMOVE = 'TODO_REMOVE';
+export const TODO_REMOVE_RES = 'TODO_REMOVE_RES';
