@@ -12,10 +12,11 @@ class ListRow extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: this.props.selected || false
+      selected: this.props.selected || false,
+      opendId: ''
     }
   }
-
+  
   renderSelected() {
     if (this.state.selected) {
       return (
@@ -27,7 +28,7 @@ class ListRow extends Component {
       )
     }
   }
-
+  
   onPress() {
     const {onPress, select, data} = this.props;
     if (select) {
@@ -35,28 +36,36 @@ class ListRow extends Component {
     }
     onPress && onPress.call(this, data);
   }
-
+  
   render() {
-    let {style} = this.props;
-    let swipeoutBtns = [
-      {
-        text: '删除',
-        type: 'primary'
-      },
-      {
-        text: '修改'
-      },
-    ];
-    return (
-      <Swipeout right={swipeoutBtns} autoClose={true} backgroundColor={'red'}>
+    let {style, rightBtn, onOpen, close, scroll} = this.props;
+    if (rightBtn) {
+      return (
+        <Swipeout
+          close={close}
+          right={rightBtn}
+          autoClose={true}
+          onOpen={onOpen}
+          scroll={scroll}
+          sensitivity={1}>
+          <TouchableOpacity onPress={this.onPress.bind(this)} activeOpacity={1}>
+            <View style={[styles.list_item, CommonStyles.border_b, style]}>
+              { this.props.children }
+              {this.renderSelected()}
+            </View>
+          </TouchableOpacity>
+        </Swipeout>
+      )
+    } else {
+      return (
         <TouchableOpacity onPress={this.onPress.bind(this)}>
           <View style={[styles.list_item, CommonStyles.border_b, style]}>
             { this.props.children }
             {this.renderSelected()}
           </View>
         </TouchableOpacity>
-      </Swipeout>
-    )
+      )
+    }
   }
 }
 

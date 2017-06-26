@@ -3,7 +3,7 @@
  */
 
 import React from "react";
-import {InteractionManager, ListView, Text, View,Keyboard} from "react-native";
+import {InteractionManager, ListView, Text, View, Keyboard} from "react-native";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import Toast from "@remobile/react-native-toast";
@@ -20,36 +20,47 @@ class Todos extends ListViewPage {
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     };
   }
-
+  
   componentDidMount() {
     const {todoAction} = this.props;
     InteractionManager.runAfterInteractions(() => {
       todoAction.fetch();
     })
   }
-
-  onDelete(id) {
-    const {todoAction} = this.props;
-    let todos = this.props.todo.todos;
-    let idx = -1;
-    todos.find((item, i) => {
-      if (item.id === id) {
-        idx = i;
-        return item;
-      }
-    });
-    todoAction.remove(id);
-  }
-
+  
   renderRow(row) {
+    const {todoAction, todo} = this.props;
+    let todos = todo.todos;
+    let rightBtn = [{
+      text: '删除',
+      type: 'delete',
+      onPress: () => {
+        let idx = -1;
+        todos.find((item, i) => {
+          if (item.id === row.id) {
+            idx = i;
+            return item;
+          }
+        });
+        todoAction.remove(row.id);
+      }
+    }];
     return (
-      <ListItem data={row} onPress={this.onDelete.bind(this, row.id)}>
+      <ListItem
+        close={this.state.opendId !== row.id}
+        data={row}
+        rightBtn={rightBtn}
+        onOpen={() => {
+          this.setState({
+            opendId: row.id
+          })
+        }}>
         <Text style={{flex: 1}}>{row.get('text')}</Text>
         <Text style={{width: 200}}>{row.id}</Text>
       </ListItem>
     )
   }
-
+  
   renderList() {
     let todos = this.props.todo.todos || [];
     if (todos.length > 0) {
@@ -63,7 +74,7 @@ class Todos extends ListViewPage {
       return null;
     }
   }
-
+  
   validator() {
     let text = this.state.text;
     if (!text) {
@@ -72,7 +83,7 @@ class Todos extends ListViewPage {
     }
     return true;
   }
-
+  
   doSubmit() {
     let flag = this.validator();
     if (flag !== true) {
@@ -85,14 +96,14 @@ class Todos extends ListViewPage {
     });
     Keyboard.dismiss();
   }
-
+  
   renderLoading() {
     let {todo} = this.props;
     if (todo.loading === true) {
       return <Loading/>
     }
   }
-
+  
   renderForm() {
     let {todo} = this.props;
     return (
@@ -107,7 +118,7 @@ class Todos extends ListViewPage {
         onChange={(t) => this.setState({text: t})}/>
     )
   }
-
+  
   renderBody() {
     return (
       <View style={ComponentStyles.container}>
