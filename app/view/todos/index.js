@@ -3,12 +3,22 @@
  */
 
 import React from "react";
-import {InteractionManager, Keyboard, ListView, StyleSheet, Text, TextInput, View} from "react-native";
+import {
+  InteractionManager,
+  Keyboard,
+  ListView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  RefreshControl,
+  ActivityIndicator
+} from "react-native";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import Toast from "@remobile/react-native-toast";
 import * as todoAction from "../../redux/action/todo";
-import {ComponentStyles} from "../../style";
+import {ComponentStyles, StyleConfig} from "../../style";
 import ListViewPage from "../common/ListView";
 import {InputItem, ListItem, Loading} from "../../component";
 
@@ -22,7 +32,7 @@ class Todos extends ListViewPage {
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     };
   }
-
+  
   componentDidMount() {
     super.componentDidMount();
     const {todoAction} = this.props;
@@ -30,7 +40,7 @@ class Todos extends ListViewPage {
       todoAction.fetch();
     });
   }
-
+  
   doUpdate(row) {
     const {todoAction} = this.props;
     if (this.state.editText) {
@@ -41,7 +51,7 @@ class Todos extends ListViewPage {
       });
     }
   }
-
+  
   renderRow(row) {
     const {todoAction, todo} = this.props;
     let todos = todo.todos;
@@ -67,7 +77,7 @@ class Todos extends ListViewPage {
         todoAction.remove(row.id);
       }
     }];
-
+    
     let renderText = () => {
       if (!this.state.edit) {
         return (
@@ -108,21 +118,52 @@ class Todos extends ListViewPage {
       </ListItem>
     )
   }
-
+  
+  renderFooter() {
+    const {todo} = this.props;
+    
+    return (
+      <View style={styles.footer}>
+        <ActivityIndicator size="small" color={StyleConfig.color_primary}/>
+        <Text style={styles.footer_text}>
+          数据加载中……
+        </Text>
+      </View>
+    );
+  }
+  
   renderList() {
-    let todos = this.props.todo.todos || [];
-    if (todos.length > 0) {
+    const {todo} = this.props;
+    let todos = todo.todos || [], isEmpty = todo.isEmpty || false;
+    if (isEmpty) {
       return (
-        <ListView
-          dataSource={this.state.dataSource.cloneWithRows(todos)}
-          renderRow={this.renderRow.bind(this)}
-        />
+        <View style={ComponentStyles.container}>
+          <Text style={{flex: 1, textAlign: 'center', paddingTop: 60}}>数据为空</Text>
+        </View>
       )
     } else {
-      return null;
+      return (
+        <ListView
+          initialListSize={14}
+          dataSource={this.state.dataSource.cloneWithRows(todos)}
+          renderRow={this.renderRow.bind(this)}
+          enableEmptySections={true}
+          renderFooter={this.renderFooter.bind(this)}
+          refreshControl={
+            <RefreshControl
+              style={{backgroundColor: 'transparent'}}
+              refreshing={this.props.todo.loading}
+              onRefresh={() => this.props.todoAction.fetch()}
+              title="加载中..."
+              colors={[StyleConfig.color_primary]}
+            />
+          }
+        />
+      )
     }
+    
   }
-
+  
   validator() {
     let text = this.state.text;
     if (!text) {
@@ -131,7 +172,7 @@ class Todos extends ListViewPage {
     }
     return true;
   }
-
+  
   doSubmit() {
     let flag = this.validator();
     if (flag !== true) {
@@ -144,14 +185,14 @@ class Todos extends ListViewPage {
     });
     Keyboard.dismiss();
   }
-
+  
   renderLoading() {
     let {todo} = this.props;
     if (todo.loading === true) {
       return <Loading/>
     }
   }
-
+  
   renderForm() {
     let {todo} = this.props;
     return (
@@ -163,16 +204,16 @@ class Todos extends ListViewPage {
         value={this.state.text}
         loading={todo.saving}
         onSubmit={this.doSubmit.bind(this)}
-        onChangeText={(t) => this.setState({text: t})}/>
+        onChange={(t) => this.setState({text: t})}/>
     )
   }
-
+  
   renderBody() {
     return (
       <View style={ComponentStyles.container}>
         {this.renderForm()}
         {this.renderList()}
-        {this.renderLoading()}
+        {/*{this.renderLoading()}*/}
       </View>
     )
   }
@@ -184,7 +225,21 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     padding: 0,
     height: 19
-  }
+  },
+  
+  footer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5
+  },
+  
+  footer_text: {
+    textAlign: 'center',
+    fontSize: 16,
+    marginLeft: 10
+  },
 });
 export default connect(state => ({
   todo: state.todo

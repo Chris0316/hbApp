@@ -25,9 +25,11 @@ export default function user(state = initialState, action) {
         loading: true
       });
     case types.TODO_FETCH_RES:
+      let isEmpty = action.todos.length === 0;
       return Object.assign({}, state, {
         todos: action.todos,
-        loading: false
+        loading: false,
+        isEmpty
       });
     case types.TODO_REMOVE:
       return Object.assign({}, state, {
