@@ -3,7 +3,17 @@
  */
 
 import React from "react";
-import {ActivityIndicator, InteractionManager, Keyboard, ListView, RefreshControl, StyleSheet, Text, TextInput, View} from "react-native";
+import {
+  ActivityIndicator,
+  InteractionManager,
+  Keyboard,
+  ListView,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
+} from "react-native";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import Toast from "@remobile/react-native-toast";
@@ -26,7 +36,7 @@ class Todos extends ListViewPage {
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     };
   }
-
+  
   componentDidMount() {
     super.componentDidMount();
     const {todoAction} = this.props;
@@ -34,29 +44,30 @@ class Todos extends ListViewPage {
       todoAction.fetchMore(1, this.pageSize);
     });
   }
-
+  
   componentWillReceiveProps(nextProps) {
-    if (nextProps.todo && nextProps.todo.batch && nextProps.todo.batch.length > 0 && nextProps.todo.loadingMore === false) {
-      if (nextProps.todo.loading === false && nextProps.todo.type === 'TODO_FETCH_MORE_RES') {
-        this.pageNo = 1;
-        let s = nextProps.todo.batch;
+    const {todo} = nextProps;
+    if (nextProps.todo.type === 'TODO_FETCH_MORE_RES') {
+      if (todo.loading === false && todo.loadMore === false) {
+        this.pageNo = 2;
+        let s = todo.batch;
         this.setState({
           sources: s,
           dataSource: this.state.dataSource.cloneWithRows(s)
         });
       } else {
-        let s = this.state.sources.concat(nextProps.todo.batch);
+        let s = this.state.sources.concat(todo.batch);
         this.setState({
           sources: s,
           dataSource: this.state.dataSource.cloneWithRows(s)
         });
-      }
-      if (nextProps.todo.noMore !== true) {
-        this.pageNo++;
+        if (todo.noMore !== true) {
+          this.pageNo++;
+        }
       }
     }
   }
-
+  
   doUpdate(row) {
     const {todoAction} = this.props;
     if (this.state.editText) {
@@ -67,7 +78,7 @@ class Todos extends ListViewPage {
       });
     }
   }
-
+  
   renderRow(row) {
     const {todoAction, todo} = this.props;
     let todos = todo.todos;
@@ -93,7 +104,7 @@ class Todos extends ListViewPage {
         todoAction.remove(row.id);
       }
     }];
-
+    
     let renderText = () => {
       if (!this.state.edit) {
         return (
@@ -134,10 +145,10 @@ class Todos extends ListViewPage {
       </ListItem>
     )
   }
-
+  
   loadMore() {
     const {todoAction, todo} = this.props;
-    if (todo.loading || todo.loadingMore || this.state.dataSource.getRowCount() === 0) {
+    if (todo.loading === true || this.state.dataSource.getRowCount() === 0) {
       return
     }
     if (todo.noMore === true) {
@@ -145,35 +156,36 @@ class Todos extends ListViewPage {
     }
     todoAction.fetchMore(this.pageNo, this.pageSize);
   }
-
+  
   refresh() {
     const {todoAction} = this.props;
     todoAction.fetchMore(1, this.pageSize);
   }
-
+  
   renderFooter() {
     const {todo} = this.props;
-    let text = '数据加载中……';
-    if (todo.noMore) {
-      text = '没有更多了';
+    if (todo.loadMore === false) {
+      return null;
     }
-    if (todo.loadingMore) {
+    if (this.state.sources.length === 0) {
+      return;
+    }
+    if (todo.noMore) {
+      return (
+        <View style={styles.footer}>
+          <Text style={styles.footer_text}>没有更多了</Text>
+        </View>
+      )
+    } else {
       return (
         <View style={styles.footer}>
           <ActivityIndicator size="small" color={StyleConfig.color_primary}/>
-          <Text style={styles.footer_text}>{text}</Text>
-        </View>
-      );
-    }
-    if (todo.noMore) {
-      return (
-        <View style={styles.footer}>
-          <Text style={styles.footer_text}>{text}</Text>
+          <Text style={styles.footer_text}>数据加载中……</Text>
         </View>
       );
     }
   }
-
+  
   renderList() {
     const {todo} = this.props;
     let isEmpty = todo.count === 0 || false;
@@ -186,28 +198,27 @@ class Todos extends ListViewPage {
     } else {
       return (
         <ListView
-          initialListSize={13}
+          initialListSize={this.pageSize}
           dataSource={this.state.dataSource}
           renderRow={this.renderRow.bind(this)}
           enableEmptySections={true}
           renderFooter={this.renderFooter.bind(this)}
           onEndReached={this.loadMore.bind(this)}
-          onEndReachedThreshold={5}
+          onEndReachedThreshold={10}
           refreshControl={
             <RefreshControl
               style={{backgroundColor: 'transparent'}}
-              refreshing={this.props.todo.loading}
+              refreshing={this.props.todo.loading && this.props.todo.loadMore === false}
               onRefresh={this.refresh.bind(this)}
-              title="加载中..."
               colors={[StyleConfig.color_primary]}
             />
           }
         />
       )
     }
-
+    
   }
-
+  
   validator() {
     let text = this.state.addText;
     if (!text) {
@@ -216,7 +227,7 @@ class Todos extends ListViewPage {
     }
     return true;
   }
-
+  
   doSubmit() {
     let flag = this.validator();
     if (flag !== true) {
@@ -229,7 +240,7 @@ class Todos extends ListViewPage {
     });
     Keyboard.dismiss();
   }
-
+  
   renderForm() {
     let {todo} = this.props;
     return (
@@ -244,7 +255,7 @@ class Todos extends ListViewPage {
         onChange={(t) => this.setState({addText: t})}/>
     )
   }
-
+  
   renderBody() {
     return (
       <View style={ComponentStyles.container}>
@@ -262,15 +273,16 @@ const styles = StyleSheet.create({
     padding: 0,
     height: 19
   },
-
+  
   footer: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 5
+    paddingVertical: 15,
+    paddingLeft: 5
   },
-
+  
   footer_text: {
     textAlign: 'center',
     fontSize: 16,

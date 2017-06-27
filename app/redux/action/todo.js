@@ -55,11 +55,12 @@ export function fetchMore(pageNo, pageSize) {
   }
 }
 
-export function fetchMoreRes(count, batch, pageSize) {
+export function fetchMoreRes(count, batch, pageNo, pageSize) {
   return {
     type: types.TODO_FETCH_MORE_RES,
     count,
     batch,
+    pageNo,
     pageSize
   }
 }

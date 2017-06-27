@@ -31,7 +31,7 @@ export function* fetchMore(pageNo, pageSize) {
   try {
     let count = yield call(leanCloud.getCount, 'Todo');
     let res = yield call(leanCloud.fetchMore, 'Todo', pageNo, pageSize);
-    yield put(fetchMoreRes(count, res, pageSize));
+    yield put(fetchMoreRes(count, res, pageNo, pageSize));
   } catch (err) {
     yield put(fetchMoreRes(err))
   }
