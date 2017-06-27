@@ -14,7 +14,6 @@ import * as userAction from "../../redux/action/user";
 class OpenAccount extends FormView {
   constructor(props) {
     super(props);
-    
   }
   
   doSubmit() {

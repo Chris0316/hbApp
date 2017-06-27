@@ -10,3 +10,4 @@ export {default as Link} from './link';
 export {default as Steps} from './steps';
 export {default as ListItem} from './listItem';
 export {default as Loading} from './loading';
+export {default as Swipeout} from './swipeout';

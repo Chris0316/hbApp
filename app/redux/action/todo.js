@@ -18,6 +18,21 @@ export function addRes(res) {
   }
 }
 
+export function edit(objectId, text, callback) {
+  return {
+    type: types.TODO_EDIT,
+    objectId,
+    text,
+    callback
+  }
+}
+
+export function editRes() {
+  return {
+    type: types.TODO_EDIT_RES
+  }
+}
+
 export function fetch() {
   return {
     type: types.TODO_FETCH

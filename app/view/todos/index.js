@@ -3,7 +3,7 @@
  */
 
 import React from "react";
-import {InteractionManager, ListView, Text, View, Keyboard} from "react-native";
+import {InteractionManager, Keyboard, ListView, StyleSheet, Text, TextInput, View} from "react-native";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import Toast from "@remobile/react-native-toast";
@@ -17,21 +17,43 @@ class Todos extends ListViewPage {
     super(props);
     this.state = {
       text: '',
+      openId: '',
+      edit: false,
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     };
   }
-  
+
   componentDidMount() {
+    super.componentDidMount();
     const {todoAction} = this.props;
     InteractionManager.runAfterInteractions(() => {
       todoAction.fetch();
-    })
+    });
   }
-  
+
+  doUpdate(row) {
+    const {todoAction} = this.props;
+    if (this.state.editText) {
+      todoAction.edit(row.id, this.state.editText, () => {
+        this.setState({
+          edit: false
+        });
+      });
+    }
+  }
+
   renderRow(row) {
     const {todoAction, todo} = this.props;
     let todos = todo.todos;
     let rightBtn = [{
+      text: '修改',
+      type: 'primary',
+      onPress: () => {
+        this.setState({
+          edit: true
+        });
+      }
+    }, {
       text: '删除',
       type: 'delete',
       onPress: () => {
@@ -45,6 +67,32 @@ class Todos extends ListViewPage {
         todoAction.remove(row.id);
       }
     }];
+
+    let renderText = () => {
+      if (!this.state.edit) {
+        return (
+          <Text style={{flex: 1}}>{row.get('text')}</Text>
+        )
+      } else {
+        if (this.state.opendId !== row.id) {
+          return (
+            <Text style={{flex: 1}}>{row.get('text')}</Text>
+          )
+        } else {
+          return (
+            <TextInput
+              style={styles.edit_text}
+              autoFocus={true}
+              underlineColorAndroid="transparent"
+              defaultValue={row.get('text')}
+              onBlur={this.doUpdate.bind(this, row)}
+              onChangeText={(text) => {
+                this.setState({editText: text})
+              }}/>
+          )
+        }
+      }
+    };
     return (
       <ListItem
         close={this.state.opendId !== row.id}
@@ -55,12 +103,12 @@ class Todos extends ListViewPage {
             opendId: row.id
           })
         }}>
-        <Text style={{flex: 1}}>{row.get('text')}</Text>
+        {renderText()}
         <Text style={{width: 200}}>{row.id}</Text>
       </ListItem>
     )
   }
-  
+
   renderList() {
     let todos = this.props.todo.todos || [];
     if (todos.length > 0) {
@@ -74,7 +122,7 @@ class Todos extends ListViewPage {
       return null;
     }
   }
-  
+
   validator() {
     let text = this.state.text;
     if (!text) {
@@ -83,7 +131,7 @@ class Todos extends ListViewPage {
     }
     return true;
   }
-  
+
   doSubmit() {
     let flag = this.validator();
     if (flag !== true) {
@@ -96,14 +144,14 @@ class Todos extends ListViewPage {
     });
     Keyboard.dismiss();
   }
-  
+
   renderLoading() {
     let {todo} = this.props;
     if (todo.loading === true) {
       return <Loading/>
     }
   }
-  
+
   renderForm() {
     let {todo} = this.props;
     return (
@@ -115,10 +163,10 @@ class Todos extends ListViewPage {
         value={this.state.text}
         loading={todo.saving}
         onSubmit={this.doSubmit.bind(this)}
-        onChange={(t) => this.setState({text: t})}/>
+        onChangeText={(t) => this.setState({text: t})}/>
     )
   }
-  
+
   renderBody() {
     return (
       <View style={ComponentStyles.container}>
@@ -129,7 +177,15 @@ class Todos extends ListViewPage {
     )
   }
 }
-
+const styles = StyleSheet.create({
+  edit_text: {
+    flex: 1,
+    fontSize: 14,
+    textAlign: 'left',
+    padding: 0,
+    height: 19
+  }
+});
 export default connect(state => ({
   todo: state.todo
 }), dispatch => ({

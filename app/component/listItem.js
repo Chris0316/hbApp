@@ -6,7 +6,7 @@ import React, {Component} from "react";
 import {StyleSheet, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {CommonStyles, StyleConfig} from "../style";
-import Swipeout from "react-native-swipeout";
+import {Swipeout} from "./index";
 
 class ListRow extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class ListRow extends Component {
       opendId: ''
     }
   }
-  
+
   renderSelected() {
     if (this.state.selected) {
       return (
@@ -28,7 +28,7 @@ class ListRow extends Component {
       )
     }
   }
-  
+
   onPress() {
     const {onPress, select, data} = this.props;
     if (select) {
@@ -36,7 +36,7 @@ class ListRow extends Component {
     }
     onPress && onPress.call(this, data);
   }
-  
+
   render() {
     let {style, rightBtn, onOpen, close, scroll} = this.props;
     if (rightBtn) {
@@ -47,8 +47,9 @@ class ListRow extends Component {
           autoClose={true}
           onOpen={onOpen}
           scroll={scroll}
+          buttonWidth={60}
           sensitivity={1}>
-          <TouchableOpacity onPress={this.onPress.bind(this)} activeOpacity={1}>
+          <TouchableOpacity onPress={this.onPress.bind(this)}>
             <View style={[styles.list_item, CommonStyles.border_b, style]}>
               { this.props.children }
               {this.renderSelected()}

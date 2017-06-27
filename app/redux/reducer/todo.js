@@ -37,6 +37,14 @@ export default function user(state = initialState, action) {
       return Object.assign({}, state, {
         loading: false
       });
+    case types.TODO_EDIT:
+      return Object.assign({}, state, {
+        loading: true
+      });
+    case types.TODO_EDIT_RES:
+      return Object.assign({}, state, {
+        loading: false
+      });
     default:
       return state;
   }

@@ -13,6 +13,11 @@ const leanCloud = {
     let object = AV.Object.createWithoutData(collection, obejctId);
     return object.destroy();
   },
+  editObj(collection, obejctId, text){
+    let object = AV.Object.createWithoutData(collection, obejctId);
+    object.set('text', text);
+    return object.save();
+  },
   fetchObject(collection) {
     let query = new AV.Query(collection);
     query.descending('createdAt');

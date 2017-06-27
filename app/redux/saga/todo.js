@@ -4,7 +4,7 @@
 
 import {call, fork, put, take} from "redux-saga/effects";
 import Toast from "@remobile/react-native-toast";
-import {addRes, fetchRes, removeRes} from "../action/todo";
+import {addRes, editRes, fetchRes, removeRes} from "../action/todo";
 import * as types from "../action/actionType";
 import {leanCloud} from "../../service";
 
@@ -38,6 +38,18 @@ export function* remove(objectId) {
   }
 }
 
+export function* edit(objectId, text, callback) {
+  try {
+    yield call(leanCloud.editObj, 'Todo', objectId, text);
+    yield put(editRes());
+    yield fetch();
+    callback && callback();
+  } catch (err) {
+    yield put(editRes());
+    Toast.show(err.message);
+  }
+}
+
 export function* doAdd() {
   while (true) {
     const {text} = yield take(types.TODO_ADD);
@@ -54,8 +66,15 @@ export function* doFetch() {
 
 export function* doRemove() {
   while (true) {
-    const {objectId, callback} = yield take(types.TODO_REMOVE);
-    yield fork(remove, objectId, callback);
+    const {objectId} = yield take(types.TODO_REMOVE);
+    yield fork(remove, objectId);
+  }
+}
+
+export function* doEdit() {
+  while (true) {
+    const {objectId, text, callback} = yield take(types.TODO_EDIT);
+    yield fork(edit, objectId, text, callback);
   }
 }
 
@@ -63,4 +82,5 @@ export default function* watch() {
   yield fork(doAdd);
   yield fork(doFetch);
   yield fork(doRemove);
+  yield fork(doEdit);
 }
