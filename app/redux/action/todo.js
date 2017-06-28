@@ -46,6 +46,24 @@ export function fetchRes(todos) {
   }
 }
 
+
+export function fetchMore(pageNo, pageSize) {
+  return {
+    type: types.TODO_FETCH_MORE,
+    pageNo,
+    pageSize
+  }
+}
+
+export function fetchMoreRes(count, batch, pageSize) {
+  return {
+    type: types.TODO_FETCH_MORE_RES,
+    count,
+    batch,
+    pageSize
+  }
+}
+
 export function remove(objectId, callback) {
   return {
     type: types.TODO_REMOVE,

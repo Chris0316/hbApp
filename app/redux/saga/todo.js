@@ -4,7 +4,7 @@
 
 import {call, fork, put, take} from "redux-saga/effects";
 import Toast from "@remobile/react-native-toast";
-import {addRes, editRes, fetchRes, removeRes} from "../action/todo";
+import {addRes, editRes, fetchMoreRes, fetchRes, removeRes} from "../action/todo";
 import * as types from "../action/actionType";
 import {leanCloud} from "../../service";
 
@@ -24,6 +24,16 @@ export function* fetch() {
     yield put(fetchRes(res));
   } catch (err) {
     yield put(fetchRes(err))
+  }
+}
+
+export function* fetchMore(pageNo, pageSize) {
+  try {
+    let count = yield call(leanCloud.getCount, 'Todo');
+    let res = yield call(leanCloud.fetchMore, 'Todo', pageNo, pageSize);
+    yield put(fetchMoreRes(count, res, pageSize));
+  } catch (err) {
+    yield put(fetchMoreRes(err))
   }
 }
 
@@ -64,6 +74,13 @@ export function* doFetch() {
   }
 }
 
+export function* doFetchMore() {
+  while (true) {
+    const {pageNo, pageSize} = yield take(types.TODO_FETCH_MORE);
+    yield fork(fetchMore, pageNo, pageSize);
+  }
+}
+
 export function* doRemove() {
   while (true) {
     const {objectId} = yield take(types.TODO_REMOVE);
@@ -83,4 +100,5 @@ export default function* watch() {
   yield fork(doFetch);
   yield fork(doRemove);
   yield fork(doEdit);
+  yield fork(doFetchMore);
 }

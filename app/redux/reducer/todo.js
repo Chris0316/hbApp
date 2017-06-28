@@ -5,7 +5,7 @@
 import * as types from "../action/actionType";
 
 const initialState = {
-  loading: false,
+  loading: true,
   saving: false
 };
 
@@ -46,6 +46,22 @@ export default function user(state = initialState, action) {
     case types.TODO_EDIT_RES:
       return Object.assign({}, state, {
         loading: false
+      });
+    case types.TODO_FETCH_MORE:
+      return Object.assign({}, state, {
+        loadingMore: action.pageNo > 1,
+        loading: action.pageNo === 1,
+        noMore: false,
+        type: types.TODO_FETCH_MORE
+      });
+    case types.TODO_FETCH_MORE_RES:
+      return Object.assign({}, state, {
+        batch: action.batch,
+        count: action.count,
+        loadingMore: false,
+        loading: false,
+        noMore: action.batch.length < action.pageSize,
+        type: types.TODO_FETCH_MORE_RES
       });
     default:
       return state;

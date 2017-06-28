@@ -7,7 +7,15 @@ import FormView from "./FormView";
 class ListView extends FormView {
 
   constructor(props) {
-    super(props)
+    super(props);
+  }
+
+  loadMore() {
+
+  }
+
+  renderFooter(){
+
   }
 }
 

@@ -17,3 +17,5 @@ export const TODO_EDIT = 'TODO_EDIT';
 export const TODO_EDIT_RES = 'TODO_EDIT_RES';
 export const TODO_REMOVE = 'TODO_REMOVE';
 export const TODO_REMOVE_RES = 'TODO_REMOVE_RES';
+export const TODO_FETCH_MORE = 'TODO_FETCH_MORE';
+export const TODO_FETCH_MORE_RES = 'TODO_FETCH_MORE_RES';

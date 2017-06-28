@@ -22,6 +22,17 @@ const leanCloud = {
     let query = new AV.Query(collection);
     query.descending('createdAt');
     return query.find();
+  },
+  fetchMore(collection, pageNo = 1, pageSize = 10) {
+    let query = new AV.Query(collection);
+    query.skip((pageNo - 1) * pageSize);
+    query.limit(pageSize);
+    query.descending('createdAt');
+    return query.find();
+  },
+  getCount(collection){
+    let query = new AV.Query(collection);
+    return query.count();
   }
 };
 export default leanCloud;

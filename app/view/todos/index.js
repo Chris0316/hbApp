@@ -3,44 +3,60 @@
  */
 
 import React from "react";
-import {
-  InteractionManager,
-  Keyboard,
-  ListView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  RefreshControl,
-  ActivityIndicator
-} from "react-native";
+import {ActivityIndicator, InteractionManager, Keyboard, ListView, RefreshControl, StyleSheet, Text, TextInput, View} from "react-native";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import Toast from "@remobile/react-native-toast";
 import * as todoAction from "../../redux/action/todo";
 import {ComponentStyles, StyleConfig} from "../../style";
 import ListViewPage from "../common/ListView";
-import {InputItem, ListItem, Loading} from "../../component";
+import {InputItem, ListItem} from "../../component";
 
 class Todos extends ListViewPage {
   constructor(props) {
     super(props);
+    this.pageSize = 13;
+    this.pageNo = 1;
     this.state = {
-      text: '',
+      addText: '',
+      editText: '',
       openId: '',
       edit: false,
+      sources: [],
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     };
   }
-  
+
   componentDidMount() {
     super.componentDidMount();
     const {todoAction} = this.props;
     InteractionManager.runAfterInteractions(() => {
-      todoAction.fetch();
+      todoAction.fetchMore(1, this.pageSize);
     });
   }
-  
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.todo && nextProps.todo.batch && nextProps.todo.batch.length > 0 && nextProps.todo.loadingMore === false) {
+      if (nextProps.todo.loading === false && nextProps.todo.type === 'TODO_FETCH_MORE_RES') {
+        this.pageNo = 1;
+        let s = nextProps.todo.batch;
+        this.setState({
+          sources: s,
+          dataSource: this.state.dataSource.cloneWithRows(s)
+        });
+      } else {
+        let s = this.state.sources.concat(nextProps.todo.batch);
+        this.setState({
+          sources: s,
+          dataSource: this.state.dataSource.cloneWithRows(s)
+        });
+      }
+      if (nextProps.todo.noMore !== true) {
+        this.pageNo++;
+      }
+    }
+  }
+
   doUpdate(row) {
     const {todoAction} = this.props;
     if (this.state.editText) {
@@ -51,7 +67,7 @@ class Todos extends ListViewPage {
       });
     }
   }
-  
+
   renderRow(row) {
     const {todoAction, todo} = this.props;
     let todos = todo.todos;
@@ -77,7 +93,7 @@ class Todos extends ListViewPage {
         todoAction.remove(row.id);
       }
     }];
-    
+
     let renderText = () => {
       if (!this.state.edit) {
         return (
@@ -118,42 +134,70 @@ class Todos extends ListViewPage {
       </ListItem>
     )
   }
-  
+
+  loadMore() {
+    const {todoAction, todo} = this.props;
+    if (todo.loading || todo.loadingMore || this.state.dataSource.getRowCount() === 0) {
+      return
+    }
+    if (todo.noMore === true) {
+      return;
+    }
+    todoAction.fetchMore(this.pageNo, this.pageSize);
+  }
+
+  refresh() {
+    const {todoAction} = this.props;
+    todoAction.fetchMore(1, this.pageSize);
+  }
+
   renderFooter() {
     const {todo} = this.props;
-    
-    return (
-      <View style={styles.footer}>
-        <ActivityIndicator size="small" color={StyleConfig.color_primary}/>
-        <Text style={styles.footer_text}>
-          数据加载中……
-        </Text>
-      </View>
-    );
+    let text = '数据加载中……';
+    if (todo.noMore) {
+      text = '没有更多了';
+    }
+    if (todo.loadingMore) {
+      return (
+        <View style={styles.footer}>
+          <ActivityIndicator size="small" color={StyleConfig.color_primary}/>
+          <Text style={styles.footer_text}>{text}</Text>
+        </View>
+      );
+    }
+    if (todo.noMore) {
+      return (
+        <View style={styles.footer}>
+          <Text style={styles.footer_text}>{text}</Text>
+        </View>
+      );
+    }
   }
-  
+
   renderList() {
     const {todo} = this.props;
-    let todos = todo.todos || [], isEmpty = todo.isEmpty || false;
+    let isEmpty = todo.count === 0 || false;
     if (isEmpty) {
       return (
         <View style={ComponentStyles.container}>
-          <Text style={{flex: 1, textAlign: 'center', paddingTop: 60}}>数据为空</Text>
+          <Text style={{flex: 1, textAlign: 'center', paddingTop: 60}}>目前没有数据，请刷新重试……</Text>
         </View>
       )
     } else {
       return (
         <ListView
-          initialListSize={14}
-          dataSource={this.state.dataSource.cloneWithRows(todos)}
+          initialListSize={13}
+          dataSource={this.state.dataSource}
           renderRow={this.renderRow.bind(this)}
           enableEmptySections={true}
           renderFooter={this.renderFooter.bind(this)}
+          onEndReached={this.loadMore.bind(this)}
+          onEndReachedThreshold={5}
           refreshControl={
             <RefreshControl
               style={{backgroundColor: 'transparent'}}
               refreshing={this.props.todo.loading}
-              onRefresh={() => this.props.todoAction.fetch()}
+              onRefresh={this.refresh.bind(this)}
               title="加载中..."
               colors={[StyleConfig.color_primary]}
             />
@@ -161,38 +205,31 @@ class Todos extends ListViewPage {
         />
       )
     }
-    
+
   }
-  
+
   validator() {
-    let text = this.state.text;
+    let text = this.state.addText;
     if (!text) {
       Toast.show('请输入内容');
       return false;
     }
     return true;
   }
-  
+
   doSubmit() {
     let flag = this.validator();
     if (flag !== true) {
       return;
     }
     const {todoAction} = this.props;
-    todoAction.add(this.state.text);
+    todoAction.add(this.state.addText);
     this.setState({
-      text: ''
+      addText: ''
     });
     Keyboard.dismiss();
   }
-  
-  renderLoading() {
-    let {todo} = this.props;
-    if (todo.loading === true) {
-      return <Loading/>
-    }
-  }
-  
+
   renderForm() {
     let {todo} = this.props;
     return (
@@ -201,19 +238,18 @@ class Todos extends ListViewPage {
         btnLabel="添加"
         label="内容"
         placeholder="请输入内容"
-        value={this.state.text}
+        value={this.state.addText}
         loading={todo.saving}
         onSubmit={this.doSubmit.bind(this)}
-        onChange={(t) => this.setState({text: t})}/>
+        onChange={(t) => this.setState({addText: t})}/>
     )
   }
-  
+
   renderBody() {
     return (
       <View style={ComponentStyles.container}>
         {this.renderForm()}
         {this.renderList()}
-        {/*{this.renderLoading()}*/}
       </View>
     )
   }
@@ -226,7 +262,7 @@ const styles = StyleSheet.create({
     padding: 0,
     height: 19
   },
-  
+
   footer: {
     flex: 1,
     flexDirection: 'row',
@@ -234,7 +270,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 5
   },
-  
+
   footer_text: {
     textAlign: 'center',
     fontSize: 16,
